@@ -1,0 +1,1300 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aquoz | Free In-Home Water Test &amp; Whole-Home Filtration</title>
+  <meta name="description" content="Book a free in-home water test with Aquoz. Whole-house and under-sink filtration installed by licensed Australian plumbers. WaterMark &amp; NSF certified. Lifetime warranty.">
+
+  <!-- Open Graph / social share -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="What's really in your tap water? | Aquoz">
+  <meta property="og:description" content="Book a free in-home water test and get an honest recommendation. Whole-home filtration, licensed install, lifetime warranty.">
+  <meta property="og:image" content="assets/hero-image.webp">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- =========================================================
+       META PIXEL  —  paste your Pixel ID where marked, then
+       uncomment this block to start tracking.  The form already
+       fires a "Lead" event via fbq() when this is live.
+  ============================================================
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID');   // <-- replace YOUR_PIXEL_ID
+    fbq('track', 'PageView');
+  </script>
+  ============================================================ -->
+
+  <style>
+    :root {
+      --navy: #0b2438;
+      --navy-2: #0e2c44;
+      --ink: #102433;
+      --blue: #1880bd;
+      --blue-deep: #115e8b;
+      --aqua: #46c2d6;
+      --aqua-soft: #8fe3ef;
+      --muted: #5b6f7d;
+      --line: #e3edf2;
+      --soft: #eef8fb;
+      --white: #ffffff;
+      --gold: #f4b740;
+      --green: #1f9d63;
+      --radius: 16px;
+      --radius-sm: 11px;
+      --shadow-sm: 0 6px 20px rgba(12,40,60,.08);
+      --shadow: 0 24px 60px rgba(10,35,52,.16);
+      --shadow-lg: 0 40px 90px rgba(8,32,52,.30);
+      --ease: cubic-bezier(.22,1,.36,1);
+      --maxw: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      background: var(--white);
+      line-height: 1.55;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    h1, h2, h3 { letter-spacing: -.02em; }
+
+    .wrap { width: min(var(--maxw), calc(100% - 40px)); margin: 0 auto; }
+    section[id], .form-panel { scroll-margin-top: 96px; }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 26px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #2a93cf, var(--blue) 60%, var(--blue-deep));
+      color: white;
+      font: inherit;
+      font-weight: 800;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 14px 30px rgba(24,128,189,.34), inset 0 1px 0 rgba(255,255,255,.25);
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease), filter .25s var(--ease);
+    }
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -120%;
+      width: 60%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent);
+      transform: skewX(-18deg);
+      transition: left .7s var(--ease);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(24,128,189,.42), inset 0 1px 0 rgba(255,255,255,.3); }
+    .btn:hover::after { left: 130%; }
+    .btn:active { transform: translateY(0); }
+
+    .btn.ghost {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.5);
+      box-shadow: none;
+      backdrop-filter: blur(4px);
+    }
+    .btn.ghost:hover { background: rgba(255,255,255,.16); box-shadow: none; }
+
+    .btn.light {
+      background: #fff;
+      color: var(--blue-deep);
+      box-shadow: 0 14px 30px rgba(8,32,52,.18);
+    }
+    .btn.light:hover { box-shadow: 0 20px 40px rgba(8,32,52,.26); }
+
+    .btn.block { width: 100%; }
+    .btn .arr { transition: transform .25s var(--ease); }
+    .btn:hover .arr { transform: translateX(4px); }
+
+    /* ---------- Announcement bar ---------- */
+    .announce {
+      background: linear-gradient(90deg, var(--navy), var(--blue-deep));
+      color: #dff4fb;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+    .announce .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      min-height: 40px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .announce span { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .announce svg { width: 16px; height: 16px; }
+    .announce .dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.45); }
+
+    /* ---------- Header ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255,255,255,.82);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(14px) saturate(140%);
+      transition: box-shadow .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease);
+    }
+    .topbar.scrolled {
+      background: rgba(255,255,255,.95);
+      border-color: var(--line);
+      box-shadow: 0 8px 30px rgba(10,35,52,.08);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 76px;
+      transition: min-height .3s var(--ease);
+    }
+    .topbar.scrolled .nav { min-height: 64px; }
+    .brand { display: flex; align-items: center; text-decoration: none; }
+    .brand img { width: 138px; height: auto; transition: width .3s var(--ease); }
+    .topbar.scrolled .brand img { width: 120px; }
+
+    .nav-actions { display: flex; align-items: center; gap: 14px; }
+    .phone-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      font-weight: 800;
+      color: var(--navy);
+      font-size: 16px;
+      white-space: nowrap;
+    }
+    .phone-link .ph-ico {
+      width: 38px; height: 38px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: var(--soft);
+      color: var(--blue);
+      flex: none;
+    }
+    .phone-link small { display: block; font-size: 10.5px; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+    .phone-link svg { width: 18px; height: 18px; }
+
+    /* ---------- Hero ---------- */
+    .hero { position: relative; isolation: isolate; overflow: hidden; color: #fff; }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0; z-index: -2;
+      background: url("assets/hero-image.webp") center right / cover no-repeat;
+      animation: kenburns 24s ease-in-out infinite alternate;
+    }
+    .hero::after {
+      content: "";
+      position: absolute; inset: 0; z-index: -1;
+      background:
+        radial-gradient(120% 90% at 85% 10%, rgba(70,194,214,.20), transparent 55%),
+        linear-gradient(108deg, rgba(7,26,42,.95) 0%, rgba(8,30,48,.9) 36%, rgba(8,30,48,.55) 66%, rgba(8,30,48,.32) 100%);
+    }
+    @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.09); } }
+
+    .bubbles { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .bubble {
+      position: absolute; bottom: -60px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), rgba(143,227,239,.10));
+      box-shadow: 0 0 14px rgba(143,227,239,.25);
+      opacity: 0;
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      0% { transform: translateY(0) scale(.5); opacity: 0; }
+      12% { opacity: .55; }
+      100% { transform: translateY(-105vh) scale(1.05); opacity: 0; }
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) 440px;
+      gap: 48px;
+      align-items: center;
+      padding: 60px 0 96px;
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 8px 15px; border-radius: 999px;
+      background: rgba(70,194,214,.14);
+      border: 1px solid rgba(143,227,239,.4);
+      color: #c7f5ff;
+      font-size: 12.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+    }
+    .eyebrow svg { width: 15px; height: 15px; }
+
+    .hero h1 {
+      margin: 22px 0 18px;
+      max-width: 660px;
+      font-size: clamp(40px, 5.6vw, 70px);
+      line-height: 1.02;
+      font-weight: 800;
+    }
+    .hero h1 .hl { position: relative; color: var(--aqua-soft); white-space: nowrap; }
+    .hero h1 .hl::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: .06em; height: .12em;
+      background: linear-gradient(90deg, var(--aqua), transparent);
+      border-radius: 4px;
+      transform: scaleX(0); transform-origin: left;
+      animation: underline 1s var(--ease) 1.1s forwards;
+    }
+    @keyframes underline { to { transform: scaleX(1); } }
+
+    .hero-copy { max-width: 560px; color: rgba(255,255,255,.9); font-size: clamp(17px, 1.6vw, 20px); }
+
+    .hero-rating {
+      display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin: 22px 0 4px; font-size: 14px; font-weight: 700; color: rgba(255,255,255,.92);
+    }
+    .stars { display: inline-flex; gap: 2px; color: var(--gold); }
+    .stars svg { width: 17px; height: 17px; }
+    .hero-rating .sep { width: 1px; height: 16px; background: rgba(255,255,255,.3); }
+    .hero-rating .mini-badges { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,.78); font-weight: 600; }
+
+    .hero-points {
+      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px;
+      margin: 26px 0 30px; max-width: 660px;
+    }
+    .hero-point {
+      padding: 15px 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.07);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(4px);
+      transition: transform .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease);
+    }
+    .hero-point:hover { transform: translateY(-4px); background: rgba(255,255,255,.12); border-color: rgba(143,227,239,.5); }
+    .hero-point .hp-ico { width: 30px; height: 30px; color: var(--aqua-soft); margin-bottom: 9px; }
+    .hero-point .hp-ico svg { width: 100%; height: 100%; }
+    .hero-point b { display: block; font-size: 15.5px; font-weight: 800; }
+    .hero-point small { display: block; margin-top: 3px; color: rgba(255,255,255,.72); font-size: 12.5px; font-weight: 600; }
+
+    .hero-cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .hero-cta-row .call-text { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: rgba(255,255,255,.9); text-decoration: none; }
+    .hero-cta-row .call-text svg { width: 18px; height: 18px; color: var(--aqua-soft); }
+
+    /* ---------- Form panel ---------- */
+    .form-panel {
+      position: relative;
+      background: rgba(255,255,255,.97);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 26px 26px 24px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255,255,255,.8);
+    }
+    .form-ribbon {
+      position: absolute; top: -14px; left: 24px;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), #27b873);
+      color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .03em;
+      box-shadow: 0 10px 22px rgba(31,157,99,.32);
+    }
+    .form-ribbon svg { width: 14px; height: 14px; }
+    .form-panel h2 { margin: 12px 0 6px; font-size: 25px; line-height: 1.12; color: var(--navy); }
+    .form-panel .sub { margin: 0 0 18px; color: var(--muted); font-size: 14.5px; }
+
+    .field { display: grid; gap: 6px; margin-bottom: 13px; }
+    .field.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    label { font-size: 12.5px; font-weight: 800; color: var(--navy); }
+    input, select {
+      width: 100%; min-height: 50px;
+      border: 1.5px solid #d3e1e9; border-radius: 10px;
+      padding: 12px 14px; font: inherit; font-size: 15px; color: var(--ink); background: #fff;
+      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+    }
+    input::placeholder { color: #9bb0bd; }
+    input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(24,128,189,.13); }
+    input.invalid, select.invalid { border-color: #e2574c; box-shadow: 0 0 0 4px rgba(226,87,76,.12); }
+
+    .form-panel .btn { margin-top: 4px; }
+    .fineprint { margin-top: 13px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; justify-content: center; text-align: center; }
+    .fineprint svg { width: 14px; height: 14px; flex: none; color: var(--green); }
+    .fineprint a { color: var(--blue-deep); }
+
+    .success {
+      display: none; text-align: center; padding: 18px 8px 8px;
+    }
+    .success.show { display: block; animation: pop .5s var(--ease); }
+    @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+    .success .check {
+      width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%;
+      background: linear-gradient(180deg, #27b873, var(--green));
+      display: grid; place-items: center; color: #fff;
+      box-shadow: 0 16px 32px rgba(31,157,99,.36);
+    }
+    .success .check svg { width: 32px; height: 32px; }
+    .success h3 { margin: 0 0 6px; font-size: 22px; color: var(--navy); }
+    .success p { margin: 0 0 16px; color: var(--muted); font-size: 14.5px; }
+    .success .call-now {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 12px 20px; border-radius: 999px; text-decoration: none;
+      background: var(--soft); color: var(--blue-deep); font-weight: 800;
+    }
+    .success .call-now svg { width: 18px; height: 18px; }
+
+    /* ---------- Section primitives ---------- */
+    .section { padding: 86px 0; }
+    .section.tight { padding: 64px 0; }
+    .kicker {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 0 0 14px; color: var(--blue); font-size: 13px; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+    }
+    .kicker::before { content: ""; width: 26px; height: 2px; background: var(--aqua); border-radius: 2px; }
+    .section-head { max-width: 760px; margin-bottom: 42px; }
+    .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+    .section-head.center .kicker { justify-content: center; }
+    h2.title { margin: 0; color: var(--navy); font-size: clamp(30px, 4.4vw, 48px); line-height: 1.05; font-weight: 800; }
+    .lead { margin: 16px 0 0; color: var(--muted); font-size: clamp(16px, 1.6vw, 19px); }
+
+    /* ---------- Trust logos band ---------- */
+    .logos-band { background: linear-gradient(180deg, #f6fcfd, #fff); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .logos-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 0; flex-wrap: wrap; }
+    .logos-inner .label { font-weight: 800; color: var(--navy); font-size: 15px; max-width: 230px; }
+    .logo-items { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+    .logo-item { display: flex; align-items: center; gap: 11px; color: var(--muted); font-size: 13.5px; font-weight: 700; }
+    .logo-item img { width: 46px; height: 46px; object-fit: contain; }
+    .logo-item .pin { width: 40px; height: 40px; border-radius: 10px; background: var(--soft); color: var(--blue); display: grid; place-items: center; }
+    .logo-item .pin svg { width: 20px; height: 20px; }
+
+    /* ---------- Stats ---------- */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .stat {
+      text-align: center; padding: 30px 16px; border-radius: var(--radius);
+      background: linear-gradient(180deg, #fff, var(--soft));
+      border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+    .stat:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .stat .num { font-size: clamp(34px, 4vw, 46px); font-weight: 800; color: var(--blue-deep); line-height: 1; letter-spacing: -.03em; }
+    .stat .num .star { color: var(--gold); font-size: .7em; }
+    .stat .lbl { margin-top: 8px; color: var(--muted); font-size: 14px; font-weight: 600; }
+
+    /* ---------- Problem grid ---------- */
+    .problem-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
+    .problem {
+      padding: 22px; border-radius: var(--radius); background: #fff;
+      border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+    }
+    .problem:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: rgba(70,194,214,.45); }
+    .problem .p-ico {
+      width: 46px; height: 46px; border-radius: 12px; margin-bottom: 14px;
+      background: linear-gradient(180deg, #eaf7fb, #d8eff5); color: var(--blue-deep);
+      display: grid; place-items: center;
+    }
+    .problem .p-ico svg { width: 24px; height: 24px; }
+    .problem b { display: block; color: var(--navy); font-size: 16.5px; margin-bottom: 5px; }
+    .problem span { color: var(--muted); font-size: 14px; }
+
+    /* ---------- Systems ---------- */
+    .system-band { background: linear-gradient(180deg, #f4fbfd, #fff); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .systems { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px; }
+    .system {
+      border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff;
+      box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
+      transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+    }
+    .system:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .system .img-wrap { position: relative; overflow: hidden; }
+    .system img { width: 100%; height: 300px; object-fit: cover; transition: transform .6s var(--ease); }
+    .system:hover img { transform: scale(1.06); }
+    .system .tag {
+      position: absolute; top: 14px; left: 14px;
+      padding: 7px 13px; border-radius: 999px; font-size: 12px; font-weight: 800;
+      background: rgba(11,36,56,.82); color: #fff; backdrop-filter: blur(4px);
+    }
+    .system-body { padding: 26px; display: flex; flex-direction: column; flex: 1; }
+    .system h3 { margin: 0 0 8px; color: var(--navy); font-size: 24px; }
+    .system > .system-body > p { margin: 0 0 18px; color: var(--muted); }
+    .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; padding: 0; list-style: none; }
+    .pill-list li {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 999px; background: var(--soft); color: var(--blue-deep);
+      font-size: 12.5px; font-weight: 700;
+    }
+    .pill-list li svg { width: 13px; height: 13px; color: var(--green); }
+    .system .sys-cta { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--blue-deep); text-decoration: none; }
+    .system .sys-cta svg { width: 17px; height: 17px; transition: transform .25s var(--ease); }
+    .system:hover .sys-cta svg { transform: translateX(4px); }
+
+    /* ---------- Process ---------- */
+    .process { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; position: relative; }
+    .step { position: relative; padding: 30px 26px; border-radius: var(--radius); border: 1px solid var(--line); background: #fff; box-shadow: var(--shadow-sm); }
+    .step .num {
+      width: 52px; height: 52px; display: grid; place-items: center; border-radius: 15px;
+      background: linear-gradient(180deg, var(--blue), var(--blue-deep)); color: #fff;
+      font-weight: 800; font-size: 21px; margin-bottom: 18px;
+      box-shadow: 0 12px 24px rgba(24,128,189,.3);
+    }
+    .step h3 { margin: 0 0 8px; color: var(--navy); font-size: 21px; }
+    .step p { margin: 0; color: var(--muted); font-size: 15px; }
+    .step .connector { position: absolute; top: 56px; right: -14px; color: var(--aqua); z-index: 2; }
+    .step .connector svg { width: 26px; height: 26px; }
+
+    /* ---------- Why / guarantees ---------- */
+    .why-band { background: linear-gradient(180deg, #fff, #f4fbfd); border-top: 1px solid var(--line); }
+    .why-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
+    .why {
+      display: flex; gap: 15px; padding: 24px; border-radius: var(--radius);
+      background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+    .why:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .why .w-ico {
+      flex: none; width: 50px; height: 50px; border-radius: 14px;
+      background: linear-gradient(180deg, #eaf7fb, #d8eff5); color: var(--blue-deep);
+      display: grid; place-items: center;
+    }
+    .why .w-ico svg { width: 26px; height: 26px; }
+    .why b { display: block; color: var(--navy); font-size: 16.5px; margin-bottom: 4px; }
+    .why span { color: var(--muted); font-size: 14px; }
+
+    /* ---------- Testimonials ---------- */
+    .testi-band { background: radial-gradient(120% 120% at 80% 0%, #133a57, var(--navy) 60%); color: #fff; }
+    .testi-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; flex-wrap: wrap; margin-bottom: 36px; }
+    .testi-head h2 { margin: 0; color: #fff; font-size: clamp(28px, 4vw, 44px); line-height: 1.06; max-width: 560px; font-weight: 800; }
+    .testi-head .rating-box { text-align: right; }
+    .testi-head .rating-box .big { font-size: 46px; font-weight: 800; line-height: 1; }
+    .testi-head .rating-box .stars { justify-content: flex-end; margin: 6px 0 4px; }
+    .testi-head .rating-box small { color: rgba(255,255,255,.7); font-weight: 600; }
+    .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .review {
+      padding: 26px; border-radius: var(--radius);
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(4px);
+      transition: transform .3s var(--ease), background .3s var(--ease);
+    }
+    .review:hover { transform: translateY(-5px); background: rgba(255,255,255,.1); }
+    .review .stars { margin-bottom: 12px; }
+    .review p { margin: 0 0 18px; font-size: 16px; line-height: 1.55; color: rgba(255,255,255,.95); }
+    .review .who { display: flex; align-items: center; gap: 12px; }
+    .review .avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex: none;
+      display: grid; place-items: center; font-weight: 800; color: #fff; font-size: 16px;
+    }
+    .review .who b { display: block; font-size: 14.5px; }
+    .review .who small { color: rgba(255,255,255,.65); font-size: 12.5px; }
+
+    /* ---------- FAQ ---------- */
+    .faq-list { max-width: 860px; margin: 0 auto; display: grid; gap: 14px; }
+    .faq {
+      border: 1px solid var(--line); border-radius: var(--radius); background: #fff;
+      box-shadow: var(--shadow-sm); overflow: hidden; transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+    }
+    .faq.open { border-color: rgba(70,194,214,.5); box-shadow: var(--shadow); }
+    .faq button {
+      width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 20px 24px; background: none; border: 0; cursor: pointer; text-align: left;
+      font: inherit; font-size: 17px; font-weight: 800; color: var(--navy);
+    }
+    .faq .icon { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--soft); color: var(--blue); display: grid; place-items: center; transition: transform .3s var(--ease), background .3s var(--ease), color .3s var(--ease); }
+    .faq .icon svg { width: 17px; height: 17px; }
+    .faq.open .icon { transform: rotate(45deg); background: var(--blue); color: #fff; }
+    .faq .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s var(--ease); }
+    .faq.open .panel { grid-template-rows: 1fr; }
+    .faq .panel-inner { overflow: hidden; }
+    .faq .panel p { margin: 0; padding: 0 24px 22px; color: var(--muted); font-size: 15.5px; }
+
+    /* ---------- Final CTA ---------- */
+    .final-cta { position: relative; overflow: hidden; color: #fff; background: radial-gradient(120% 140% at 10% 0%, #1f95d0, var(--blue-deep) 55%, #0d4a6e); }
+    .final-cta::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 90% at 90% 110%, rgba(143,227,239,.35), transparent 60%); }
+    .final-inner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 36px; padding: 70px 0; flex-wrap: wrap; }
+    .final-inner h2 { margin: 0; color: #fff; font-size: clamp(28px, 4vw, 44px); line-height: 1.06; max-width: 620px; font-weight: 800; }
+    .final-inner p { margin: 14px 0 0; color: rgba(255,255,255,.85); font-size: 18px; }
+    .final-actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .final-actions .call-text { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,.9); text-decoration: none; font-weight: 700; }
+    .final-actions .call-text svg { width: 18px; height: 18px; }
+
+    /* ---------- Footer ---------- */
+    footer { background: var(--navy); color: rgba(255,255,255,.72); padding: 46px 0 30px; }
+    .foot-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 30px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .foot-top img { width: 140px; margin-bottom: 14px; filter: brightness(0) invert(1); opacity: .92; }
+    .foot-top p { margin: 0; font-size: 14px; line-height: 1.6; max-width: 320px; }
+    .foot-col h4 { margin: 0 0 12px; color: #fff; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+    .foot-col a, .foot-col div { display: block; color: rgba(255,255,255,.72); text-decoration: none; font-size: 14px; margin-bottom: 9px; }
+    .foot-col a:hover { color: var(--aqua-soft); }
+    .foot-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; font-size: 13px; flex-wrap: wrap; }
+    .foot-bottom a { color: rgba(255,255,255,.72); text-decoration: none; }
+
+    /* ---------- Sticky mobile bar ---------- */
+    .sticky-mobile {
+      display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: rgba(255,255,255,.97); border-top: 1px solid var(--line);
+      box-shadow: 0 -12px 30px rgba(10,35,52,.14); backdrop-filter: blur(10px);
+      gap: 10px;
+    }
+    .sticky-mobile a { flex: 1; }
+    .sticky-mobile .btn { min-height: 50px; font-size: 15px; }
+    .sticky-mobile .btn.call { flex: 0 0 50px; padding: 0; }
+    .sticky-mobile .btn.call svg { width: 20px; height: 20px; }
+
+    /* ---------- Reveal animation ---------- */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: var(--d, 0s); }
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    /* hero entrance */
+    .anim-up { opacity: 0; transform: translateY(22px); animation: heroUp .9s var(--ease) forwards; animation-delay: var(--d, 0s); }
+    @keyframes heroUp { to { opacity: 1; transform: none; } }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 40px 0 70px; }
+      .form-panel { max-width: 520px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .problem-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .systems { grid-template-columns: 1fr; }
+      .process { grid-template-columns: 1fr; }
+      .step .connector { display: none; }
+      .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews { grid-template-columns: 1fr; }
+      .foot-top { grid-template-columns: 1fr 1fr; }
+      .announce { display: none; }
+    }
+    @media (max-width: 760px) {
+      .nav-actions .btn:not(.call) { display: none; }
+      .phone-link small { display: none; }
+      .phone-link span.num { display: none; }
+      .sticky-mobile { display: flex; }
+      .section { padding: 60px 0; }
+      .hero h1 .hl { white-space: normal; }
+      .testi-head { flex-direction: column; align-items: flex-start; }
+      .testi-head .rating-box { text-align: left; }
+      .testi-head .rating-box .stars { justify-content: flex-start; }
+      .final-inner { padding: 54px 0; }
+      body { padding-bottom: 72px; }
+    }
+    @media (max-width: 540px) {
+      .wrap { width: min(100% - 28px, var(--maxw)); }
+      .hero-points { grid-template-columns: 1fr; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .foot-top { grid-template-columns: 1fr; }
+      .system img { height: 230px; }
+      .form-panel { padding: 22px 18px 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+      .reveal, .anim-up { opacity: 1 !important; transform: none !important; }
+      .bubbles { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement bar -->
+  <div class="announce">
+    <div class="wrap">
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>
+        Free in-home water test
+      </span>
+      <span class="dot"></span>
+      <span>Interest-free payment plans</span>
+      <span class="dot"></span>
+      <span>Lifetime warranty + free filters for life</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="topbar" id="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#" aria-label="Aquoz home"><img src="assets/aquoz-logo.png" alt="Aquoz"></a>
+      <div class="nav-actions">
+        <a class="phone-link" href="tel:1300911485">
+          <span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <span class="num">
+            <small>Call us today</small>
+            1300 911 485
+          </span>
+        </a>
+        <a class="btn" href="#consultation">Book free water test <span class="arr">→</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="bubbles" aria-hidden="true" id="bubbles"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-copy-col">
+          <div class="eyebrow anim-up" style="--d:.05s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>
+            Whole-home water filtration · Australian owned
+          </div>
+          <h1 class="anim-up" style="--d:.15s">Cleaner, safer, better-tasting water from <span class="hl">every tap.</span></h1>
+          <p class="hero-copy anim-up" style="--d:.25s">Whatever brings you here &mdash; chlorine taste, bottled-water bills, dry skin, or what's in your water &mdash; Aquoz handles it. Free in-home water test, installed by licensed Australian plumbers.</p>
+
+          <div class="hero-rating anim-up" style="--d:.32s">
+            <!-- TODO: replace 4.9 / review count with your verified Google rating -->
+            <span class="stars" aria-label="Rated 4.9 out of 5">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <strong>4.9/5</strong>
+            <span class="sep"></span>
+            <span class="mini-badges">Loved by Victorian homeowners</span>
+          </div>
+
+          <div class="hero-points">
+            <div class="hero-point anim-up" style="--d:.4s">
+              <div class="hp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+              <b>Free water test</b><small>On-site analysis &amp; honest advice</small>
+            </div>
+            <div class="hero-point anim-up" style="--d:.5s">
+              <div class="hp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.6l-5.5 5.5a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l5.5-5.5a4 4 0 0 0 5.6-5.6l-2.4 2.4-2-2 2.4-2.4z"/></svg></div>
+              <b>Licensed install</b><small>By qualified Aussie plumbers</small>
+            </div>
+            <div class="hero-point anim-up" style="--d:.6s">
+              <div class="hp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-4z"/></svg></div>
+              <b>Lifetime warranty</b><small>+ free sediment filters for life</small>
+            </div>
+          </div>
+
+          <div class="hero-cta-row anim-up" style="--d:.68s">
+            <a class="btn light" href="#consultation">Get my free water test <span class="arr">→</span></a>
+            <a class="call-text" href="tel:1300911485">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              or call 1300 911 485
+            </a>
+          </div>
+        </div>
+
+        <!-- Lead form -->
+        <form id="consultation" class="form-panel anim-up" style="--d:.4s" novalidate>
+          <div class="form-ribbon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            100% FREE · No obligation
+          </div>
+          <h2>Book your free water test</h2>
+          <p class="sub">Tell us about your home and we'll recommend the right system. No pressure, no pushy sales.</p>
+
+          <!-- honeypot (spam trap) -->
+          <div class="field hp" aria-hidden="true">
+            <label for="company">Company</label>
+            <input id="company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" name="name" autocomplete="name" placeholder="e.g. Sarah Mitchell" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="04xx xxx xxx" required>
+          </div>
+          <div class="field">
+            <label for="postcode">Postcode</label>
+            <input id="postcode" name="postcode" inputmode="numeric" autocomplete="postal-code" placeholder="e.g. 3061" required>
+          </div>
+          <div class="field">
+            <label for="priority">What matters most? <span style="font-weight:600;color:var(--muted)">(optional)</span></label>
+            <select id="priority" name="priority">
+              <option value="">Select one</option>
+              <option>Better drinking water</option>
+              <option>Whole-house filtration</option>
+              <option>Chlorine taste or smell</option>
+              <option>Skin, hair or shower water</option>
+              <option>Bore or tank water</option>
+              <option>Not sure — need advice</option>
+            </select>
+          </div>
+
+          <button class="btn block" type="submit" id="submitBtn">Get my free water test <span class="arr">→</span></button>
+          <div class="fineprint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            We'll never share your details · Response within 24 hours
+          </div>
+
+          <div class="success" id="success">
+            <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <h3>You're booked in! 🎉</h3>
+            <p>Thanks — our team will call you within 24 hours to arrange your free water test.</p>
+            <a class="call-now" href="tel:1300911485">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Prefer to talk now? Call 1300 911 485
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Trust logos -->
+    <section class="logos-band">
+      <div class="wrap logos-inner">
+        <div class="label">Certified to Australian Drinking Water Standards</div>
+        <div class="logo-items">
+          <div class="logo-item"><img src="assets/watermark-certified.jpg" alt="WaterMark certified">WaterMark<br>Certified</div>
+          <div class="logo-item"><img src="assets/nsf-certified.png" alt="NSF certified">NSF<br>Certified</div>
+          <div class="logo-item"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-4z"/></svg></span>Lifetime<br>Warranty</div>
+          <div class="logo-item"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M2 12a10 10 0 0 1 20 0"/><path d="M12 22V12"/><circle cx="12" cy="6" r="2"/></svg></span>Interest-free<br>Plans</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="stats" id="stats">
+          <div class="stat reveal">
+            <!-- TODO: replace with your verified rating -->
+            <div class="num"><span data-count="4.9" data-decimals="1">0</span><span class="star">★</span></div>
+            <div class="lbl">Average customer rating</div>
+          </div>
+          <div class="stat reveal" style="--d:.1s">
+            <div class="num"><span data-count="12" data-suffix="+">0</span></div>
+            <div class="lbl">Contaminants reduced</div>
+          </div>
+          <div class="stat reveal" style="--d:.2s">
+            <div class="num"><span data-count="2" data-suffix=" hr">0</span></div>
+            <div class="lbl">Typical install time</div>
+          </div>
+          <div class="stat reveal" style="--d:.3s">
+            <div class="num">$0</div>
+            <div class="lbl">Sediment filters, for life</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="section" id="concerns">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="kicker">Whatever brings you here</p>
+          <h2 class="title">There's more than one reason to filter your water.</h2>
+          <p class="lead">Taste, bottled-water bills, dry skin, appliance damage, or simply peace of mind about what's in it &mdash; here's what Aquoz helps with.</p>
+        </div>
+        <div class="problem-grid">
+          <div class="problem reveal">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></div>
+            <b>Chlorine taste &amp; smell</b><span>Improve the taste and odour of everyday tap water.</span>
+          </div>
+          <div class="problem reveal" style="--d:.08s">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>
+            <b>Sediment &amp; rust</b><span>Reduce visible particles before they travel through the home.</span>
+          </div>
+          <div class="problem reveal" style="--d:.16s">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 4-5"/></svg></div>
+            <b>Heavy metals</b><span>Filtration designed for more confident drinking water.</span>
+          </div>
+          <div class="problem reveal" style="--d:.24s">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.3a1 1 0 0 1 1.4 0l9 9a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.4 0l-9-9a1 1 0 0 1 0-1.4z"/><path d="M9 12h6"/></svg></div>
+            <b>PFAS concerns</b><span>Ask which system targets the contaminants you care about.</span>
+          </div>
+          <div class="problem reveal">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-3-7-11-7-11S5 12 5 15a7 7 0 0 0 7 7z"/></svg></div>
+            <b>Shower &amp; skin water</b><span>Cleaner water for bathing, washing and daily routines.</span>
+          </div>
+          <div class="problem reveal" style="--d:.08s">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div>
+            <b>Appliance protection</b><span>Whole-house filtration helps protect pipes and appliances.</span>
+          </div>
+          <div class="problem reveal" style="--d:.16s">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l-1 7H7z"/><path d="M7 9c0 3 10 3 10 0M5 22h14l-1-9H6z"/></svg></div>
+            <b>Bottled water spend</b><span>Stop paying for bottled water — fill straight from the tap.</span>
+          </div>
+          <div class="problem reveal" style="--d:.24s">
+            <div class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v6c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <b>Bore or tank water</b><span>Get advice based on your supply and postcode.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Systems -->
+    <section class="system-band" id="systems">
+      <div class="wrap section">
+        <div class="section-head reveal">
+          <p class="kicker">Choose your setup</p>
+          <h2 class="title">One free test. The right system for your home.</h2>
+          <p class="lead">Aquoz can recommend whole-house filtration on its own, or pair it with under-sink reverse osmosis for laboratory-grade drinking water at the kitchen tap.</p>
+        </div>
+        <div class="systems">
+          <article class="system reveal">
+            <div class="img-wrap">
+              <img src="assets/full-house-system.webp" alt="Aquoz 3-stage full house filtration system">
+              <span class="tag">Most popular</span>
+            </div>
+            <div class="system-body">
+              <h3>3-stage full-house filtration</h3>
+              <p>Clean water from every tap — for drinking, cooking, showering and your appliances. Ideal for families who want better water throughout the home.</p>
+              <ul class="pill-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Whole home</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Licensed install</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Lifetime warranty</li>
+              </ul>
+              <a class="sys-cta" href="#consultation">Get my free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </article>
+          <article class="system reveal" style="--d:.12s">
+            <div class="img-wrap">
+              <img src="assets/undersink-ro-system.webp" alt="Aquoz under-sink reverse osmosis system">
+              <span class="tag">Best drinking water</span>
+            </div>
+            <div class="system-body">
+              <h3>Full house + under-sink RO</h3>
+              <p>For families who want whole-home filtration <em>and</em> 6-stage reverse-osmosis drinking water straight from the kitchen tap.</p>
+              <ul class="pill-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Kitchen RO</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Laboratory-grade</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Custom quote</li>
+              </ul>
+              <a class="sys-cta" href="#consultation">Get my free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section" id="how">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <p class="kicker">How it works</p>
+          <h2 class="title">From enquiry to clean water in 3 simple steps.</h2>
+        </div>
+        <div class="process">
+          <div class="step reveal">
+            <div class="num">1</div>
+            <h3>Free water test</h3>
+            <p>We test your water on-site and review your postcode, supply and concerns — then explain your options in plain English.</p>
+            <span class="connector"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="step reveal" style="--d:.12s">
+            <div class="num">2</div>
+            <h3>Clear, fixed quote</h3>
+            <p>Get a transparent quote with the right filtration options and interest-free payment plans. No surprises, no pressure.</p>
+            <span class="connector"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="step reveal" style="--d:.24s">
+            <div class="num">3</div>
+            <h3>Professional install</h3>
+            <p>Licensed plumbers install your system — usually in just a few hours — and you enjoy cleaner water from every tap.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Aquoz -->
+    <section class="why-band">
+      <div class="wrap section">
+        <div class="section-head center reveal">
+          <p class="kicker">Why homeowners choose Aquoz</p>
+          <h2 class="title">Honest advice, certified systems, zero risk.</h2>
+        </div>
+        <div class="why-grid">
+          <div class="why reveal">
+            <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-4z"/></svg></div>
+            <div><b>Lifetime warranty</b><span>Every Aquoz system is backed for life — we stand behind what we install.</span></div>
+          </div>
+          <div class="why reveal" style="--d:.08s">
+            <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
+            <div><b>Free filters for life</b><span>Lifetime free sediment filter replacements — no ongoing surprise costs.</span></div>
+          </div>
+          <div class="why reveal" style="--d:.16s">
+            <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.6l-5.5 5.5a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l5.5-5.5a4 4 0 0 0 5.6-5.6l-2.4 2.4-2-2 2.4-2.4z"/></svg></div>
+            <div><b>Licensed plumbers</b><span>Installed by qualified Australian plumbers — clean, compliant and fast.</span></div>
+          </div>
+          <div class="why reveal">
+            <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div><b>WaterMark &amp; NSF certified</b><span>Certified to Australian Drinking Water Standards for total peace of mind.</span></div>
+          </div>
+          <div class="why reveal" style="--d:.08s">
+            <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+            <div><b>Interest-free plans</b><span>Flexible, interest-free payment options so clean water fits your budget.</span></div>
+          </div>
+          <div class="why reveal" style="--d:.16s">
+            <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/><circle cx="12" cy="12" r="11"/></svg></div>
+            <div><b>No pushy sales</b><span>A free test and honest recommendation. You decide — never any pressure.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testi-band">
+      <div class="wrap section">
+        <div class="testi-head reveal">
+          <h2>Real reasons Victorian families switched to Aquoz.</h2>
+          <div class="rating-box">
+            <!-- TODO: replace with your verified Google rating & count -->
+            <div class="big">4.9</div>
+            <span class="stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <small>Based on verified customer reviews</small>
+          </div>
+        </div>
+        <div class="reviews">
+          <div class="review reveal">
+            <span class="stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <p>"The difference was immediate. My kids actually prefer tap water now."</p>
+            <div class="who"><span class="avatar" style="background:linear-gradient(135deg,#1880bd,#46c2d6)">SM</span><span><b>Sarah M.</b><small>Balwyn, VIC</small></span></div>
+          </div>
+          <div class="review reveal" style="--d:.1s">
+            <span class="stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <p>"I was spending $40 a week on bottled water. Now I just fill up from the tap."</p>
+            <div class="who"><span class="avatar" style="background:linear-gradient(135deg,#1f9d63,#46c2d6)">PK</span><span><b>Priya K.</b><small>Craigieburn, VIC</small></span></div>
+          </div>
+          <div class="review reveal" style="--d:.2s">
+            <span class="stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <p>"The plumber was in and out in two hours. No mess, no fuss — brilliant service."</p>
+            <div class="who"><span class="avatar" style="background:linear-gradient(135deg,#115e8b,#1f9d63)">TD</span><span><b>Tom D.</b><small>Ballarat, VIC</small></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <p class="kicker">Common questions</p>
+          <h2 class="title">Everything you want to know before you book.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq reveal">
+            <button type="button" aria-expanded="false">Is the water test really free?<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+            <div class="panel"><div class="panel-inner"><p>Yes — 100% free and with no obligation. We test your water on-site, explain what we find, and recommend the right options. Whether you go ahead is entirely up to you.</p></div></div>
+          </div>
+          <div class="faq reveal">
+            <button type="button" aria-expanded="false">How much does a system cost?<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+            <div class="panel"><div class="panel-inner"><p>It depends on your home, water supply and the system that suits you — which is exactly what the free test determines. You'll get a clear, fixed quote with interest-free payment plans available, so there are no surprises.</p></div></div>
+          </div>
+          <div class="faq reveal">
+            <button type="button" aria-expanded="false">How long does installation take?<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+            <div class="panel"><div class="panel-inner"><p>Most installs are completed in just a few hours by our licensed plumbers, with minimal disruption to your home. We leave everything clean and tidy.</p></div></div>
+          </div>
+          <div class="faq reveal">
+            <button type="button" aria-expanded="false">What does the system actually remove?<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+            <div class="panel"><div class="panel-inner"><p>Aquoz systems are designed to reduce chlorine, sediment, sand, silt, rust, heavy metals, PFAS, fluoride, pesticides, herbicides, VOCs and odours. Your free test confirms what matters most for your supply.</p></div></div>
+          </div>
+          <div class="faq reveal">
+            <button type="button" aria-expanded="false">What's covered by the warranty?<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+            <div class="panel"><div class="panel-inner"><p>Every Aquoz system comes with a lifetime warranty, plus lifetime free sediment filter replacements. We stand behind our systems for the long term.</p></div></div>
+          </div>
+          <div class="faq reveal">
+            <button type="button" aria-expanded="false">Do you service my area?<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+            <div class="panel"><div class="panel-inner"><p>We service homes right across Victoria and beyond — on town, tank or bore water. Pop your postcode in the form and we'll confirm availability when we call.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+      <div class="wrap final-inner">
+        <div class="reveal">
+          <h2>Ready to find out what's really in your water?</h2>
+          <p>Book your free, no-obligation water test today and get an honest recommendation from Aquoz.</p>
+        </div>
+        <div class="final-actions reveal" style="--d:.1s">
+          <a class="btn light" href="#consultation">Book my free water test <span class="arr">→</span></a>
+          <a class="call-text" href="tel:1300911485">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            or call 1300 911 485
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-top">
+        <div>
+          <img src="assets/aquoz-logo.png" alt="Aquoz">
+          <p>Clean water. Every tap. Every home. Whole-house and under-sink water filtration, installed by licensed Australian plumbers.</p>
+        </div>
+        <div class="foot-col">
+          <h4>Contact</h4>
+          <a href="tel:1300911485">1300 911 485</a>
+          <a href="mailto:hello@aquoz.com.au">hello@aquoz.com.au</a>
+          <div>9/35-37 Jesica Rd,<br>Campbellfield VIC</div>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <a href="#systems">Our systems</a>
+          <a href="#how">How it works</a>
+          <a href="#faq">FAQs</a>
+          <a href="#consultation">Book free test</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <div>© <span id="year"></span> Aquoz Water Filtration. Australian owned &amp; operated.</div>
+        <div><a href="#">Privacy Policy</a> · <a href="#">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky mobile CTA -->
+  <div class="sticky-mobile">
+    <a class="btn call" href="tel:1300911485" aria-label="Call Aquoz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </a>
+    <a class="btn" href="#consultation">Book free water test</a>
+  </div>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* ---------------------------------------------------------------
+         ADAPTIVE HERO BY AD ANGLE
+         Add ?a=ANGLE to the ad's destination URL to match the headline
+         to that ad. No tag = the universal umbrella headline (default).
+         Angles: health · taste · savings · family · skin · appliances
+         e.g.  .../index.html?a=savings
+      ----------------------------------------------------------------- */
+      var ANGLES = {
+        health:     { eyebrow: "Whole-home water filtration · Australian owned",
+                      h1: "What's really in your <span class='hl'>tap water?</span>",
+                      sub: "Book a free in-home water test and find out exactly what's in it — then get an honest recommendation. Whole-house & under-sink filtration by licensed Australian plumbers.",
+                      priority: "Whole-house filtration" },
+        taste:      { eyebrow: "Better-tasting water · Australian owned",
+                      h1: "Finally, tap water that <span class='hl'>tastes great.</span>",
+                      sub: "Cut the chlorine taste and smell for good — better water for drinking, coffee and tea. Start with a free in-home water test and licensed install.",
+                      priority: "Chlorine taste or smell" },
+        savings:    { eyebrow: "Stop buying bottled water · Australian owned",
+                      h1: "Stop buying <span class='hl'>bottled water.</span>",
+                      sub: "Families switch and save hundreds a year — clean, great-tasting water straight from the tap. Start with a free in-home water test.",
+                      priority: "Better drinking water" },
+        family:     { eyebrow: "Safer water for your family · Australian owned",
+                      h1: "Safer water for the people <span class='hl'>you love.</span>",
+                      sub: "Cleaner, filtered water for drinking, cooking and bathing — peace of mind from every tap. Free in-home water test, installed by licensed Australian plumbers.",
+                      priority: "Better drinking water" },
+        skin:       { eyebrow: "Better shower &amp; skin water · Australian owned",
+                      h1: "Softer skin, healthier hair — from <span class='hl'>every tap.</span>",
+                      sub: "Reduce the chlorine that dries out skin and hair. Whole-home filtered water for better showers and daily routines. Free in-home water test.",
+                      priority: "Skin, hair or shower water" },
+        appliances: { eyebrow: "Whole-home water filtration · Australian owned",
+                      h1: "Protect your home from sediment &amp; <span class='hl'>scale.</span>",
+                      sub: "Reduce sediment, rust and mineral build-up that damages pipes, hot water systems and appliances. Free in-home water test, licensed install.",
+                      priority: "Whole-house filtration" }
+      };
+      var ALIASES = {
+        health:"health", contaminants:"health", quality:"health", pfas:"health",
+        taste:"taste", smell:"taste", chlorine:"taste", drinking:"taste",
+        savings:"savings", save:"savings", bottled:"savings", money:"savings",
+        family:"family", kids:"family", baby:"family", safe:"family",
+        skin:"skin", hair:"skin", shower:"skin", eczema:"skin",
+        appliances:"appliances", appliance:"appliances", scale:"appliances", hardwater:"appliances", sediment:"appliances"
+      };
+      try {
+        var sp = new URLSearchParams(location.search);
+        var qa = (sp.get("a") || sp.get("angle") || "").toLowerCase().trim();
+        var key = ALIASES[qa];
+        if (key && ANGLES[key]) {
+          var cfg = ANGLES[key];
+          var eb = document.querySelector(".hero .eyebrow");
+          var h1 = document.querySelector(".hero h1");
+          var sub = document.querySelector(".hero .hero-copy");
+          if (eb) { var ic = eb.querySelector("svg"); eb.innerHTML = (ic ? ic.outerHTML + " " : "") + cfg.eyebrow; }
+          if (h1) h1.innerHTML = cfg.h1;
+          if (sub) sub.textContent = cfg.sub;
+          var pri = document.getElementById("priority");
+          if (pri && cfg.priority) { for (var pi = 0; pi < pri.options.length; pi++) { if (pri.options[pi].text === cfg.priority) { pri.selectedIndex = pi; break; } } }
+          document.documentElement.setAttribute("data-angle", key);
+        }
+      } catch (e) {}
+
+      /* Year */
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      /* Header scroll state */
+      var topbar = document.getElementById("topbar");
+      var onScroll = function () { topbar.classList.toggle("scrolled", window.scrollY > 12); };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      /* Floating bubbles (hero) */
+      if (!reduce) {
+        var bubbles = document.getElementById("bubbles");
+        for (var i = 0; i < 8; i++) {
+          var b = document.createElement("span");
+          var size = 8 + Math.random() * 30;
+          b.className = "bubble";
+          b.style.width = b.style.height = size + "px";
+          b.style.left = Math.random() * 100 + "%";
+          b.style.animationDuration = (9 + Math.random() * 9) + "s";
+          b.style.animationDelay = (Math.random() * 8) + "s";
+          bubbles.appendChild(b);
+        }
+      }
+
+      /* Scroll reveal */
+      var reveals = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window && !reduce) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+        reveals.forEach(function (el) { io.observe(el); });
+      } else {
+        reveals.forEach(function (el) { el.classList.add("is-visible"); });
+      }
+
+      /* Animated counters */
+      var counted = false;
+      var statsEl = document.getElementById("stats");
+      function runCounters() {
+        if (counted) return; counted = true;
+        document.querySelectorAll("[data-count]").forEach(function (el) {
+          var target = parseFloat(el.getAttribute("data-count"));
+          var decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+          var suffix = el.getAttribute("data-suffix") || "";
+          if (reduce) { el.textContent = target.toFixed(decimals) + suffix; return; }
+          var start = null, dur = 1400;
+          function tick(ts) {
+            if (!start) start = ts;
+            var p = Math.min((ts - start) / dur, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = (target * eased).toFixed(decimals) + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+            else el.textContent = target.toFixed(decimals) + suffix;
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+      if (statsEl && "IntersectionObserver" in window) {
+        var sio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) { runCounters(); sio.disconnect(); } });
+        }, { threshold: 0.4 });
+        sio.observe(statsEl);
+      } else { runCounters(); }
+
+      /* FAQ accordion */
+      document.querySelectorAll(".faq button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var item = btn.closest(".faq");
+          var isOpen = item.classList.contains("open");
+          document.querySelectorAll(".faq.open").forEach(function (o) {
+            o.classList.remove("open"); o.querySelector("button").setAttribute("aria-expanded", "false");
+          });
+          if (!isOpen) { item.classList.add("open"); btn.setAttribute("aria-expanded", "true"); }
+        });
+      });
+
+      /* Lead form */
+      var form = document.getElementById("consultation");
+      var success = document.getElementById("success");
+      var submitBtn = document.getElementById("submitBtn");
+
+      function setInvalid(el, bad) { el.classList.toggle("invalid", bad); }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        /* Honeypot: silently ignore bots */
+        if (form.company && form.company.value) return;
+
+        var name = form.name, phone = form.phone, postcode = form.postcode;
+        var ok = true;
+        if (!name.value.trim()) { setInvalid(name, true); ok = false; } else setInvalid(name, false);
+        var digits = (phone.value.match(/\d/g) || []).length;
+        if (digits < 8) { setInvalid(phone, true); ok = false; } else setInvalid(phone, false);
+        if (!/^\d{4}$/.test(postcode.value.trim())) { setInvalid(postcode, true); ok = false; } else setInvalid(postcode, false);
+        if (!ok) {
+          var firstBad = form.querySelector(".invalid");
+          if (firstBad) firstBad.focus();
+          return;
+        }
+
+        /* Loading state */
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "Sending…";
+
+        var payload = {
+          name: name.value.trim(),
+          phone: phone.value.trim(),
+          postcode: postcode.value.trim(),
+          priority: form.priority.value
+        };
+
+        /* =====================================================
+           TODO — CONNECT YOUR BACKEND HERE
+           Replace this timeout with a real submission, e.g.:
+
+           fetch("https://YOUR_WEBHOOK_OR_CRM_ENDPOINT", {
+             method: "POST",
+             headers: { "Content-Type": "application/json" },
+             body: JSON.stringify(payload)
+           }).then(showSuccess).catch(showSuccess);
+        ===================================================== */
+        function showSuccess() {
+          /* Fire Meta Pixel Lead event (when pixel is installed) */
+          if (typeof fbq === "function") { fbq("track", "Lead"); }
+          /* Optional: Google Ads / GA4 — push to dataLayer if present */
+          if (window.dataLayer) { window.dataLayer.push({ event: "generate_lead" }); }
+
+          form.querySelectorAll(".field, .btn[type=submit], .fineprint, .form-ribbon, h2, .sub").forEach(function (el) { el.style.display = "none"; });
+          success.classList.add("show");
+        }
+
+        console.log("Lead captured (demo):", payload);
+        setTimeout(showSuccess, 700); /* simulate network — remove when backend is wired */
+      });
+    })();
+  </script>
+</body>
+</html>

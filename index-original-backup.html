@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aquoz | Whole Home Water Filtration Consultation</title>
+  <meta name="description" content="Book a free Aquoz water consultation for whole-house and under-sink water filtration systems in Australia.">
+  <style>
+    :root {
+      --navy: #10283b;
+      --blue: #1b6ea8;
+      --aqua: #4dbfd3;
+      --ink: #132331;
+      --muted: #5f7180;
+      --line: #dbe7ed;
+      --soft: #eef8fb;
+      --white: #fff;
+      --sand: #f7f3ea;
+      --gold: #f0b83d;
+      --shadow: 0 20px 60px rgba(10, 35, 52, .18);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--white);
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid rgba(219,231,237,.9);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .brand img {
+      width: 132px;
+      height: auto;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .phone { text-decoration: none; white-space: nowrap; }
+
+    .btn {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--blue);
+      color: white;
+      font: inherit;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 12px 26px rgba(27,110,168,.24);
+    }
+
+    .btn.secondary {
+      background: white;
+      color: var(--navy);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .hero {
+      min-height: calc(100vh - 74px);
+      display: grid;
+      align-items: stretch;
+      background:
+        linear-gradient(90deg, rgba(7,27,43,.92) 0%, rgba(7,27,43,.76) 42%, rgba(7,27,43,.28) 72%, rgba(7,27,43,.16) 100%),
+        url("assets/hero-image.webp") center right / cover no-repeat;
+      color: white;
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) 420px;
+      gap: 46px;
+      align-items: center;
+      padding: 54px 0 44px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      width: fit-content;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(77,191,211,.14);
+      border: 1px solid rgba(111,215,232,.42);
+      color: #c7f5ff;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 20px 0 18px;
+      max-width: 720px;
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: .96;
+      letter-spacing: 0;
+      overflow-wrap: normal;
+    }
+
+    .hero h1 span { color: #83e4f2; }
+
+    .hero-copy {
+      max-width: 640px;
+      color: rgba(255,255,255,.88);
+      font-size: 20px;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 30px 0;
+      max-width: 720px;
+    }
+
+    .hero-point {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      border-radius: 8px;
+      font-weight: 800;
+    }
+
+    .hero-point small {
+      display: block;
+      margin-top: 5px;
+      color: rgba(255,255,255,.72);
+      font-weight: 700;
+    }
+
+    .form-panel {
+      background: white;
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.72);
+    }
+
+    .form-panel h2 {
+      margin: 0 0 7px;
+      font-size: 27px;
+      line-height: 1.08;
+      color: var(--navy);
+    }
+
+    .form-panel p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid #cddce4;
+      border-radius: 6px;
+      padding: 11px 12px;
+      font: inherit;
+      color: var(--ink);
+      background: white;
+    }
+
+    textarea { resize: vertical; min-height: 86px; }
+
+    .fineprint {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .trust-strip {
+      background: #f4fbfd;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .trust-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .trust-inner strong {
+      color: var(--navy);
+      font-size: 18px;
+    }
+
+    .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .badge-row img { width: 48px; height: 48px; object-fit: contain; }
+
+    .section {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 76px 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(280px, .58fr);
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .problem {
+      min-height: 118px;
+      padding: 18px;
+      border-radius: 8px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+
+    .problem b {
+      display: block;
+      color: var(--navy);
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .problem span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .system-band {
+      background: linear-gradient(180deg, #f7fbfd, white);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .systems {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .system {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .system img {
+      width: 100%;
+      height: 310px;
+      object-fit: cover;
+      background: var(--soft);
+    }
+
+    .system-body { padding: 24px; }
+
+    .system h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    .system p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pill-list li {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #eef8fb;
+      color: var(--navy);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .step {
+      position: relative;
+      padding: 26px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    .num {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--navy);
+      color: white;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 24px;
+    }
+
+    .step p { margin: 0; color: var(--muted); }
+
+    .testimonial-band {
+      background: var(--navy);
+      color: white;
+    }
+
+    .testimonial-wrap {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 74px 0;
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .quote {
+      margin: 0;
+      font-size: clamp(28px, 4.5vw, 48px);
+      line-height: 1.1;
+      font-weight: 900;
+    }
+
+    .reviews {
+      display: grid;
+      gap: 14px;
+    }
+
+    .review {
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.9);
+    }
+
+    .review b {
+      display: block;
+      margin-top: 10px;
+      color: white;
+    }
+
+    .final-cta {
+      background: linear-gradient(135deg, var(--blue), #104464);
+      color: white;
+    }
+
+    .final-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 62px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .final-inner h2 { color: white; max-width: 760px; }
+    .final-inner p { color: rgba(255,255,255,.82); margin: 14px 0 0; font-size: 18px; }
+
+    footer {
+      padding: 28px 0;
+      background: #071b2b;
+      color: rgba(255,255,255,.72);
+    }
+
+    .footer-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 14px;
+    }
+
+    .sticky-mobile {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -10px 28px rgba(10,35,52,.12);
+    }
+
+    .sticky-mobile .btn { width: 100%; }
+
+    .success {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 6px;
+      background: #e7f7ee;
+      color: #155e35;
+      font-weight: 800;
+      border: 1px solid #bce7cc;
+    }
+
+    @media (max-width: 900px) {
+      .nav { min-height: 66px; }
+      .brand img { width: 112px; }
+      .phone { display: none; }
+      .hero { min-height: auto; }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 44px 0 28px;
+      }
+      .hero-points { grid-template-columns: 1fr; }
+      .form-panel { max-width: 560px; }
+      .trust-inner { grid-template-columns: 1fr; }
+      .badge-row { align-items: flex-start; }
+      .section { padding: 54px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 14px; }
+      .problem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .systems { grid-template-columns: 1fr; }
+      .process { grid-template-columns: 1fr; }
+      .testimonial-wrap { grid-template-columns: 1fr; padding: 54px 0; }
+      .final-inner { display: grid; padding: 48px 0 86px; }
+      .footer-inner { display: grid; padding-bottom: 64px; }
+      .sticky-mobile { display: block; }
+    }
+
+    @media (max-width: 560px) {
+      .nav-actions .btn { display: none; }
+      .hero-inner, .nav, .section, .trust-inner, .testimonial-wrap, .final-inner, .footer-inner {
+        width: min(100% - 28px, 1180px);
+      }
+      .hero h1 {
+        font-size: 38px;
+        line-height: 1.03;
+        max-width: 350px;
+      }
+      .hero-copy {
+        font-size: 17px;
+        max-width: 350px;
+      }
+      .form-panel {
+        padding: 20px;
+        width: 100%;
+      }
+      .form-panel h2 {
+        font-size: 22px;
+      }
+      .problem-grid { grid-template-columns: 1fr; }
+      .system img { height: 230px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#">
+        <img src="assets/aquoz-logo.png" alt="Aquoz">
+      </a>
+      <div class="nav-actions">
+        <a class="phone" href="tel:1300911485">1300 911 485</a>
+        <a class="btn" href="#consultation">Book consultation</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">Whole-home water filtration</div>
+          <h1>Cleaner water from <span>every tap</span> in your home.</h1>
+          <p class="hero-copy">Aquoz helps Australian homeowners choose whole-house and under-sink filtration systems with water analysis, licensed installation and clear recommendations.</p>
+          <div class="hero-points" aria-label="Key benefits">
+            <div class="hero-point">Free consultation<small>Water analysis and honest advice</small></div>
+            <div class="hero-point">Licensed install<small>Installed by qualified plumbers</small></div>
+            <div class="hero-point">Lifetime warranty<small>Support for your system</small></div>
+          </div>
+          <a class="btn secondary" href="#systems">Compare systems</a>
+        </div>
+
+        <form id="consultation" class="form-panel">
+          <h2>Book your water consultation</h2>
+          <p>No obligation. Tell us about your home and we will recommend the right Aquoz system.</p>
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" autocomplete="tel" required>
+          </div>
+          <div class="field">
+            <label for="postcode">Postcode</label>
+            <input id="postcode" name="postcode" inputmode="numeric" autocomplete="postal-code" required>
+          </div>
+          <div class="field">
+            <label for="property">Is the property owned or rented?</label>
+            <select id="property" name="property">
+              <option value="">Select one</option>
+              <option>Owner occupied</option>
+              <option>Investment property</option>
+              <option>Rented</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="priority">What matters most?</label>
+            <select id="priority" name="priority">
+              <option value="">Select one</option>
+              <option>Better drinking water</option>
+              <option>Whole-house filtration</option>
+              <option>Chlorine taste or smell</option>
+              <option>Skin, hair or shower water</option>
+              <option>Bore or tank water</option>
+            </select>
+          </div>
+          <button class="btn" type="submit">Book my consultation</button>
+          <div class="fineprint">Response within 24 hours. Australian owned and operated.</div>
+          <div id="success" class="success">Thanks. Your landing-page form draft is working.</div>
+        </form>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Trust proof">
+      <div class="trust-inner">
+        <strong>Trusted across Australia for whole-home water filtration.</strong>
+        <div class="badge-row"><img src="assets/watermark-certified.jpg" alt="WaterMark certified">WaterMark certified</div>
+        <div class="badge-row"><img src="assets/nsf-certified.png" alt="NSF certified">NSF certified</div>
+        <div class="badge-row">Interest-free plans available</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="kicker">What is in your water?</p>
+          <h2>Tap water can meet standards and still feel wrong at home.</h2>
+        </div>
+        <p class="lead">Taste, odour, chlorine, sediment and mineral build-up can affect the way your water feels in the shower, tastes in coffee and performs through appliances.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem"><b>Chlorine taste</b><span>Improve the taste and smell of everyday tap water.</span></div>
+        <div class="problem"><b>Sediment and rust</b><span>Help reduce visible particles before they travel through the home.</span></div>
+        <div class="problem"><b>Heavy metals</b><span>Choose filtration designed for more confident drinking water.</span></div>
+        <div class="problem"><b>PFAS concerns</b><span>Ask which system is right for the contaminants you want addressed.</span></div>
+        <div class="problem"><b>Shower water</b><span>Cleaner water for bathing, washing and daily routines.</span></div>
+        <div class="problem"><b>Appliance protection</b><span>Whole-house filtration helps protect pipes and appliances.</span></div>
+        <div class="problem"><b>Bottled water spend</b><span>Reduce reliance on bottled water at home.</span></div>
+        <div class="problem"><b>Bore or tank water</b><span>Get advice based on your supply and postcode.</span></div>
+      </div>
+    </section>
+
+    <section id="systems" class="system-band">
+      <div class="section">
+        <div class="section-head">
+          <div>
+            <p class="kicker">Choose your setup</p>
+            <h2>One consultation. The right system for your home.</h2>
+          </div>
+          <p class="lead">Aquoz can recommend whole-house filtration only, or pair it with under-sink reverse osmosis for high-purity drinking water from the kitchen.</p>
+        </div>
+        <div class="systems">
+          <article class="system">
+            <img src="assets/full-house-system.webp" alt="Aquoz full house filtration system">
+            <div class="system-body">
+              <h3>3-stage full-house filtration</h3>
+              <p>Clean water from every tap. Designed for families who want better water for drinking, cooking, showering and appliances.</p>
+              <ul class="pill-list">
+                <li>Whole home</li>
+                <li>Licensed install</li>
+                <li>Lifetime warranty</li>
+              </ul>
+            </div>
+          </article>
+          <article class="system">
+            <img src="assets/undersink-ro-system.webp" alt="Aquoz under-sink reverse osmosis system">
+            <div class="system-body">
+              <h3>Full house plus under-sink RO</h3>
+              <p>For families who want whole-home filtration and laboratory-grade drinking water from the kitchen tap.</p>
+              <ul class="pill-list">
+                <li>Kitchen RO</li>
+                <li>Drinking water focus</li>
+                <li>Custom quote</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="kicker">How it works</p>
+          <h2>A simple path from enquiry to installation.</h2>
+        </div>
+        <p class="lead">The page is built around one conversion goal: getting homeowners to book a water consultation with enough trust to submit the form.</p>
+      </div>
+      <div class="process">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Free consultation</h3>
+          <p>Aquoz reviews your home, postcode and water concerns before recommending a system.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Custom quote</h3>
+          <p>You receive a clear quote with suitable filtration options and payment choices.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Professional install</h3>
+          <p>Licensed plumbers install the system, with most installs completed in a few hours.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonial-band">
+      <div class="testimonial-wrap">
+        <p class="quote">Real-world reasons families switch to Aquoz.</p>
+        <div class="reviews">
+          <div class="review">"The difference was immediate. My kids actually prefer tap water now."<b>Sarah M., Balwyn VIC</b></div>
+          <div class="review">"I was spending $40 a week on bottled water. Now I fill up from the tap."<b>Priya K., Craigieburn VIC</b></div>
+          <div class="review">"The plumber was in and out in two hours. No mess, no fuss."<b>Tom D., Ballarat VIC</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="final-inner">
+        <div>
+          <h2>Ready to find out what your home water needs?</h2>
+          <p>Book a free consultation and get a practical recommendation from Aquoz.</p>
+        </div>
+        <a class="btn secondary" href="#consultation">Book consultation</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>Aquoz Water Filtration</div>
+      <div>1300 911 485 | hello@aquoz.com.au | 9/35-37 Jesica Rd, Campbellfield VIC</div>
+    </div>
+  </footer>
+
+  <div class="sticky-mobile">
+    <a class="btn" href="#consultation">Book consultation</a>
+  </div>
+
+  <script>
+    const form = document.getElementById("consultation");
+    const success = document.getElementById("success");
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      success.style.display = "block";
+    });
+  </script>
+</body>
+</html>
