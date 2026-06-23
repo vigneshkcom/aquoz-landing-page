@@ -605,10 +605,26 @@
       .form-panel { padding: 22px 18px 20px; }
     }
 
+    /* ---------- Problem animated list (mobile only) ---------- */
+    .problem-animated-list { display: none; flex-direction: column; gap: 12px; }
+    .pal-item {
+      width: 100%; transform-origin: top center;
+      animation: pal-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes pal-in {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    @media (max-width: 540px) {
+      .problem-grid { display: none !important; }
+      .problem-animated-list { display: flex; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
       .reveal, .anim-up { opacity: 1 !important; transform: none !important; }
       .bubbles { display: none; }
+      .pal-item { animation: none !important; }
     }
   </style>
 </head>
@@ -835,6 +851,7 @@
             <b>Bore or tank water</b><span>Get advice based on your supply and postcode.</span>
           </div>
         </div>
+        <div class="problem-animated-list" id="problemAnimList" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -1234,6 +1251,58 @@
           if (!isOpen) { item.classList.add("open"); btn.setAttribute("aria-expanded", "true"); }
         });
       });
+
+      /* Problem animated list (mobile ≤540px) */
+      (function () {
+        if (!window.matchMedia('(max-width: 540px)').matches) return;
+        var grid = document.querySelector('.problem-grid');
+        var list = document.getElementById('problemAnimList');
+        if (!grid || !list) return;
+        var cards = Array.from(grid.querySelectorAll('.problem'));
+        var idx = 0;
+        var started = false;
+        var DELAY = 900;
+
+        if (reduce) {
+          cards.forEach(function (c) {
+            var w = document.createElement('div');
+            w.className = 'pal-item';
+            var clone = c.cloneNode(true);
+            clone.removeAttribute('style');
+            w.appendChild(clone);
+            list.appendChild(w);
+          });
+          return;
+        }
+
+        function showNext() {
+          if (idx >= cards.length) return;
+          var w = document.createElement('div');
+          w.className = 'pal-item';
+          var clone = cards[idx].cloneNode(true);
+          clone.removeAttribute('style');
+          w.appendChild(clone);
+          list.insertBefore(w, list.firstChild);
+          idx++;
+          if (idx < cards.length) setTimeout(showNext, DELAY);
+        }
+
+        var section = document.getElementById('concerns');
+        if ('IntersectionObserver' in window && section) {
+          var palObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting && !started) {
+                started = true;
+                palObs.disconnect();
+                showNext();
+              }
+            });
+          }, { threshold: 0.1 });
+          palObs.observe(section);
+        } else {
+          showNext();
+        }
+      })();
 
       /* Lead form */
       var form = document.getElementById("consultation");
