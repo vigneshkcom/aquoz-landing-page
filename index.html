@@ -1267,28 +1267,18 @@
           priority: form.priority.value
         };
 
-        /* =====================================================
-           TODO — CONNECT YOUR BACKEND HERE
-           Replace this timeout with a real submission, e.g.:
-
-           fetch("https://YOUR_WEBHOOK_OR_CRM_ENDPOINT", {
-             method: "POST",
-             headers: { "Content-Type": "application/json" },
-             body: JSON.stringify(payload)
-           }).then(showSuccess).catch(showSuccess);
-        ===================================================== */
         function showSuccess() {
-          /* Fire Meta Pixel Lead event (when pixel is installed) */
           if (typeof fbq === "function") { fbq("track", "Lead"); }
-          /* Optional: Google Ads / GA4 — push to dataLayer if present */
           if (window.dataLayer) { window.dataLayer.push({ event: "generate_lead" }); }
-
           form.querySelectorAll(".field, .btn[type=submit], .fineprint, .form-ribbon, h2, .sub").forEach(function (el) { el.style.display = "none"; });
           success.classList.add("show");
         }
 
-        console.log("Lead captured (demo):", payload);
-        setTimeout(showSuccess, 700); /* simulate network — remove when backend is wired */
+        fetch("https://services.leadconnectorhq.com/hooks/vVm4MZqtH6yPqsy9d8QN/webhook-trigger/2d9dc9b2-6cf2-45af-8028-de9607254aa0", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).then(showSuccess).catch(showSuccess);
       });
     })();
   </script>
