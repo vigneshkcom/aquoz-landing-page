@@ -720,6 +720,10 @@
             <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="e.g. john@email.com" required>
           </div>
           <div class="field">
+            <label for="address">Street address</label>
+            <input id="address" name="address" autocomplete="street-address" placeholder="e.g. 12 Smith St, Craigieburn" required>
+          </div>
+          <div class="field">
             <label for="postcode">Postcode</label>
             <input id="postcode" name="postcode" inputmode="numeric" autocomplete="postal-code" placeholder="e.g. 3061" required>
           </div>
@@ -1248,12 +1252,13 @@
         /* Honeypot: silently ignore bots */
         if (form.company && form.company.value) return;
 
-        var name = form.name, phone = form.phone, email = form.email, postcode = form.postcode;
+        var name = form.name, phone = form.phone, email = form.email, address = form.address, postcode = form.postcode;
         var ok = true;
         if (!name.value.trim()) { setInvalid(name, true); ok = false; } else setInvalid(name, false);
         if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setInvalid(email, true); ok = false; } else setInvalid(email, false);
         var digits = (phone.value.match(/\d/g) || []).length;
         if (digits < 8) { setInvalid(phone, true); ok = false; } else setInvalid(phone, false);
+        if (!address.value.trim()) { setInvalid(address, true); ok = false; } else setInvalid(address, false);
         if (!/^\d{4}$/.test(postcode.value.trim())) { setInvalid(postcode, true); ok = false; } else setInvalid(postcode, false);
         if (!ok) {
           var firstBad = form.querySelector(".invalid");
@@ -1269,6 +1274,7 @@
           name: name.value.trim(),
           phone: phone.value.trim(),
           email: email.value.trim(),
+          address: address.value.trim(),
           postcode: postcode.value.trim(),
           priority: form.priority.value
         };
