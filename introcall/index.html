@@ -3,304 +3,374 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Your Free Water Test — Aquoz</title>
+  <title>Book Your Free Intro Call — Aquoz Water Filtration</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --navy: #0b2438;
-      --navy-2: #0e2c44;
-      --blue: #1880bd;
-      --aqua: #46c2d6;
-      --gold: #f5b731;
-      --white: #ffffff;
-      --muted: rgba(255,255,255,0.65);
-      --radius: 16px;
+      --navy:   #0b2438;
+      --navy2:  #0d2d46;
+      --blue:   #1880bd;
+      --aqua:   #46c2d6;
+      --aqua2:  #2ba8bf;
+      --gold:   #f5b731;
+      --white:  #ffffff;
+      --muted:  rgba(255,255,255,0.6);
+      --card-bg: rgba(255,255,255,0.035);
+      --card-border: rgba(255,255,255,0.09);
+      --r: 18px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background: var(--navy);
       color: var(--white);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* NAV */
+    /* ── NAV ── */
     nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 32px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(11,36,56,0.95);
-      backdrop-filter: blur(8px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      padding: 0 40px;
+      height: 68px;
+      background: rgba(11,36,56,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
-    .logo {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--white);
-      text-decoration: none;
-    }
-    .logo span { color: var(--aqua); }
+    .nav-logo img { height: 32px; display: block; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
     .nav-phone {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--white);
-      text-decoration: none;
-      opacity: 0.85;
-      transition: opacity 0.2s;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 700; color: var(--white);
+      text-decoration: none; opacity: 0.9;
+      transition: opacity .2s;
     }
     .nav-phone:hover { opacity: 1; }
-    .nav-phone svg { width: 16px; height: 16px; color: var(--aqua); }
+    .nav-phone svg { width: 15px; height: 15px; color: var(--aqua); flex: none; }
+    .nav-cta {
+      display: inline-flex; align-items: center;
+      background: var(--aqua); color: var(--navy);
+      font-size: 13px; font-weight: 800;
+      padding: 9px 20px; border-radius: 100px;
+      text-decoration: none; transition: background .2s, transform .2s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: #5dd0e3; transform: translateY(-1px); }
 
-    /* HERO BAND */
-    .hero-band {
-      background: linear-gradient(135deg, var(--navy) 0%, #0d3554 100%);
-      padding: 56px 24px 48px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-band::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(70,194,214,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .step-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(70,194,214,0.12);
-      border: 1px solid rgba(70,194,214,0.3);
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--aqua);
-      margin-bottom: 20px;
-    }
-    .step-badge svg { width: 14px; height: 14px; }
-    .hero-band h1 {
-      font-size: clamp(28px, 5vw, 42px);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.5px;
-      margin-bottom: 14px;
-    }
-    .hero-band h1 span { color: var(--aqua); }
-    .hero-band p {
-      font-size: 16px;
-      color: var(--muted);
-      max-width: 520px;
-      margin: 0 auto 28px;
-      line-height: 1.6;
-    }
-
-    /* TRUST ROW */
-    .trust-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.75);
-    }
-    .trust-item svg { width: 16px; height: 16px; color: var(--aqua); flex: none; }
-
-    /* CALENDAR SECTION */
-    .calendar-wrap {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 48px 24px 64px;
-    }
-    .calendar-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 32px;
-      overflow: hidden;
-    }
-    .calendar-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--aqua);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 6px;
-    }
-    .calendar-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      color: var(--white);
-    }
-    .calendar-frame {
-      width: 100%;
-      min-height: 680px;
-      border: none;
-      border-radius: 12px;
-      background: transparent;
-      overflow: hidden;
-    }
-
-    /* WHAT TO EXPECT */
-    .expect-section {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 0 24px 64px;
-    }
-    .expect-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--white);
-    }
-    .expect-grid {
+    /* ── MAIN LAYOUT ── */
+    .page {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      grid-template-columns: 380px 1fr;
+      min-height: calc(100vh - 68px);
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      gap: 48px;
+      align-items: start;
     }
-    .expect-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius);
-      padding: 22px;
+
+    /* ── LEFT PANEL ── */
+    .left {
+      padding: 56px 0 64px;
+      position: sticky;
+      top: 68px;
+    }
+    .step-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(70,194,214,0.1);
+      border: 1px solid rgba(70,194,214,0.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px; font-weight: 700;
+      color: var(--aqua); letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .step-pill svg { width: 13px; height: 13px; flex: none; }
+
+    .left h1 {
+      font-size: clamp(28px, 3.5vw, 38px);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.8px;
+      margin-bottom: 16px;
+    }
+    .left h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--aqua), #7de3ef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .left .sub {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+
+    /* what to expect */
+    .expect-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+    .expect-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 18px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r);
+      transition: background .25s, border-color .25s;
+    }
+    .expect-item:hover {
+      background: rgba(255,255,255,0.055);
+      border-color: rgba(70,194,214,0.25);
     }
     .expect-icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(70,194,214,0.12);
+      width: 38px; height: 38px; flex: none;
       border-radius: 10px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 14px;
+      background: rgba(70,194,214,0.12);
+      display: grid; place-items: center;
     }
-    .expect-icon svg { width: 20px; height: 20px; color: var(--aqua); }
-    .expect-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-    .expect-card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .expect-icon svg { width: 18px; height: 18px; color: var(--aqua); }
+    .expect-text h3 { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+    .expect-text p  { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
 
-    /* FOOTER */
+    /* trust */
+    .trust-row { display: flex; flex-direction: column; gap: 10px; }
+    .trust-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+    .trust-item .dot {
+      width: 18px; height: 18px; flex: none;
+      border-radius: 50%;
+      background: rgba(70,194,214,0.15);
+      display: grid; place-items: center;
+    }
+    .trust-item .dot svg { width: 10px; height: 10px; color: var(--aqua); }
+
+    /* ── RIGHT PANEL ── */
+    .right {
+      padding: 56px 0 64px;
+    }
+    .calendar-header {
+      margin-bottom: 20px;
+    }
+    .calendar-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--aqua); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+    .calendar-heading {
+      font-size: 22px; font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .calendar-sub {
+      font-size: 13.5px; color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .calendar-shell {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px;
+      overflow: hidden;
+      padding: 4px;
+    }
+    .calendar-inner {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .calendar-inner iframe {
+      display: block;
+      width: 100%;
+      min-height: 720px;
+      border: none;
+    }
+
+    /* ── DIVIDER ── */
+    .left-divider {
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,255,255,0.06), transparent);
+      margin: 28px 0;
+    }
+
+    /* ── FOOTER ── */
     footer {
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 24px 32px;
-      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       font-size: 12px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.35);
+      max-width: 1280px;
+      margin: 0 auto;
     }
-    footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    footer a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color .2s; }
     footer a:hover { color: var(--white); }
+    footer .footer-links { display: flex; gap: 20px; }
 
-    @media (max-width: 640px) {
-      nav { padding: 14px 20px; }
-      .hero-band { padding: 40px 20px 36px; }
-      .calendar-card { padding: 20px; }
-      .expect-grid { grid-template-columns: 1fr; }
-      .trust-row { gap: 14px; }
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-cta { display: none; }
+      .page {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+        gap: 0;
+      }
+      .left {
+        padding: 36px 0 28px;
+        position: static;
+      }
+      .right { padding: 0 0 48px; }
+      footer { padding: 20px; flex-direction: column; gap: 10px; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .left h1 { font-size: 26px; }
+      .expect-item { padding: 14px 16px; }
+    }
+
+    /* glow accent */
+    .glow {
+      position: fixed;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(70,194,214,0.07) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a href="https://waterfilter.aquoz.com.au" class="logo">AQU<span>◎</span>Z</a>
+<div class="glow"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="https://waterfilter.aquoz.com.au" class="nav-logo">
+    <img src="https://waterfilter.aquoz.com.au/assets/aquoz-logo.png" alt="Aquoz Water Filtration">
+  </a>
+  <div class="nav-right">
     <a href="tel:1300911485" class="nav-phone">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
       1300 911 485
     </a>
-  </nav>
+    <a href="https://waterfilter.aquoz.com.au" class="nav-cta">← Back to site</a>
+  </div>
+</nav>
 
-  <!-- HERO -->
-  <div class="hero-band">
-    <div class="step-badge">
+<!-- MAIN -->
+<div class="page">
+
+  <!-- LEFT -->
+  <aside class="left">
+    <div class="step-pill">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-      Step 2 of 2 — Pick your time
+      Step 2 of 2
     </div>
-    <h1>Book your <span>free intro call</span></h1>
-    <p>Choose a time that works for you. A member of our team will call to understand your water concerns and answer any questions — no pressure, no obligation.</p>
-    <div class="trust-row">
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        100% free — no obligation
-      </div>
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        10–15 minute call
-      </div>
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Australian owned & operated
-      </div>
-    </div>
-  </div>
 
-  <!-- CALENDAR -->
-  <div class="calendar-wrap">
-    <div class="calendar-card">
-      <div class="calendar-label">Schedule</div>
-      <div class="calendar-title">Select a date & time</div>
-      <iframe
-        src="https://api.leadconnectorhq.com/widget/booking/slbd3jBOYq3Z5JbzUlrX"
-        class="calendar-frame"
-        scrolling="no"
-        id="slbd3jBOYq3Z5JbzUlrX_1782963255001">
-      </iframe>
-      <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
-    </div>
-  </div>
+    <h1>Book your<br><em>free intro call</em></h1>
+    <p class="sub">Pick a time that works for you. A water specialist will call to understand your concerns and walk you through your options — no pressure, ever.</p>
 
-  <!-- WHAT TO EXPECT -->
-  <div class="expect-section">
-    <div class="expect-title">What happens on the call?</div>
-    <div class="expect-grid">
-      <div class="expect-card">
+    <div class="expect-list">
+      <div class="expect-item">
+        <div class="expect-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="expect-text">
+          <h3>10–15 minutes</h3>
+          <p>Quick, no-fluff conversation. We respect your time.</p>
+        </div>
+      </div>
+      <div class="expect-item">
         <div class="expect-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         </div>
-        <h3>We listen first</h3>
-        <p>Tell us your water concerns — taste, skin, health, appliances. We tailor our recommendations to your situation.</p>
-      </div>
-      <div class="expect-card">
-        <div class="expect-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div class="expect-text">
+          <h3>We listen first</h3>
+          <p>Tell us your water concerns — taste, skin, health, or appliances. We tailor everything to you.</p>
         </div>
-        <h3>Clear answers</h3>
-        <p>We explain what's typically in your local water supply and which filtration options make sense for your home.</p>
       </div>
-      <div class="expect-card">
+      <div class="expect-item">
         <div class="expect-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         </div>
-        <h3>Book your water test</h3>
-        <p>If it's a good fit, we'll schedule a free in-home water test at a time that suits you — no obligation to proceed.</p>
+        <div class="expect-text">
+          <h3>Book your in-home test</h3>
+          <p>If it's a good fit, we'll arrange a free water test at your home at a time that suits.</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- FOOTER -->
-  <footer>
-    © 2026 Aquoz Water Filtration · Australian Owned · <a href="#">Privacy Policy</a> · <a href="tel:1300911485">1300 911 485</a>
-  </footer>
+    <div class="left-divider"></div>
+
+    <div class="trust-row">
+      <div class="trust-item">
+        <div class="dot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+        100% free — no obligation whatsoever
+      </div>
+      <div class="trust-item">
+        <div class="dot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+        NSF certified & WaterMark approved systems
+      </div>
+      <div class="trust-item">
+        <div class="dot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+        Installed by licensed Australian plumbers
+      </div>
+      <div class="trust-item">
+        <div class="dot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+        Australian owned &amp; operated since day one
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT -->
+  <main class="right">
+    <div class="calendar-header">
+      <div class="calendar-label">Schedule your call</div>
+      <div class="calendar-heading">Select a date &amp; time</div>
+      <div class="calendar-sub">All times shown in Australia/Sydney (GMT+10)</div>
+    </div>
+
+    <div class="calendar-shell">
+      <div class="calendar-inner">
+        <iframe
+          src="https://api.leadconnectorhq.com/widget/booking/slbd3jBOYq3Z5JbzUlrX"
+          scrolling="no"
+          id="slbd3jBOYq3Z5JbzUlrX_1782963255001">
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Aquoz Water Filtration · Australian Owned</span>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms</a>
+    <a href="tel:1300911485">1300 911 485</a>
+  </div>
+</footer>
+
+<script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
 
 </body>
 </html>
