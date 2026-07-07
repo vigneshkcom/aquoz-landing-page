@@ -578,6 +578,11 @@
       return `${opp.name} - ${opp.source || 'Unknown'}`;
     }
 
+    function editableReferralNote(note) {
+      const value = String(note || '').trim();
+      return /updated by tracker/i.test(value) ? '' : value;
+    }
+
     function referrerCandidates() {
       const q = state.referrerQuery.trim().toLowerCase();
       return state.opportunities
@@ -607,7 +612,7 @@
       state.selectedOpportunityId = id;
       state.referrerQuery = '';
       document.getElementById('link-target').textContent = target.name;
-      document.getElementById('referral-note').value = target.referralNote || '';
+      document.getElementById('referral-note').value = editableReferralNote(target.referralNote);
       document.getElementById('link-error').textContent = '';
       document.getElementById('referrer-search').value = '';
       renderReferrerOptions();
