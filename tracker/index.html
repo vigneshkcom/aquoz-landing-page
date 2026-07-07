@@ -346,6 +346,7 @@
     <div class="modal-body">
       <div class="field">
         <label for="referrer-select">Who referred this customer?</label>
+        <input id="referrer-search" type="search" placeholder="Search by name or source" autocomplete="off">
         <select id="referrer-select"></select>
       </div>
       <div class="field">
@@ -369,6 +370,7 @@
       opportunities: [],
       columns: [],
       selectedOpportunityId: '',
+      referrerQuery: '',
       query: '',
     };
 
@@ -572,24 +574,55 @@
       }
     }
 
+    function referrerLabel(opp) {
+      return `${opp.name} - ${opp.source || 'Unknown'}`;
+    }
+
+    function referrerCandidates() {
+      const q = state.referrerQuery.trim().toLowerCase();
+      return state.opportunities
+        .filter((opp) => opp.id !== state.selectedOpportunityId)
+        .filter((opp) => {
+          if (!q) return true;
+          return [opp.name, opp.source, opp.email, opp.phone, opp.stageName]
+            .join(' ')
+            .toLowerCase()
+            .includes(q);
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function renderReferrerOptions() {
+      const select = document.getElementById('referrer-select');
+      const matches = referrerCandidates();
+      select.disabled = !matches.length;
+      select.innerHTML = matches.length
+        ? matches.map((opp) => `<option value="${esc(opp.id)}">${esc(referrerLabel(opp))}</option>`).join('')
+        : '<option value="">No matching won customers</option>';
+    }
+
     function openLinkDialog(id) {
       const target = state.opportunities.find((opp) => opp.id === id);
       if (!target) return;
       state.selectedOpportunityId = id;
+      state.referrerQuery = '';
       document.getElementById('link-target').textContent = target.name;
       document.getElementById('referral-note').value = target.referralNote || '';
       document.getElementById('link-error').textContent = '';
-      document.getElementById('referrer-select').innerHTML = state.opportunities
-        .filter((opp) => opp.id !== id)
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((opp) => `<option value="${esc(opp.id)}">${esc(opp.name)} - ${esc(opp.source || 'Unknown')}</option>`)
-        .join('');
+      document.getElementById('referrer-search').value = '';
+      renderReferrerOptions();
       document.getElementById('link-dialog').showModal();
+      document.getElementById('referrer-search').focus();
     }
 
     async function saveLink() {
       const button = document.getElementById('save-link');
       const error = document.getElementById('link-error');
+      const referrerOpportunityId = document.getElementById('referrer-select').value;
+      if (!referrerOpportunityId) {
+        error.textContent = 'Search and select a referrer first.';
+        return;
+      }
       button.disabled = true;
       error.textContent = '';
       try {
@@ -597,7 +630,7 @@
           method: 'POST',
           body: JSON.stringify({
             opportunityId: state.selectedOpportunityId,
-            referrerOpportunityId: document.getElementById('referrer-select').value,
+            referrerOpportunityId,
             note: document.getElementById('referral-note').value,
           }),
         });
@@ -655,6 +688,10 @@
     document.getElementById('logout-btn').addEventListener('click', lock);
     document.getElementById('cancel-link').addEventListener('click', () => document.getElementById('link-dialog').close());
     document.getElementById('save-link').addEventListener('click', saveLink);
+    document.getElementById('referrer-search').addEventListener('input', (event) => {
+      state.referrerQuery = event.target.value;
+      renderReferrerOptions();
+    });
     document.getElementById('search').addEventListener('input', (event) => {
       state.query = event.target.value;
       renderBoard();
