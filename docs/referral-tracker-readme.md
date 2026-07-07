@@ -59,6 +59,7 @@ Supabase is not required for the current tracker because GHL opportunity custom 
   - Referred customer opportunity/customer
   - GHL contact buttons for both customers when contact IDs are available
 - Tracker cards are fixed-height and compact so all cards in the board stay the same size.
+- Card status/stage/age details are simple rows, not nested chip cards.
 - Cards show:
   - Change referrer
   - Unlink
