@@ -640,9 +640,9 @@
           }),
         });
         document.getElementById('link-dialog').close();
-        const message = data.linked && data.linked.trackingOpportunityReused
-          ? 'Referral link saved in GHL. Tracking opportunity already exists.'
-          : 'Referral link saved and tracking opportunity created in GHL.';
+        const message = data.linked && data.linked.associationRelationReused
+          ? 'Referral link saved in GHL. Additional opportunity was already linked.'
+          : 'Referral link saved and additional opportunity linked in GHL.';
         showToast(data.linked && data.linked.noteWarning ? `${message} Note warning: ${data.linked.noteWarning}` : message);
         await loadTracker();
       } catch (err) {
@@ -656,14 +656,14 @@
       const opportunity = state.opportunities.find((opp) => opp.id === id);
       if (!opportunity) return;
       const referrerName = opportunity.referredByName || 'the linked referrer';
-      if (!confirm(`Unlink ${opportunity.name} from ${referrerName}? This will delete the tracker-created referral opportunity in GHL.`)) return;
+      if (!confirm(`Unlink ${opportunity.name} from ${referrerName}? This will remove the linked additional opportunity relation in GHL.`)) return;
       try {
         const data = await api('/referrals', {
           method: 'DELETE',
           body: JSON.stringify({ opportunityId: id }),
         });
-        const message = data.unlinked && data.unlinked.deletedTrackingOpportunityId
-          ? 'Referral unlinked and tracking opportunity removed from GHL.'
+        const message = data.unlinked && data.unlinked.deletedRelation
+          ? 'Referral unlinked and additional opportunity relation removed from GHL.'
           : 'Referral unlinked in GHL.';
         showToast(data.unlinked && data.unlinked.noteWarning ? `${message} Note warning: ${data.unlinked.noteWarning}` : message);
         await loadTracker();
