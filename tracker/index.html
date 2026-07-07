@@ -234,6 +234,7 @@
     .refline strong { color: var(--ink); }
     .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
     .card-actions .btn { min-height: 34px; padding: 0 9px; font-size: 12px; }
+    .card-actions .wide { grid-column: 1 / -1; }
 
     .empty {
       border: 1px dashed var(--line-strong);
@@ -520,8 +521,9 @@
             ${madeCount ? `<br><strong>${madeCount}</strong> referral${madeCount === 1 ? '' : 's'} attributed to this customer.` : ''}
           </div>
           <div class="card-actions">
-            <button class="btn" type="button" data-action="link" data-id="${esc(opp.id)}">Link referrer</button>
-            <button class="btn green" type="button" data-action="ask" data-id="${esc(opp.id)}">Ask review</button>
+            <button class="btn" type="button" data-action="link" data-id="${esc(opp.id)}">${linked ? 'Change referrer' : 'Link referrer'}</button>
+            ${linked ? `<button class="btn orange" type="button" data-action="unlink" data-id="${esc(opp.id)}">Unlink</button>` : ''}
+            <button class="btn green ${linked ? 'wide' : ''}" type="button" data-action="ask" data-id="${esc(opp.id)}">Ask review</button>
           </div>
         </article>
       `;
@@ -600,14 +602,35 @@
           }),
         });
         document.getElementById('link-dialog').close();
-        showToast(data.linked && data.linked.trackingOpportunityReused
+        const message = data.linked && data.linked.trackingOpportunityReused
           ? 'Referral link saved in GHL. Tracking opportunity already exists.'
-          : 'Referral link saved and tracking opportunity created in GHL.');
+          : 'Referral link saved and tracking opportunity created in GHL.';
+        showToast(data.linked && data.linked.noteWarning ? `${message} Note warning: ${data.linked.noteWarning}` : message);
         await loadTracker();
       } catch (err) {
         error.textContent = err.message;
       } finally {
         button.disabled = false;
+      }
+    }
+
+    async function unlinkReferral(id) {
+      const opportunity = state.opportunities.find((opp) => opp.id === id);
+      if (!opportunity) return;
+      const referrerName = opportunity.referredByName || 'the linked referrer';
+      if (!confirm(`Unlink ${opportunity.name} from ${referrerName}? This will delete the tracker-created referral opportunity in GHL.`)) return;
+      try {
+        const data = await api('/referrals', {
+          method: 'DELETE',
+          body: JSON.stringify({ opportunityId: id }),
+        });
+        const message = data.unlinked && data.unlinked.deletedTrackingOpportunityId
+          ? 'Referral unlinked and tracking opportunity removed from GHL.'
+          : 'Referral unlinked in GHL.';
+        showToast(data.unlinked && data.unlinked.noteWarning ? `${message} Note warning: ${data.unlinked.noteWarning}` : message);
+        await loadTracker();
+      } catch (err) {
+        showToast(err.message, 'error');
       }
     }
 
@@ -640,6 +663,7 @@
       const button = event.target.closest('button[data-action]');
       if (!button) return;
       if (button.dataset.action === 'link') openLinkDialog(button.dataset.id);
+      if (button.dataset.action === 'unlink') unlinkReferral(button.dataset.id);
       if (button.dataset.action === 'ask') sendAsk(button.dataset.id);
     });
 
