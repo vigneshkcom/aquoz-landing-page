@@ -125,3 +125,5 @@ The Ask Review button:
 - `67903ab` - Add referral unlink and audit notes
 - `96556a9` - Add referrer search in tracker
 - `c5557ca` - Attach referral tracking opportunity to customer contact (superseded by association relation flow)
+- `08e2667` - Use GHL additional opportunity associations
+- `410e472` - Reduce referral link API load
