@@ -197,7 +197,12 @@
       font-size: 12px;
       font-weight: 800;
     }
-    .stack { display: grid; gap: 10px; }
+    .stack { display: grid; gap: 10px; min-height: 56px; }
+    .stack.drag-over {
+      outline: 2px solid rgba(24,128,189,.36);
+      outline-offset: 4px;
+      border-radius: var(--radius);
+    }
 
     .card {
       background: var(--panel);
@@ -206,6 +211,8 @@
       box-shadow: 0 6px 18px rgba(16,36,51,.06);
       padding: 13px;
     }
+    .card[draggable="true"] { cursor: grab; }
+    .card.dragging { opacity: .58; }
     .card-top { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
     .card h3 { margin: 0; font-size: 15px; line-height: 1.25; }
     .pill {
@@ -232,9 +239,30 @@
       line-height: 1.45;
     }
     .refline strong { color: var(--ink); }
+    .stage-select {
+      width: 100%;
+      min-height: 34px;
+      margin-top: 10px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 750;
+      background: #fff;
+    }
     .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
     .card-actions .btn { min-height: 34px; padding: 0 9px; font-size: 12px; }
     .card-actions .wide { grid-column: 1 / -1; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
 
     .empty {
       border: 1px dashed var(--line-strong);
@@ -372,6 +400,7 @@
       selectedOpportunityId: '',
       referrerQuery: '',
       query: '',
+      draggingId: '',
     };
 
     const money = (value) => new Intl.NumberFormat('en-AU', {
@@ -488,7 +517,8 @@
     function renderSetup(setup) {
       const box = document.getElementById('setup');
       const missing = (setup && setup.missingFields || []).filter((field) => field.requiredForLink);
-      if (!setup || (!missing.length && setup.hasGhlApiKey && setup.hasLocationId)) {
+      const hasReviewEmailConfig = setup && (setup.hasReviewUrl || setup.hasReviewEmailTemplate);
+      if (!setup || (!missing.length && setup.hasGhlApiKey && setup.hasLocationId && hasReviewEmailConfig)) {
         box.style.display = 'none';
         box.innerHTML = '';
         return;
@@ -497,8 +527,16 @@
       if (!setup.hasGhlApiKey) parts.push('GHL API key env var is missing.');
       if (!setup.hasLocationId) parts.push('GHL location ID env var is missing.');
       if (missing.length) parts.push('Referral custom field ID is missing, so saving referral links will fail until it is added.');
+      if (!hasReviewEmailConfig) parts.push('Review email needs AQUOZ_REVIEW_URL or AQUOZ_REVIEW_EMAIL_TEMPLATE_ID.');
       box.innerHTML = `<strong>Setup attention:</strong> ${esc(parts.join(' '))}`;
       box.style.display = 'block';
+    }
+
+    function stageOptions(current) {
+      const selected = current || 'won';
+      return state.columns.map((column) => `
+        <option value="${esc(column.key)}" ${column.key === selected ? 'selected' : ''}>${esc(column.label)}</option>
+      `).join('');
     }
 
     function cardHtml(opp) {
@@ -507,7 +545,7 @@
       const source = opp.source || 'Unknown';
       const stage = opp.stageName || 'Closed Won';
       return `
-        <article class="card" data-id="${esc(opp.id)}">
+        <article class="card" data-id="${esc(opp.id)}" draggable="true">
           <div class="card-top">
             <h3>${esc(opp.name)}</h3>
             <span class="pill">Won</span>
@@ -522,10 +560,14 @@
             ${linked ? `Referred by <strong>${esc(opp.referredByName || opp.referredById)}</strong>` : 'No referrer linked yet.'}
             ${madeCount ? `<br><strong>${madeCount}</strong> referral${madeCount === 1 ? '' : 's'} attributed to this customer.` : ''}
           </div>
+          <label class="sr-only" for="stage-${esc(opp.id)}">Tracker stage</label>
+          <select class="stage-select" id="stage-${esc(opp.id)}" data-action="move" data-id="${esc(opp.id)}">
+            ${stageOptions(opp.bucket)}
+          </select>
           <div class="card-actions">
             <button class="btn" type="button" data-action="link" data-id="${esc(opp.id)}">${linked ? 'Change referrer' : 'Link referrer'}</button>
             ${linked ? `<button class="btn orange" type="button" data-action="unlink" data-id="${esc(opp.id)}">Unlink</button>` : ''}
-            <button class="btn green ${linked ? 'wide' : ''}" type="button" data-action="ask" data-id="${esc(opp.id)}">Ask review</button>
+            <button class="btn green ${linked ? 'wide' : ''}" type="button" data-action="ask" data-id="${esc(opp.id)}">Send review email</button>
           </div>
         </article>
       `;
@@ -546,7 +588,7 @@
               </div>
               <span class="count">${cards.length}</span>
             </div>
-            <div class="stack">
+            <div class="stack" data-stage="${esc(column.key)}">
               ${cards.length ? cards.map(cardHtml).join('') : '<div class="empty">No cards</div>'}
             </div>
           </section>
@@ -675,16 +717,33 @@
     async function sendAsk(id) {
       const opportunity = state.opportunities.find((opp) => opp.id === id);
       if (!opportunity) return;
-      if (!confirm(`Trigger post-install review/referral ask for ${opportunity.name}?`)) return;
+      const destination = opportunity.email ? ` to ${opportunity.email}` : '';
+      if (!confirm(`Send review request email${destination} for ${opportunity.name}?`)) return;
       try {
         await api('/automation', {
           method: 'POST',
-          body: JSON.stringify({ opportunityId: id, action: 'post_install_review_referral' }),
+          body: JSON.stringify({ opportunityId: id, action: 'send_review_email' }),
         });
-        showToast('Post-install review/referral ask triggered.');
+        showToast('Review request email sent.');
         await loadTracker();
       } catch (err) {
         showToast(err.message, 'error');
+      }
+    }
+
+    async function moveStage(id, stage) {
+      const opportunity = state.opportunities.find((opp) => opp.id === id);
+      if (!opportunity || opportunity.bucket === stage) return;
+      try {
+        await api('/automation', {
+          method: 'POST',
+          body: JSON.stringify({ opportunityId: id, action: 'move_stage', stage }),
+        });
+        showToast(`${opportunity.name} moved.`);
+        await loadTracker();
+      } catch (err) {
+        showToast(err.message, 'error');
+        await loadTracker();
       }
     }
 
@@ -707,6 +766,44 @@
       if (button.dataset.action === 'link') openLinkDialog(button.dataset.id);
       if (button.dataset.action === 'unlink') unlinkReferral(button.dataset.id);
       if (button.dataset.action === 'ask') sendAsk(button.dataset.id);
+    });
+    document.getElementById('board').addEventListener('change', (event) => {
+      const select = event.target.closest('select[data-action="move"]');
+      if (!select) return;
+      moveStage(select.dataset.id, select.value);
+    });
+    document.getElementById('board').addEventListener('dragstart', (event) => {
+      const card = event.target.closest('.card[data-id]');
+      if (!card) return;
+      state.draggingId = card.dataset.id;
+      card.classList.add('dragging');
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', card.dataset.id);
+    });
+    document.getElementById('board').addEventListener('dragend', (event) => {
+      const card = event.target.closest('.card[data-id]');
+      if (card) card.classList.remove('dragging');
+      state.draggingId = '';
+      document.querySelectorAll('.stack.drag-over').forEach((stack) => stack.classList.remove('drag-over'));
+    });
+    document.getElementById('board').addEventListener('dragover', (event) => {
+      const stack = event.target.closest('.stack[data-stage]');
+      if (!stack || !state.draggingId) return;
+      event.preventDefault();
+      stack.classList.add('drag-over');
+      event.dataTransfer.dropEffect = 'move';
+    });
+    document.getElementById('board').addEventListener('dragleave', (event) => {
+      const stack = event.target.closest('.stack[data-stage]');
+      if (stack && !stack.contains(event.relatedTarget)) stack.classList.remove('drag-over');
+    });
+    document.getElementById('board').addEventListener('drop', (event) => {
+      const stack = event.target.closest('.stack[data-stage]');
+      if (!stack) return;
+      event.preventDefault();
+      stack.classList.remove('drag-over');
+      const id = event.dataTransfer.getData('text/plain') || state.draggingId;
+      if (id) moveStage(id, stack.dataset.stage);
     });
 
     if (state.token) enterApp();

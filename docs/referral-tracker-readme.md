@@ -34,8 +34,13 @@ Optional:
 
 - `AQUOZ_GHL_PIPELINE_ID` - limits the tracker to one pipeline.
 - `AQUOZ_POST_INSTALL_WEBHOOK_URL` - sends post-install automation events to a webhook.
+- `AQUOZ_REVIEW_URL` - review link used by the built-in review request email.
+- `AQUOZ_REVIEW_EMAIL_TEMPLATE_ID` - optional GHL email template ID to use instead of the built-in email body.
+- `AQUOZ_REVIEW_EMAIL_FROM` - optional verified sender address for the GHL email send.
+- `AQUOZ_REVIEW_EMAIL_SUBJECT` - optional subject line override.
 
 The tracker does not create new referral opportunities. It uses GHL's associations relation endpoint to link an existing opportunity to an additional contact.
+Supabase is not required for the current tracker because GHL opportunity custom fields store the board stage, referrer link, association relation ID, and post-install status.
 
 ## What Exists Now
 
@@ -72,6 +77,7 @@ Field groups include:
 - Referred customer contact ID
 - Review status
 - Referral ask status
+- Tracker stage
 
 ### Link Referrer Flow
 
@@ -102,16 +108,30 @@ When a user unlinks a referral:
 
 ### Post-Install Review/Referral Ask
 
-The Ask Review button:
+The Send Review Email button:
 
-- Optionally posts to `AQUOZ_POST_INSTALL_WEBHOOK_URL`.
-- Updates review/referral status fields in GHL.
-- Moves the card into the Ask Sent column based on status field values.
+- Sends an outbound email through GHL's Conversations API.
+- Uses either `AQUOZ_REVIEW_EMAIL_TEMPLATE_ID` or the built-in email body with `AQUOZ_REVIEW_URL`.
+- Optionally posts to `AQUOZ_POST_INSTALL_WEBHOOK_URL` after the email send.
+- Updates review/referral status fields in GHL only after the email send succeeds.
+- Moves the card into the Ask Sent column by writing the tracker stage custom field.
+
+### Manual Kanban Movement
+
+Cards can be moved between tracker columns with the stage dropdown on each card or by dragging a card into another column.
+
+Manual movement:
+
+1. Updates only the tracker stage custom field.
+2. Does not change the real GHL sales pipeline stage.
+3. Does not create or remove opportunities.
+4. Does not change referral links unless the Link Referrer or Unlink buttons are used.
 
 ## Current Behavior Notes
 
 - GHL's opportunity search endpoint does not return all custom field values, so the tracker hydrates won opportunities one by one with `GET /opportunities/:id`.
 - The tracker uses GHL custom fields as the durable link source.
+- The tracker stage custom field is the durable Kanban source after a card is manually moved.
 - The linked additional opportunity relation is used for GHL visibility without creating a new opportunity.
 - Unlink only removes the association relation and clears tracker referral fields.
 
