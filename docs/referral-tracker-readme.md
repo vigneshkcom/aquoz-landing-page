@@ -58,6 +58,7 @@ Supabase is not required for the current tracker because GHL opportunity custom 
   - Referrer opportunity/customer
   - Referred customer opportunity/customer
   - GHL contact buttons for both customers when contact IDs are available
+- Tracker cards are fixed-height and compact so all cards in the board stay the same size.
 - Cards show:
   - Change referrer
   - Unlink
@@ -123,16 +124,16 @@ The Send Review Email button:
 - Updates review/referral status fields in GHL only after the email send succeeds.
 - Does not move the card to a separate review-request column.
 
-### Manual Kanban Movement
+### Kanban Movement
 
-Cards can be moved between tracker columns with the stage dropdown on each card or by dragging a card into another column.
+Cards cannot be moved between tracker columns from the UI.
 
-Manual movement:
+This is intentional:
 
-1. Updates only the tracker stage custom field.
-2. Does not change the real GHL sales pipeline stage.
-3. Does not create or remove opportunities.
-4. Does not change referral links unless the Link Referrer or Unlink buttons are used.
+1. There is no dropdown on cards.
+2. There is no drag/drop movement.
+3. The API rejects the old `move_stage` action.
+4. The tracker must not look or behave like it can change GHL pipeline stage.
 
 ## Current Behavior Notes
 

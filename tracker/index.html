@@ -9,25 +9,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f6f8fb;
+      --navy: #0b2438;
+      --navy-2: #0e2c44;
+      --bg: #f5fbfd;
       --panel: #ffffff;
       --ink: #102433;
-      --muted: #61717f;
-      --line: #dfe7ee;
-      --line-strong: #c8d4de;
+      --muted: #627789;
+      --line: #dce9ef;
+      --line-strong: #c5d8e2;
       --blue: #1880bd;
+      --blue-deep: #115e8b;
+      --aqua: #46c2d6;
+      --soft: #eef9fc;
       --green: #1f9d63;
       --orange: #f07a3a;
       --red: #c7493d;
-      --shadow: 0 12px 34px rgba(16, 36, 51, .08);
-      --radius: 8px;
+      --shadow: 0 18px 48px rgba(10,35,52,.12);
+      --shadow-sm: 0 8px 22px rgba(12,40,60,.08);
+      --radius: 14px;
+      --radius-sm: 10px;
     }
 
     * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
+      background:
+        linear-gradient(180deg, #f6fcfd 0%, #eef7fa 42%, #f7fbfd 100%);
       color: var(--ink);
       font-family: "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
       font-size: 14px;
@@ -43,9 +51,8 @@
       place-items: center;
       padding: 24px;
       background:
-        linear-gradient(135deg, rgba(24,128,189,.14), transparent 36%),
-        linear-gradient(315deg, rgba(31,157,99,.12), transparent 42%),
-        var(--bg);
+        radial-gradient(120% 90% at 85% 10%, rgba(70,194,214,.20), transparent 55%),
+        linear-gradient(108deg, rgba(7,26,42,.95), rgba(8,30,48,.84));
     }
 
     .gate-box {
@@ -59,7 +66,7 @@
 
     .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
     .brand img { width: 116px; }
-    .brand span { font-weight: 800; color: var(--blue); }
+    .brand span { font-weight: 800; color: var(--blue-deep); }
 
     .gate-box h1, .toolbar h1 {
       margin: 0;
@@ -73,8 +80,8 @@
     .field label { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
     input, select, textarea {
       width: 100%;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
+      border: 1.5px solid #d3e1e9;
+      border-radius: var(--radius-sm);
       min-height: 42px;
       padding: 10px 12px;
       color: var(--ink);
@@ -82,27 +89,29 @@
       outline: none;
     }
     textarea { min-height: 86px; resize: vertical; }
-    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,128,189,.12); }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(24,128,189,.13); }
 
     .btn {
       min-height: 40px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: #fff;
-      color: var(--ink);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #2a93cf, var(--blue) 60%, var(--blue-deep));
+      color: #fff;
       font-weight: 800;
       padding: 0 13px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: background .16s ease, border-color .16s ease, transform .16s ease;
+      box-shadow: 0 12px 24px rgba(24,128,189,.24), inset 0 1px 0 rgba(255,255,255,.25);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
       text-decoration: none;
     }
-    .btn:hover { border-color: var(--blue); transform: translateY(-1px); }
-    .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
-    .btn.green { background: var(--green); color: #fff; border-color: var(--green); }
-    .btn.orange { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 16px 30px rgba(24,128,189,.30), inset 0 1px 0 rgba(255,255,255,.25); }
+    .btn.primary { background: linear-gradient(180deg, #2a93cf, var(--blue) 60%, var(--blue-deep)); color: #fff; }
+    .btn.green { background: linear-gradient(180deg, #27b873, var(--green)); color: #fff; box-shadow: 0 12px 22px rgba(31,157,99,.22); }
+    .btn.orange { background: linear-gradient(180deg, #f08b4f, #df7434); color: #fff; box-shadow: 0 12px 22px rgba(240,122,58,.20); }
+    .btn.light { background: #fff; color: var(--navy); border-color: var(--line-strong); box-shadow: none; }
     .btn.icon { width: 40px; padding: 0; }
     .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 
@@ -111,9 +120,10 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(246,248,251,.9);
+      background: rgba(255,255,255,.88);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
+      box-shadow: 0 8px 30px rgba(10,35,52,.06);
     }
     .toolbar {
       max-width: 1540px;
@@ -135,22 +145,22 @@
     }
     .search { max-width: 320px; }
 
-    main { max-width: 1540px; margin: 0 auto; padding: 22px; }
+    main { max-width: 1500px; margin: 0 auto; padding: 18px 22px 26px; }
     .status-row {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
     .metric {
-      background: var(--panel);
+      background: linear-gradient(180deg, #fff, var(--soft));
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: 0 6px 18px rgba(16,36,51,.04);
-      padding: 15px;
+      box-shadow: var(--shadow-sm);
+      padding: 11px 14px;
     }
     .metric span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
-    .metric b { display: block; margin-top: 7px; font-size: 24px; }
+    .metric b { display: block; margin-top: 4px; color: var(--navy); font-size: 22px; line-height: 1; }
 
     .setup {
       display: none;
@@ -165,27 +175,28 @@
 
     .board {
       display: grid;
-      grid-template-columns: repeat(3, minmax(300px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, minmax(320px, 1fr));
+      gap: 12px;
       align-items: start;
       overflow-x: auto;
       padding-bottom: 10px;
     }
     .column {
-      min-height: 420px;
-      background: #edf2f6;
+      min-height: 620px;
+      background: rgba(255,255,255,.66);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 10px;
+      box-shadow: var(--shadow-sm);
     }
     .col-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      padding: 4px 4px 10px;
+      padding: 3px 4px 9px;
     }
-    .col-head h2 { margin: 0; font-size: 14px; }
+    .col-head h2 { margin: 0; color: var(--navy); font-size: 14px; }
     .col-head p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
     .count {
       min-width: 28px;
@@ -198,125 +209,146 @@
       font-size: 12px;
       font-weight: 800;
     }
-    .stack { display: grid; gap: 10px; min-height: 56px; }
-    .stack.drag-over {
-      outline: 2px solid rgba(24,128,189,.36);
-      outline-offset: 4px;
-      border-radius: var(--radius);
-    }
+    .stack { display: grid; gap: 8px; min-height: 56px; }
 
     .card {
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: 0 6px 18px rgba(16,36,51,.06);
-      padding: 13px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 20px rgba(16,36,51,.055);
+      padding: 11px;
+      height: 224px;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 8px;
+      overflow: hidden;
     }
-    .card[draggable="true"] { cursor: grab; }
-    .card.dragging { opacity: .58; }
-    .card-top { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
-    .card h3 { margin: 0; font-size: 15px; line-height: 1.25; }
+    .card-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; }
+    .card h3 { margin: 0; color: var(--navy); font-size: 15px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .pill {
       border-radius: 999px;
-      padding: 3px 8px;
-      font-size: 10px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      background: var(--soft);
+      color: var(--blue-deep);
+      white-space: nowrap;
+    }
+    .source-line {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11.5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      color: var(--muted);
+      font-size: 10.5px;
+    }
+    .meta-item {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdfe;
+      padding: 7px 8px;
+    }
+    .meta-item span {
+      display: block;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: .04em;
-      background: rgba(31,157,99,.12);
-      color: var(--green);
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .meta { margin: 10px 0 0; display: grid; gap: 6px; color: var(--muted); font-size: 12px; }
-    .meta-row { display: flex; justify-content: space-between; gap: 10px; }
-    .meta-row b { color: var(--ink); font-weight: 800; text-align: right; }
+    .meta-item b {
+      display: block;
+      margin-top: 3px;
+      color: var(--navy);
+      font-size: 12px;
+      line-height: 1.1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .refline {
-      margin-top: 10px;
-      padding: 9px;
-      border-radius: var(--radius);
-      background: #f5f8fa;
+      min-height: 44px;
+      padding: 8px;
+      border-radius: 8px;
+      background: var(--soft);
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.45;
+      line-height: 1.3;
+      overflow: hidden;
     }
     .refline strong { color: var(--ink); }
     .referral-pair {
-      margin-top: 10px;
-      display: grid;
-      gap: 8px;
-      padding: 10px;
+      min-height: 44px;
+      padding: 8px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: 8px;
       background: #f8fbfd;
-    }
-    .pair-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      gap: 8px;
-      align-items: stretch;
+      gap: 4px;
+      overflow: hidden;
     }
-    .pair-person {
+    .referral-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       min-width: 0;
-      padding: 9px;
-      border-radius: 6px;
-      background: #fff;
-      border: 1px solid var(--line);
+      font-size: 12px;
+      line-height: 1.2;
     }
-    .pair-person span {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-      margin-bottom: 5px;
+    .referral-line b {
+      min-width: 0;
+      color: var(--navy);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    .pair-person b {
-      display: block;
-      font-size: 13px;
-      line-height: 1.25;
-      overflow-wrap: anywhere;
-    }
-    .pair-person small {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.35;
-    }
-    .pair-arrow {
-      align-self: center;
+    .referral-line .arrow {
       color: var(--blue);
       font-weight: 900;
-      line-height: 1;
+      flex: none;
     }
-    .pair-summary {
+    .referral-note {
+      min-width: 0;
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
+      font-size: 11px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    .pair-links {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+    .mini-links {
+      display: flex;
+      gap: 10px;
+      min-width: 0;
+      font-size: 11px;
+      font-weight: 800;
     }
-    .pair-links .btn {
-      min-height: 32px;
+    .mini-links a {
+      color: var(--blue-deep);
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mini-links a:hover { text-decoration: underline; }
+    .card-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .card-actions .btn {
+      min-height: 30px;
       padding: 0 8px;
       font-size: 11px;
+      box-shadow: none;
+      white-space: nowrap;
     }
-    .stage-select {
-      width: 100%;
-      min-height: 34px;
-      margin-top: 10px;
-      padding: 0 10px;
-      font-size: 12px;
-      font-weight: 750;
-      background: #fff;
-    }
-    .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-    .card-actions .btn { min-height: 34px; padding: 0 9px; font-size: 12px; }
     .card-actions .wide { grid-column: 1 / -1; }
+    .card-actions .span-2 { grid-column: span 2; }
 
     .sr-only {
       position: absolute;
@@ -380,9 +412,6 @@
       main, .toolbar { padding-left: 14px; padding-right: 14px; }
       .status-row { grid-template-columns: 1fr; }
       .board { grid-template-columns: repeat(3, 82vw); }
-      .card-actions { grid-template-columns: 1fr; }
-      .pair-row, .pair-links { grid-template-columns: 1fr; }
-      .pair-arrow { text-align: center; transform: rotate(90deg); }
     }
   </style>
 </head>
@@ -468,7 +497,6 @@
       selectedOpportunityId: '',
       referrerQuery: '',
       query: '',
-      draggingId: '',
     };
 
     const money = (value) => new Intl.NumberFormat('en-AU', {
@@ -598,31 +626,16 @@
       box.style.display = 'block';
     }
 
-    function stageOptions(current) {
-      const selected = current || 'won';
-      return state.columns.map((column) => `
-        <option value="${esc(column.key)}" ${column.key === selected ? 'selected' : ''}>${esc(column.label)}</option>
-      `).join('');
-    }
-
-    function ghlButton(url, label) {
+    function ghlButton(url, label, className = 'btn light') {
       return url
-        ? `<a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
+        ? `<a class="${esc(className)}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
         : '';
     }
 
-    function referralPerson(label, person, fallbackName) {
-      const name = person && (person.name || person.contactName) || fallbackName || 'Unknown';
-      const source = person && person.source || 'Unknown source';
-      const value = person && Number.isFinite(Number(person.value)) ? money(person.value) : '';
-      const detail = [source, value].filter(Boolean).join(' | ');
-      return `
-        <div class="pair-person">
-          <span>${esc(label)}</span>
-          <b>${esc(name)}</b>
-          <small>${esc(detail)}</small>
-        </div>
-      `;
+    function ghlTextLink(url, label) {
+      return url
+        ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
+        : '';
     }
 
     function referralPairHtml(opp) {
@@ -631,27 +644,18 @@
         contactId: opp.referredByContactId,
         ghlContactUrl: opp.referredByGhlContactUrl,
       };
-      const customer = {
-        name: opp.name,
-        source: opp.source,
-        value: opp.value,
-        contactId: opp.contactId,
-        ghlContactUrl: opp.ghlContactUrl,
-      };
       const referrerName = referrer.name || opp.referredByName || 'the referrer';
       return `
         <div class="referral-pair">
-          <div class="pair-row">
-            ${referralPerson('Referrer', referrer, referrerName)}
-            <div class="pair-arrow">-&gt;</div>
-            ${referralPerson('Referred customer', customer, opp.name)}
+          <div class="referral-line">
+            <b>${esc(referrerName)}</b>
+            <span class="arrow">-&gt;</span>
+            <b>${esc(opp.name)}</b>
           </div>
-          <div class="pair-summary">
-            <strong>${esc(referrerName)}</strong> referred <strong>${esc(opp.name)}</strong>. This won job is worth <strong>${money(opp.value)}</strong>.
-          </div>
-          <div class="pair-links">
-            ${ghlButton(referrer.ghlContactUrl, 'View referrer in GHL')}
-            ${ghlButton(opp.ghlContactUrl, 'View customer in GHL')}
+          <div class="referral-note">${esc(referrerName)} referred ${esc(opp.name)} | ${money(opp.value)} won</div>
+          <div class="mini-links">
+            ${ghlTextLink(referrer.ghlContactUrl, 'View referrer in GHL')}
+            ${ghlTextLink(opp.ghlContactUrl, 'View customer in GHL')}
           </div>
         </div>
       `;
@@ -662,17 +666,20 @@
       const madeCount = opp.referralsMade ? opp.referralsMade.length : 0;
       const source = opp.source || 'Unknown';
       const stage = opp.stageName || 'Closed Won';
+      const viewCustomerButton = ghlButton(opp.ghlContactUrl, 'View in GHL');
       return `
-        <article class="card" data-id="${esc(opp.id)}" draggable="true">
+        <article class="card" data-id="${esc(opp.id)}">
           <div class="card-top">
-            <h3>${esc(opp.name)}</h3>
-            <span class="pill">Won</span>
+            <div>
+              <h3>${esc(opp.name)}</h3>
+              <div class="source-line">${esc(source)}</div>
+            </div>
+            <span class="pill">${money(opp.value)}</span>
           </div>
           <div class="meta">
-            <div class="meta-row"><span>Value</span><b>${money(opp.value)}</b></div>
-            <div class="meta-row"><span>Source</span><b>${esc(source)}</b></div>
-            <div class="meta-row"><span>Stage</span><b>${esc(stage)}</b></div>
-            <div class="meta-row"><span>Won age</span><b>${esc(daysSince(opp.wonAt) || 'Unknown')}</b></div>
+            <div class="meta-item"><span>Status</span><b>Won</b></div>
+            <div class="meta-item"><span>Stage</span><b>${esc(stage)}</b></div>
+            <div class="meta-item"><span>Age</span><b>${esc(daysSince(opp.wonAt) || 'Unknown')}</b></div>
           </div>
           ${linked ? referralPairHtml(opp) : `
             <div class="refline">
@@ -680,14 +687,11 @@
               ${madeCount ? `<br><strong>${madeCount}</strong> referral${madeCount === 1 ? '' : 's'} attributed to this customer.` : ''}
             </div>
           `}
-          <label class="sr-only" for="stage-${esc(opp.id)}">Tracker stage</label>
-          <select class="stage-select" id="stage-${esc(opp.id)}" data-action="move" data-id="${esc(opp.id)}">
-            ${stageOptions(opp.bucket)}
-          </select>
           <div class="card-actions">
-            <button class="btn" type="button" data-action="link" data-id="${esc(opp.id)}">${linked ? 'Change referrer' : 'Link referrer'}</button>
+            <button class="btn light" type="button" data-action="link" data-id="${esc(opp.id)}">${linked ? 'Change' : 'Link'}</button>
             ${linked ? `<button class="btn orange" type="button" data-action="unlink" data-id="${esc(opp.id)}">Unlink</button>` : ''}
-            <button class="btn green ${linked ? 'wide' : ''}" type="button" data-action="ask" data-id="${esc(opp.id)}">Send review email</button>
+            ${linked ? '' : viewCustomerButton}
+            <button class="btn green" type="button" data-action="ask" data-id="${esc(opp.id)}">Review</button>
           </div>
         </article>
       `;
@@ -708,7 +712,7 @@
               </div>
               <span class="count">${cards.length}</span>
             </div>
-            <div class="stack" data-stage="${esc(column.key)}">
+            <div class="stack">
               ${cards.length ? cards.map(cardHtml).join('') : '<div class="empty">No cards</div>'}
             </div>
           </section>
@@ -851,22 +855,6 @@
       }
     }
 
-    async function moveStage(id, stage) {
-      const opportunity = state.opportunities.find((opp) => opp.id === id);
-      if (!opportunity || opportunity.bucket === stage) return;
-      try {
-        await api('/automation', {
-          method: 'POST',
-          body: JSON.stringify({ opportunityId: id, action: 'move_stage', stage }),
-        });
-        showToast(`${opportunity.name} moved.`);
-        await loadTracker();
-      } catch (err) {
-        showToast(err.message, 'error');
-        await loadTracker();
-      }
-    }
-
     document.getElementById('login-form').addEventListener('submit', login);
     document.getElementById('refresh-btn').addEventListener('click', loadTracker);
     document.getElementById('logout-btn').addEventListener('click', lock);
@@ -886,44 +874,6 @@
       if (button.dataset.action === 'link') openLinkDialog(button.dataset.id);
       if (button.dataset.action === 'unlink') unlinkReferral(button.dataset.id);
       if (button.dataset.action === 'ask') sendAsk(button.dataset.id);
-    });
-    document.getElementById('board').addEventListener('change', (event) => {
-      const select = event.target.closest('select[data-action="move"]');
-      if (!select) return;
-      moveStage(select.dataset.id, select.value);
-    });
-    document.getElementById('board').addEventListener('dragstart', (event) => {
-      const card = event.target.closest('.card[data-id]');
-      if (!card) return;
-      state.draggingId = card.dataset.id;
-      card.classList.add('dragging');
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.setData('text/plain', card.dataset.id);
-    });
-    document.getElementById('board').addEventListener('dragend', (event) => {
-      const card = event.target.closest('.card[data-id]');
-      if (card) card.classList.remove('dragging');
-      state.draggingId = '';
-      document.querySelectorAll('.stack.drag-over').forEach((stack) => stack.classList.remove('drag-over'));
-    });
-    document.getElementById('board').addEventListener('dragover', (event) => {
-      const stack = event.target.closest('.stack[data-stage]');
-      if (!stack || !state.draggingId) return;
-      event.preventDefault();
-      stack.classList.add('drag-over');
-      event.dataTransfer.dropEffect = 'move';
-    });
-    document.getElementById('board').addEventListener('dragleave', (event) => {
-      const stack = event.target.closest('.stack[data-stage]');
-      if (stack && !stack.contains(event.relatedTarget)) stack.classList.remove('drag-over');
-    });
-    document.getElementById('board').addEventListener('drop', (event) => {
-      const stack = event.target.closest('.stack[data-stage]');
-      if (!stack) return;
-      event.preventDefault();
-      stack.classList.remove('drag-over');
-      const id = event.dataTransfer.getData('text/plain') || state.draggingId;
-      if (id) moveStage(id, stack.dataset.stage);
     });
 
     if (state.token) enterApp();

@@ -1,8 +1,6 @@
 const {
-  TRACKER_STAGES,
   getGhlConfig,
   getReferralLinkParticipants,
-  moveOpportunityTrackerStage,
   readJsonBody,
   requireTrackerAuth,
   sendJson,
@@ -58,23 +56,7 @@ module.exports = async function handler(req, res) {
     if (!opportunity) return sendJson(res, 404, { error: 'Won opportunity was not found.' });
 
     if (action === 'move_stage') {
-      const stage = String(body.stage || '').trim().toLowerCase();
-      if (!TRACKER_STAGES.includes(stage)) {
-        return sendJson(res, 400, { error: 'Invalid tracker stage.' });
-      }
-
-      const result = await moveOpportunityTrackerStage(
-        opportunity,
-        stage,
-        `Moved to ${stage} in tracker on ${new Date().toISOString()}`,
-      );
-
-      return sendJson(res, 200, {
-        ok: true,
-        action,
-        stage,
-        result,
-      });
+      return sendJson(res, 400, { error: 'Stage changes are disabled in the tracker.' });
     }
 
     if (!['send_review_email', 'post_install_review_referral'].includes(action)) {
