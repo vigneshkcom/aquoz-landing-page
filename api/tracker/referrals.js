@@ -1,5 +1,5 @@
 const {
-  getWonOpportunityTrackerData,
+  getReferralLinkParticipants,
   linkReferral,
   readJsonBody,
   requireTrackerAuth,
@@ -21,8 +21,7 @@ module.exports = async function handler(req, res) {
 
     if (!opportunityId) return sendJson(res, 400, { error: 'opportunityId is required.' });
 
-    const trackerData = await getWonOpportunityTrackerData();
-    const target = trackerData.opportunities.find((opportunity) => opportunity.id === opportunityId);
+    const { target, referrer } = await getReferralLinkParticipants(opportunityId, referrerOpportunityId);
     if (!target) return sendJson(res, 404, { error: 'Target won opportunity was not found.' });
 
     if (req.method === 'DELETE') {
@@ -47,7 +46,6 @@ module.exports = async function handler(req, res) {
       return sendJson(res, 400, { error: 'An opportunity cannot refer itself.' });
     }
 
-    const referrer = trackerData.opportunities.find((opportunity) => opportunity.id === referrerOpportunityId);
     if (!referrer) return sendJson(res, 404, { error: 'Referrer won opportunity was not found.' });
 
     const result = await linkReferral(target, referrer, note);
