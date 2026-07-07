@@ -1,9 +1,9 @@
 const {
   getWonOpportunityTrackerData,
+  linkReferral,
   readJsonBody,
   requireTrackerAuth,
   sendJson,
-  updateOpportunityFields,
 } = require('../../lib/tracker-ghl');
 
 module.exports = async function handler(req, res) {
@@ -32,13 +32,7 @@ module.exports = async function handler(req, res) {
     if (!target) return sendJson(res, 404, { error: 'Target won opportunity was not found.' });
     if (!referrer) return sendJson(res, 404, { error: 'Referrer won opportunity was not found.' });
 
-    const result = await updateOpportunityFields(opportunityId, {
-      referrerOpportunityId: referrer.id,
-      referrerName: referrer.name,
-      referrerContactId: referrer.contactId,
-      referralLinkedAt: new Date().toISOString(),
-      referralNote: note,
-    });
+    const result = await linkReferral(target, referrer, note);
 
     return sendJson(res, 200, {
       ok: true,
@@ -47,6 +41,9 @@ module.exports = async function handler(req, res) {
         opportunityName: target.name,
         referrerOpportunityId: referrer.id,
         referrerName: referrer.name,
+        trackingOpportunityId: result.trackingOpportunity.id,
+        trackingOpportunityName: result.trackingOpportunity.name,
+        trackingOpportunityReused: !!result.trackingOpportunity.reused,
       },
       result,
     });
