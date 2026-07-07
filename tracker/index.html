@@ -3,468 +3,307 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aquoz Referral Tracker</title>
+  <title>Aquoz · Referral &amp; Review Tracker</title>
+  <meta name="theme-color" content="#0b2438">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --navy: #0b2438;
-      --navy-2: #0e2c44;
-      --bg: #f5fbfd;
-      --panel: #ffffff;
-      --ink: #102433;
-      --muted: #627789;
-      --line: #dce9ef;
-      --line-strong: #c5d8e2;
-      --blue: #1880bd;
-      --blue-deep: #115e8b;
-      --aqua: #46c2d6;
-      --soft: #eef9fc;
-      --green: #1f9d63;
-      --orange: #f07a3a;
-      --red: #c7493d;
-      --shadow: 0 18px 48px rgba(10,35,52,.12);
-      --shadow-sm: 0 8px 22px rgba(12,40,60,.08);
-      --radius: 14px;
-      --radius-sm: 10px;
+    :root{
+      /* Matched to waterfilter.aquoz.com.au */
+      --navy:#0b2438; --navy-2:#0e2c44; --ink:#102433;
+      --blue:#1880bd; --blue-deep:#115e8b; --blue-soft:#2a93cf;
+      --aqua:#46c2d6; --aqua-soft:#8fe3ef;
+      --muted:#5b6f7d; --faint:#8ba2b1;
+      --line:#e3edf2; --line-strong:#cddbe4;
+      --soft:#eef8fb; --panel:#ffffff;
+      --gold:#f4b740; --gold-deep:#c98a12; --gold-soft:#fdf3dc;
+      --green:#1f9d63; --green-soft:#e5f6ee;
+      --orange:#f07a3a; --orange-soft:#fdeee4;
+      --red:#c7493d;
+      --radius:16px; --radius-sm:11px; --pill:999px;
+      --shadow-sm:0 6px 20px rgba(12,40,60,.08);
+      --shadow:0 22px 54px rgba(10,35,52,.14);
+      --shadow-lg:0 40px 90px rgba(8,32,52,.30);
+      --ease:cubic-bezier(.22,1,.36,1);
     }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;min-height:100vh;color:var(--ink);
+      font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+      font-size:14px;-webkit-font-smoothing:antialiased;
+      background:linear-gradient(180deg,#f6fcfd 0%,#eef7fa 46%,#f7fbfd 100%);
+    }
+    button,input,select,textarea{font:inherit;}
+    button{cursor:pointer;}
+    a{color:inherit;}
 
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
+    /* ── Buttons ── */
+    .btn{
+      min-height:40px;border:1px solid transparent;border-radius:var(--pill);
+      background:linear-gradient(180deg,var(--blue-soft),var(--blue) 60%,var(--blue-deep));
+      color:#fff;font-weight:800;padding:0 16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:0 12px 24px rgba(24,128,189,.24),inset 0 1px 0 rgba(255,255,255,.25);
+      transition:transform .18s var(--ease),box-shadow .18s var(--ease),filter .18s;text-decoration:none;white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 16px 30px rgba(24,128,189,.32),inset 0 1px 0 rgba(255,255,255,.25);}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+    .btn.green{background:linear-gradient(180deg,#27b873,var(--green));box-shadow:0 12px 22px rgba(31,157,99,.22);}
+    .btn.gold{background:linear-gradient(180deg,#f7c766,var(--gold) 60%,#e2a41f);color:#3f2d05;box-shadow:0 12px 22px rgba(244,183,64,.28);}
+    .btn.orange{background:linear-gradient(180deg,#f5975c,#df7434);box-shadow:0 12px 22px rgba(240,122,58,.20);}
+    .btn.light{background:#fff;color:var(--navy);border-color:var(--line-strong);box-shadow:none;}
+    .btn.light:hover{border-color:var(--blue);color:var(--blue-deep);}
+    .btn.ghost{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.28);box-shadow:none;}
+    .btn.ghost:hover{background:rgba(255,255,255,.16);}
+    .btn.icon{width:40px;padding:0;}
+    .btn.sm{min-height:32px;padding:0 12px;font-size:12px;box-shadow:none;}
+
+    input,select,textarea{
+      width:100%;border:1.5px solid var(--line-strong);border-radius:var(--radius-sm);
+      min-height:42px;padding:10px 13px;color:var(--ink);background:#fff;outline:none;transition:border-color .18s,box-shadow .18s;
+    }
+    textarea{min-height:88px;resize:vertical;}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(24,128,189,.13);}
+
+    /* ── Gate ── */
+    .gate{
+      min-height:100vh;display:grid;place-items:center;padding:24px;
       background:
-        linear-gradient(180deg, #f6fcfd 0%, #eef7fa 42%, #f7fbfd 100%);
-      color: var(--ink);
-      font-family: "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-      font-size: 14px;
-      -webkit-font-smoothing: antialiased;
+        radial-gradient(120% 90% at 82% 8%,rgba(70,194,214,.28),transparent 55%),
+        radial-gradient(90% 80% at 12% 100%,rgba(24,128,189,.25),transparent 60%),
+        linear-gradient(150deg,var(--navy) 0%,var(--navy-2) 100%);
     }
+    .gate-box{width:min(430px,100%);background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:34px 32px;}
+    .brand{display:flex;align-items:center;gap:12px;}
+    .brand img{height:34px;width:auto;}
+    .brand .tag{font-weight:800;color:var(--blue-deep);font-size:13px;letter-spacing:.01em;}
+    .gate-box h1{margin:20px 0 6px;font-size:24px;line-height:1.12;letter-spacing:-.01em;}
+    .gate-box h1 u{text-decoration:none;border-bottom:3px solid var(--aqua);padding-bottom:1px;}
+    .gate-box p{margin:0 0 24px;color:var(--muted);line-height:1.55;}
+    .field{display:grid;gap:7px;margin-bottom:16px;}
+    .field label{color:var(--muted);font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+    .error-text{min-height:18px;color:var(--red);font-size:12.5px;margin-top:8px;font-weight:600;}
 
-    button, input, select, textarea { font: inherit; }
-    button { cursor: pointer; }
+    /* ── App shell ── */
+    .app{display:none;min-height:100vh;}
+    header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--line);box-shadow:0 8px 30px rgba(10,35,52,.05);}
+    .toolbar{max-width:1500px;margin:0 auto;padding:14px 22px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;}
+    .toolbar .brand img{height:30px;}
+    .toolbar .title{line-height:1.15;}
+    .toolbar .title h1{margin:0;font-size:16px;letter-spacing:-.01em;}
+    .toolbar .title span{font-size:11.5px;color:var(--faint);font-weight:600;}
+    .search-wrap{position:relative;max-width:340px;justify-self:end;width:100%;}
+    .search-wrap input{border-radius:var(--pill);padding-left:38px;min-height:40px;}
+    .search-wrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--faint);}
+    .tools{display:flex;align-items:center;gap:10px;}
 
-    .gate {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background:
-        radial-gradient(120% 90% at 85% 10%, rgba(70,194,214,.20), transparent 55%),
-        linear-gradient(108deg, rgba(7,26,42,.95), rgba(8,30,48,.84));
-    }
+    main{max-width:1500px;margin:0 auto;padding:22px 22px 32px;}
 
-    .gate-box {
-      width: min(420px, 100%);
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 26px;
-    }
+    /* Intro */
+    .intro{margin-bottom:18px;}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);}
+    .eyebrow::before{content:"";width:20px;height:2px;background:var(--aqua);border-radius:2px;}
+    .intro h2{margin:8px 0 5px;font-size:clamp(20px,2.6vw,27px);line-height:1.1;letter-spacing:-.02em;}
+    .intro h2 u{text-decoration:none;color:var(--blue);border-bottom:3px solid var(--aqua);padding-bottom:1px;}
+    .intro p{margin:0;color:var(--muted);max-width:680px;line-height:1.55;}
+    .intro p b{color:var(--ink);}
 
-    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-    .brand img { width: 116px; }
-    .brand span { font-weight: 800; color: var(--blue-deep); }
+    /* Metrics */
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0;}
+    .metric{position:relative;background:linear-gradient(180deg,#fff,var(--soft));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:15px 16px 15px 18px;overflow:hidden;}
+    .metric::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;}
+    .metric.m1::before{background:var(--navy);}.metric.m2::before{background:var(--blue);}
+    .metric.m3::before{background:var(--green);}.metric.m4::before{background:var(--gold);}
+    .metric span{display:block;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+    .metric b{display:block;margin-top:6px;color:var(--navy);font-size:26px;line-height:1;letter-spacing:-.02em;}
+    .metric small{display:block;margin-top:5px;color:var(--faint);font-size:11.5px;font-weight:600;}
 
-    .gate-box h1, .toolbar h1 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.1;
-      letter-spacing: 0;
-    }
+    /* Setup banner */
+    .setup{display:none;margin-bottom:16px;padding:14px 16px;border:1px solid #f3ce7d;border-radius:var(--radius);background:var(--gold-soft);color:#7a5410;line-height:1.55;font-weight:600;}
+    .setup strong{color:#5f4009;}
 
-    .gate-box p { margin: 8px 0 22px; color: var(--muted); line-height: 1.55; }
-    .field { display: grid; gap: 7px; margin-bottom: 14px; }
-    .field label { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
-    input, select, textarea {
-      width: 100%;
-      border: 1.5px solid #d3e1e9;
-      border-radius: var(--radius-sm);
-      min-height: 42px;
-      padding: 10px 12px;
-      color: var(--ink);
-      background: #fff;
-      outline: none;
-    }
-    textarea { min-height: 86px; resize: vertical; }
-    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(24,128,189,.13); }
+    /* Board */
+    .board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start;}
+    .column{background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow-sm);min-height:200px;}
+    .col-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:4px 4px 12px;}
+    .col-head .lft{display:flex;align-items:flex-start;gap:9px;}
+    .col-dot{width:9px;height:9px;border-radius:50%;margin-top:5px;flex:none;}
+    .col-head h3{margin:0;color:var(--navy);font-size:14px;letter-spacing:-.01em;}
+    .col-head p{margin:2px 0 0;color:var(--muted);font-size:11px;line-height:1.3;}
+    .count{min-width:28px;height:24px;padding:0 8px;border-radius:var(--pill);display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:800;color:var(--navy);}
+    .stack{display:grid;gap:10px;}
 
-    .btn {
-      min-height: 40px;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #2a93cf, var(--blue) 60%, var(--blue-deep));
-      color: #fff;
-      font-weight: 800;
-      padding: 0 13px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 12px 24px rgba(24,128,189,.24), inset 0 1px 0 rgba(255,255,255,.25);
-      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-      text-decoration: none;
-    }
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 16px 30px rgba(24,128,189,.30), inset 0 1px 0 rgba(255,255,255,.25); }
-    .btn.primary { background: linear-gradient(180deg, #2a93cf, var(--blue) 60%, var(--blue-deep)); color: #fff; }
-    .btn.green { background: linear-gradient(180deg, #27b873, var(--green)); color: #fff; box-shadow: 0 12px 22px rgba(31,157,99,.22); }
-    .btn.orange { background: linear-gradient(180deg, #f08b4f, #df7434); color: #fff; box-shadow: 0 12px 22px rgba(240,122,58,.20); }
-    .btn.light { background: #fff; color: var(--navy); border-color: var(--line-strong); box-shadow: none; }
-    .btn.icon { width: 40px; padding: 0; }
-    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    /* Card */
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);box-shadow:0 8px 20px rgba(16,36,51,.06);padding:13px;display:grid;gap:9px;transition:box-shadow .18s,transform .18s;}
+    .card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+    .card.due{border-color:#f1cf86;box-shadow:0 8px 20px rgba(244,183,64,.14);}
+    .card-top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px;}
+    .card h4{margin:0;color:var(--navy);font-size:15.5px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.01em;}
+    .source-line{margin-top:3px;color:var(--muted);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .val-pill{border-radius:var(--pill);padding:5px 11px;font-size:12.5px;font-weight:800;background:var(--gold-soft);color:var(--gold-deep);white-space:nowrap;}
+    .badges{display:flex;flex-wrap:wrap;gap:6px;}
+    .badge{display:inline-flex;align-items:center;gap:5px;border-radius:var(--pill);padding:3px 9px;font-size:10.5px;font-weight:800;letter-spacing:.01em;}
+    .badge.won{background:var(--soft);color:var(--blue-deep);}
+    .badge.due{background:var(--gold-soft);color:var(--gold-deep);}
+    .badge.age{background:#eef2f5;color:var(--muted);}
+    .badge.done{background:var(--green-soft);color:var(--green);}
+    .badge.sent{background:var(--green-soft);color:var(--green);}
 
-    .app { display: none; min-height: 100vh; }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(255,255,255,.88);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line);
-      box-shadow: 0 8px 30px rgba(10,35,52,.06);
-    }
-    .toolbar {
-      max-width: 1540px;
-      margin: 0 auto;
-      padding: 16px 22px;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 16px;
-    }
-    .toolbar .brand { margin: 0; }
-    .toolbar .brand img { width: 98px; }
-    .tools {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .search { max-width: 320px; }
+    .refbox{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#f8fbfd;font-size:12px;color:var(--muted);line-height:1.35;}
+    .refbox.empty-ref{border-style:dashed;}
+    .refbox strong{color:var(--ink);}
+    .referral-pair{display:grid;gap:5px;}
+    .referral-line{display:flex;align-items:center;gap:7px;min-width:0;font-size:12.5px;}
+    .referral-line b{min-width:0;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .referral-line .arrow{color:var(--blue);font-weight:900;flex:none;}
+    .mini-links{display:flex;gap:12px;font-size:10.5px;font-weight:800;}
+    .mini-links a{color:var(--blue-deep);text-decoration:none;}
+    .mini-links a:hover{text-decoration:underline;}
 
-    main { max-width: 1500px; margin: 0 auto; padding: 18px 22px 26px; }
-    .status-row {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .metric {
-      background: linear-gradient(180deg, #fff, var(--soft));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      padding: 11px 14px;
-    }
-    .metric span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
-    .metric b { display: block; margin-top: 4px; color: var(--navy); font-size: 22px; line-height: 1; }
+    .card-actions{display:flex;flex-wrap:wrap;gap:7px;padding-top:2px;}
+    .card-actions .btn{flex:1 1 auto;}
 
-    .setup {
-      display: none;
-      margin-bottom: 18px;
-      padding: 13px 14px;
-      border: 1px solid #f5c36e;
-      border-radius: var(--radius);
-      background: #fff8eb;
-      color: #815016;
-      line-height: 1.55;
-    }
+    .empty{border:1px dashed var(--line-strong);border-radius:var(--radius-sm);padding:22px 14px;color:var(--faint);text-align:center;background:rgba(255,255,255,.5);font-weight:600;}
 
-    .board {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(320px, 1fr));
-      gap: 12px;
-      align-items: start;
-      overflow-x: auto;
-      padding-bottom: 10px;
-    }
-    .column {
-      min-height: 620px;
-      background: rgba(255,255,255,.66);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 10px;
-      box-shadow: var(--shadow-sm);
-    }
-    .col-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding: 3px 4px 9px;
-    }
-    .col-head h2 { margin: 0; color: var(--navy); font-size: 14px; }
-    .col-head p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
-    .count {
-      min-width: 28px;
-      height: 24px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: #fff;
-      border: 1px solid var(--line);
-      font-size: 12px;
-      font-weight: 800;
-    }
-    .stack { display: grid; gap: 8px; min-height: 56px; }
+    /* Loading */
+    .loading{display:grid;place-items:center;gap:14px;padding:80px 16px;}
+    .spinner{width:42px;height:42px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--blue);animation:spin .8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .loading-txt{font-weight:800;color:var(--navy);font-size:16px;}
 
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-sm);
-      box-shadow: 0 8px 20px rgba(16,36,51,.055);
-      padding: 10px;
-      height: 188px;
-      display: grid;
-      grid-template-rows: auto auto 1fr auto;
-      gap: 6px;
-      overflow: hidden;
-    }
-    .card-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; }
-    .card h3 { margin: 0; color: var(--navy); font-size: 15px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .pill {
-      border-radius: 999px;
-      padding: 4px 8px;
-      font-size: 11px;
-      font-weight: 800;
-      background: var(--soft);
-      color: var(--blue-deep);
-      white-space: nowrap;
-    }
-    .source-line {
-      margin-top: 2px;
-      color: var(--muted);
-      font-size: 11px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .meta {
-      display: grid;
-      gap: 3px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-    .meta-row {
-      min-width: 0;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      line-height: 1.15;
-    }
-    .meta-row b {
-      color: var(--ink);
-      font-size: 11px;
-      font-weight: 800;
-      text-align: right;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .refline {
-      min-height: 34px;
-      padding: 7px 8px;
-      border-radius: 8px;
-      background: var(--soft);
-      color: var(--muted);
-      font-size: 11.5px;
-      line-height: 1.25;
-      overflow: hidden;
-    }
-    .refline strong { color: var(--ink); }
-    .referral-pair {
-      min-height: 42px;
-      padding: 7px 8px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #f8fbfd;
-      display: grid;
-      gap: 4px;
-      overflow: hidden;
-    }
-    .referral-line {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      min-width: 0;
-      font-size: 11px;
-      line-height: 1.2;
-    }
-    .referral-line b {
-      min-width: 0;
-      color: var(--navy);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .referral-line .arrow {
-      color: var(--blue);
-      font-weight: 900;
-      flex: none;
-    }
-    .mini-links {
-      display: flex;
-      gap: 8px;
-      min-width: 0;
-      font-size: 10px;
-      font-weight: 800;
-      line-height: 1.1;
-    }
-    .mini-links a {
-      color: var(--blue-deep);
-      text-decoration: none;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .mini-links a:hover { text-decoration: underline; }
-    .card-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-    .card-actions .btn {
-      min-height: 30px;
-      padding: 0 8px;
-      font-size: 11px;
-      box-shadow: none;
-      white-space: nowrap;
-    }
-    .card-actions .wide { grid-column: 1 / -1; }
-    .card-actions .span-2 { grid-column: span 2; }
+    /* Toast */
+    .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:60;max-width:460px;display:none;padding:13px 18px;border-radius:var(--pill);background:var(--navy);color:#fff;box-shadow:var(--shadow-lg);line-height:1.4;font-weight:600;font-size:13px;}
+    .toast.error{background:#8f2f28;}
 
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
-    }
+    /* Dialog */
+    dialog{width:min(560px,calc(100% - 28px));border:none;border-radius:var(--radius);padding:0;box-shadow:var(--shadow-lg);color:var(--ink);}
+    dialog::backdrop{background:rgba(11,36,56,.5);backdrop-filter:blur(4px);}
+    .modal-head{padding:20px 22px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+    .modal-head h3{margin:0;font-size:19px;letter-spacing:-.01em;}
+    .modal-head .target-name{color:var(--muted);margin-top:4px;font-size:13px;}
+    .modal-body{padding:20px 22px;display:grid;gap:14px;}
+    .modal-foot{padding:16px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;background:#fafcfe;}
+    .infoline{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;line-height:1.5;color:var(--ink);}
+    .infoline b{color:var(--blue-deep);}
+    .warn{background:var(--gold-soft);border:1px solid #f3ce7d;color:#7a5410;border-radius:var(--radius-sm);padding:11px 13px;font-size:12.5px;line-height:1.5;font-weight:600;}
 
-    .empty {
-      border: 1px dashed var(--line-strong);
-      border-radius: var(--radius);
-      padding: 18px;
-      color: var(--muted);
-      text-align: center;
-      background: rgba(255,255,255,.55);
+    @media(max-width:1040px){
+      .toolbar{grid-template-columns:1fr auto;}
+      .search-wrap{grid-column:1 / -1;max-width:none;justify-self:stretch;order:3;}
+      .metrics{grid-template-columns:repeat(2,1fr);}
+      .board{grid-template-columns:1fr;}
     }
-
-    .toast {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 40;
-      max-width: 420px;
-      display: none;
-      padding: 12px 14px;
-      border-radius: var(--radius);
-      background: #102433;
-      color: #fff;
-      box-shadow: var(--shadow);
-      line-height: 1.45;
-    }
-    .toast.error { background: #8f2f28; }
-
-    dialog {
-      width: min(560px, calc(100% - 28px));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 0;
-      box-shadow: var(--shadow);
-    }
-    dialog::backdrop { background: rgba(16,36,51,.42); backdrop-filter: blur(3px); }
-    .modal-head, .modal-body, .modal-foot { padding: 16px; }
-    .modal-head { border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-    .modal-head h2 { margin: 0; font-size: 18px; }
-    .modal-body { display: grid; gap: 14px; }
-    .modal-foot { border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; }
-    .target-name { color: var(--muted); margin-top: 4px; }
-    .error-text { min-height: 18px; color: var(--red); font-size: 12px; margin-top: 10px; }
-
-    @media (max-width: 1040px) {
-      .toolbar { grid-template-columns: 1fr; }
-      .tools { justify-content: start; }
-      .status-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 640px) {
-      main, .toolbar { padding-left: 14px; padding-right: 14px; }
-      .status-row { grid-template-columns: 1fr; }
-      .board { grid-template-columns: repeat(3, 82vw); }
+    @media(max-width:560px){
+      main,.toolbar{padding-left:14px;padding-right:14px;}
+      .metrics{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
+  <!-- ── GATE ── -->
   <section class="gate" id="gate">
     <form class="gate-box" id="login-form">
       <div class="brand">
         <img src="/assets/aquoz-logo.png" alt="Aquoz">
-        <span>Referral Tracker</span>
+        <span class="tag">Referral &amp; Review</span>
       </div>
-      <h1>Referral and review tracker</h1>
-      <p>Closed-won opportunities from GHL, referral links, and post-install review/referral requests.</p>
+      <h1>Referral &amp; review <u>tracker</u></h1>
+      <p>Closed-won opportunities from GoHighLevel, one-click referral links, and post-install review requests.</p>
       <div class="field">
         <label for="password">Password</label>
         <input id="password" type="password" autocomplete="current-password" required>
       </div>
-      <button class="btn primary" type="submit" id="login-btn">Unlock</button>
+      <button class="btn" type="submit" id="login-btn" style="width:100%">Unlock →</button>
       <div class="error-text" id="login-error"></div>
     </form>
   </section>
 
+  <!-- ── APP ── -->
   <section class="app" id="app">
     <header>
       <div class="toolbar">
         <div class="brand">
           <img src="/assets/aquoz-logo.png" alt="Aquoz">
-          <div>
-            <h1>Referral Tracker</h1>
-            <span id="updated">Waiting for GHL</span>
+          <div class="title">
+            <h1>Referral &amp; Review Tracker</h1>
+            <span id="updated">Loading…</span>
           </div>
         </div>
-        <input class="search" id="search" type="search" placeholder="Search won opportunities">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="search" id="search" type="search" placeholder="Search won customers, source, referrer…">
+        </div>
         <div class="tools">
-          <button class="btn" id="refresh-btn" type="button">Refresh</button>
-          <button class="btn" id="logout-btn" type="button">Lock</button>
+          <button class="btn light sm" id="refresh-btn" type="button">↻ Refresh</button>
+          <button class="btn light sm" id="logout-btn" type="button">Lock</button>
         </div>
       </div>
     </header>
 
     <main>
+      <div class="intro">
+        <span class="eyebrow">Post-install workflow</span>
+        <h2>Won installs → <u>reviews &amp; referrals</u></h2>
+        <p>Every closed-won job from GHL lands here. Around <b>14 days</b> after install, send the review + referral email, and link who referred each customer to keep the cashback pipeline clean.</p>
+      </div>
+
       <div class="setup" id="setup"></div>
-      <section class="status-row" id="metrics"></section>
-      <section class="board" id="board"></section>
+      <section class="metrics" id="metrics"></section>
+      <section id="board"></section>
     </main>
   </section>
 
+  <!-- ── Link referrer dialog ── -->
   <dialog id="link-dialog">
-    <form method="dialog">
-      <div class="modal-head">
-        <div>
-          <h2>Link referrer</h2>
-          <div class="target-name" id="link-target"></div>
-        </div>
-        <button class="btn icon" value="cancel" aria-label="Close" type="submit">X</button>
+    <div class="modal-head">
+      <div>
+        <h3>Link referrer</h3>
+        <div class="target-name" id="link-target"></div>
       </div>
-    </form>
+      <button class="btn icon light" id="link-x" type="button" aria-label="Close">×</button>
+    </div>
     <div class="modal-body">
       <div class="field">
-        <label for="referrer-select">Who referred this customer?</label>
-        <input id="referrer-search" type="search" placeholder="Search by name or source" autocomplete="off">
-        <select id="referrer-select"></select>
+        <label for="referrer-search">Who referred this customer?</label>
+        <input id="referrer-search" type="search" placeholder="Search existing won customers…" autocomplete="off">
+        <select id="referrer-select" size="1"></select>
       </div>
       <div class="field">
-        <label for="referral-note">Note</label>
-        <textarea id="referral-note" placeholder="Optional referral context"></textarea>
+        <label for="referral-note">Note (optional)</label>
+        <textarea id="referral-note" placeholder="Any referral context — e.g. neighbour, mentioned at install…"></textarea>
       </div>
       <div class="error-text" id="link-error"></div>
     </div>
     <div class="modal-foot">
-      <button class="btn" id="cancel-link" type="button">Cancel</button>
-      <button class="btn primary" id="save-link" type="button">Save link</button>
+      <button class="btn light" id="cancel-link" type="button">Cancel</button>
+      <button class="btn" id="save-link" type="button">Save referral link</button>
+    </div>
+  </dialog>
+
+  <!-- ── Review email dialog ── -->
+  <dialog id="review-dialog">
+    <div class="modal-head">
+      <div>
+        <h3>Send review + referral email</h3>
+        <div class="target-name" id="review-target"></div>
+      </div>
+      <button class="btn icon light" id="review-x" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="infoline">
+        A single post-install email will be sent to <b id="review-email">this customer</b>, from your GHL account:
+        a <b>Google review request</b> and a reminder of the <b>referral cashback</b> offer.
+      </div>
+      <div class="warn" id="review-warn" style="display:none"></div>
+      <div class="field">
+        <label for="review-note">Add a personal note (optional)</label>
+        <textarea id="review-note" placeholder="Optional line added to the email…"></textarea>
+      </div>
+      <div class="error-text" id="review-error"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn light" id="cancel-review" type="button">Cancel</button>
+      <button class="btn green" id="send-review" type="button">Send email</button>
     </div>
   </dialog>
 
@@ -472,392 +311,271 @@
 
   <script>
     const API = '/api/tracker';
+    const DUE_DAYS = 14;
     const state = {
       token: sessionStorage.getItem('aquoz_tracker_token') || '',
       opportunities: [],
       columns: [],
+      setup: null,
       selectedOpportunityId: '',
       referrerQuery: '',
       query: '',
     };
 
-    const money = (value) => new Intl.NumberFormat('en-AU', {
-      style: 'currency',
-      currency: 'AUD',
-      maximumFractionDigits: 0,
-    }).format(value || 0);
+    const money = (v) => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(v||0);
+    const esc = (v) => String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-    const esc = (value) => String(value == null ? '' : value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-
-    function showToast(message, type) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.toggle('error', type === 'error');
-      toast.style.display = 'block';
-      clearTimeout(showToast.timer);
-      showToast.timer = setTimeout(() => { toast.style.display = 'none'; }, 4200);
+    function showToast(message,type){
+      const t=document.getElementById('toast');
+      t.textContent=message; t.classList.toggle('error',type==='error'); t.style.display='block';
+      clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>{t.style.display='none';},4200);
     }
 
-    async function api(path, options = {}) {
-      const resp = await fetch(API + path, {
-        ...options,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.token}`,
-          ...(options.headers || {}),
-        },
-      });
-      const data = await resp.json().catch(() => ({}));
-      if (!resp.ok) {
-        const err = new Error(data.error || `HTTP ${resp.status}`);
-        err.data = data;
-        throw err;
-      }
+    async function api(path,options={}){
+      const resp=await fetch(API+path,{...options,headers:{'Content-Type':'application/json',Authorization:`Bearer ${state.token}`,...(options.headers||{})}});
+      const data=await resp.json().catch(()=>({}));
+      if(!resp.ok){const err=new Error(data.error||`HTTP ${resp.status}`);err.data=data;throw err;}
       return data;
     }
 
-    function enterApp() {
-      document.getElementById('gate').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      loadTracker();
-    }
+    function enterApp(){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block';loadTracker();}
+    function lock(){state.token='';sessionStorage.removeItem('aquoz_tracker_token');document.getElementById('gate').style.display='grid';document.getElementById('app').style.display='none';}
 
-    function lock() {
-      state.token = '';
-      sessionStorage.removeItem('aquoz_tracker_token');
-      document.getElementById('gate').style.display = 'grid';
-      document.getElementById('app').style.display = 'none';
-    }
-
-    async function login(event) {
+    async function login(event){
       event.preventDefault();
-      const button = document.getElementById('login-btn');
-      const error = document.getElementById('login-error');
-      button.disabled = true;
-      error.textContent = '';
-      try {
-        const resp = await fetch(API + '/auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: document.getElementById('password').value }),
-        });
-        const data = await resp.json();
-        if (!resp.ok || !data.token) throw new Error(data.error || 'Could not unlock tracker.');
-        state.token = data.token;
-        sessionStorage.setItem('aquoz_tracker_token', state.token);
-        enterApp();
-      } catch (err) {
-        error.textContent = err.message;
-      } finally {
-        button.disabled = false;
-      }
+      const button=document.getElementById('login-btn'),error=document.getElementById('login-error');
+      button.disabled=true; error.textContent='';
+      try{
+        const resp=await fetch(API+'/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('password').value})});
+        const data=await resp.json();
+        if(!resp.ok||!data.token) throw new Error(data.error||'Could not unlock tracker.');
+        state.token=data.token; sessionStorage.setItem('aquoz_tracker_token',state.token); enterApp();
+      }catch(err){error.textContent=err.message;}
+      finally{button.disabled=false;}
     }
 
-    function daysSince(iso) {
-      if (!iso) return '';
-      const diff = Date.now() - new Date(iso).getTime();
-      if (!Number.isFinite(diff)) return '';
-      const days = Math.max(0, Math.floor(diff / 86400000));
-      return `${days} day${days === 1 ? '' : 's'}`;
+    function daysSinceNum(iso){
+      if(!iso) return null;
+      const diff=Date.now()-new Date(iso).getTime();
+      if(!Number.isFinite(diff)) return null;
+      return Math.max(0,Math.floor(diff/86400000));
+    }
+    function ageLabel(iso){const d=daysSinceNum(iso);return d==null?'Unknown':`${d} day${d===1?'':'s'}`;}
+    function isDue(opp){const d=daysSinceNum(opp.wonAt);return opp.bucket==='won' && d!=null && d>=DUE_DAYS;}
+
+    function filteredOpportunities(){
+      const q=state.query.trim().toLowerCase();
+      if(!q) return state.opportunities;
+      return state.opportunities.filter((opp)=>[opp.name,opp.email,opp.phone,opp.source,opp.referredByName,opp.referrer&&opp.referrer.name,opp.stageName].join(' ').toLowerCase().includes(q));
     }
 
-    function filteredOpportunities() {
-      const q = state.query.trim().toLowerCase();
-      if (!q) return state.opportunities;
-      return state.opportunities.filter((opp) => {
-        return [opp.name, opp.email, opp.phone, opp.source, opp.referredByName, opp.referrer && opp.referrer.name, opp.stageName]
-          .join(' ')
-          .toLowerCase()
-          .includes(q);
-      });
+    function renderMetrics(list){
+      const totalValue=list.reduce((s,o)=>s+(o.value||0),0);
+      const due=list.filter(isDue).length;
+      const linked=list.filter((o)=>o.referredById).length;
+      document.getElementById('metrics').innerHTML=[
+        ['m1','Won installs',list.length,'total in CRM'],
+        ['m2','Due for follow-up',due,`${DUE_DAYS}+ days, no review sent`],
+        ['m3','Won value',money(totalValue),'closed-won pipeline'],
+        ['m4','Referrals linked',linked,'cashback pipeline'],
+      ].map(([cls,label,value,sub])=>`<div class="metric ${cls}"><span>${esc(label)}</span><b>${esc(value)}</b><small>${esc(sub)}</small></div>`).join('');
     }
 
-    function renderMetrics(list) {
-      const totalValue = list.reduce((sum, opp) => sum + (opp.value || 0), 0);
-      const linked = list.filter((opp) => opp.referredById).length;
-      const made = list.reduce((sum, opp) => sum + (opp.referralsMade ? opp.referralsMade.length : 0), 0);
-      document.getElementById('metrics').innerHTML = [
-        ['Won opportunities', list.length],
-        ['Won value', money(totalValue)],
-        ['Linked referrals', linked],
-        ['Referrals made', made],
-      ].slice(0, 4).map(([label, value]) => `
-        <div class="metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>
-      `).join('');
+    function renderSetup(setup){
+      state.setup=setup||null;
+      const box=document.getElementById('setup');
+      const missing=(setup&&setup.missingFields||[]).filter((f)=>f.requiredForLink);
+      const hasReviewEmailConfig=setup&&(setup.hasReviewUrl||setup.hasReviewEmailTemplate);
+      if(!setup||(!missing.length&&setup.hasGhlApiKey&&setup.hasLocationId&&hasReviewEmailConfig)){box.style.display='none';box.innerHTML='';return;}
+      const parts=[];
+      if(!setup.hasGhlApiKey) parts.push('GHL API key env var is missing.');
+      if(!setup.hasLocationId) parts.push('GHL location ID env var is missing.');
+      if(missing.length) parts.push('Referral custom-field ID is missing, so saving referral links will fail until it is added.');
+      if(!hasReviewEmailConfig) parts.push('Review email needs AQUOZ_REVIEW_URL or AQUOZ_REVIEW_EMAIL_TEMPLATE_ID before it can send.');
+      box.innerHTML=`<strong>Setup attention:</strong> ${esc(parts.join(' '))}`;
+      box.style.display='block';
+    }
+    function reviewConfigured(){return !!(state.setup&&(state.setup.hasReviewUrl||state.setup.hasReviewEmailTemplate));}
+
+    function ghlTextLink(url,label){return url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`:'';}
+
+    function referralPairHtml(opp){
+      const referrer=opp.referrer||{name:opp.referredByName||opp.referredById,ghlContactUrl:opp.referredByGhlContactUrl};
+      const referrerName=referrer.name||opp.referredByName||'the referrer';
+      return `<div class="refbox"><div class="referral-pair">
+        <div class="referral-line"><b>${esc(referrerName)}</b><span class="arrow">→</span><b>${esc(opp.name)}</b></div>
+        <div class="mini-links">${ghlTextLink(referrer.ghlContactUrl,'Referrer in GHL')}${ghlTextLink(opp.ghlContactUrl,'Customer in GHL')}</div>
+      </div></div>`;
     }
 
-    function renderSetup(setup) {
-      const box = document.getElementById('setup');
-      const missing = (setup && setup.missingFields || []).filter((field) => field.requiredForLink);
-      const hasReviewEmailConfig = setup && (setup.hasReviewUrl || setup.hasReviewEmailTemplate);
-      if (!setup || (!missing.length && setup.hasGhlApiKey && setup.hasLocationId && hasReviewEmailConfig)) {
-        box.style.display = 'none';
-        box.innerHTML = '';
-        return;
-      }
-      const parts = [];
-      if (!setup.hasGhlApiKey) parts.push('GHL API key env var is missing.');
-      if (!setup.hasLocationId) parts.push('GHL location ID env var is missing.');
-      if (missing.length) parts.push('Referral custom field ID is missing, so saving referral links will fail until it is added.');
-      if (!hasReviewEmailConfig) parts.push('Review email needs AQUOZ_REVIEW_URL or AQUOZ_REVIEW_EMAIL_TEMPLATE_ID.');
-      box.innerHTML = `<strong>Setup attention:</strong> ${esc(parts.join(' '))}`;
-      box.style.display = 'block';
+    function statusBadges(opp){
+      const b=[];
+      if(opp.bucket==='complete') b.push('<span class="badge done">✓ Complete</span>');
+      else b.push('<span class="badge won">Closed Won</span>');
+      if(isDue(opp)) b.push(`<span class="badge due">● Due ${daysSinceNum(opp.wonAt)}d</span>`);
+      else b.push(`<span class="badge age">${esc(ageLabel(opp.wonAt))} since won</span>`);
+      const combined=`${opp.reviewStatus||''} ${opp.referralAskStatus||''}`.toLowerCase();
+      if(/review email sent|review request email sent/.test(combined)) b.push('<span class="badge sent">✉ Review sent</span>');
+      return `<div class="badges">${b.join('')}</div>`;
     }
 
-    function ghlButton(url, label, className = 'btn light') {
-      return url
-        ? `<a class="${esc(className)}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
-        : '';
-    }
-
-    function ghlTextLink(url, label) {
-      return url
-        ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
-        : '';
-    }
-
-    function referralPairHtml(opp) {
-      const referrer = opp.referrer || {
-        name: opp.referredByName || opp.referredById,
-        contactId: opp.referredByContactId,
-        ghlContactUrl: opp.referredByGhlContactUrl,
-      };
-      const referrerName = referrer.name || opp.referredByName || 'the referrer';
-      return `
-        <div class="referral-pair">
-          <div class="referral-line">
-            <b>${esc(referrerName)}</b>
-            <span class="arrow">-&gt;</span>
-            <b>${esc(opp.name)}</b>
-          </div>
-          <div class="mini-links">
-            ${ghlTextLink(referrer.ghlContactUrl, 'Referrer GHL')}
-            ${ghlTextLink(opp.ghlContactUrl, 'Customer GHL')}
-          </div>
+    function cardHtml(opp){
+      const linked=opp.referredByName||opp.referredById;
+      const madeCount=opp.referralsMade?opp.referralsMade.length:0;
+      const source=opp.source||'Unknown source';
+      return `<article class="card ${isDue(opp)?'due':''}" data-id="${esc(opp.id)}">
+        <div class="card-top">
+          <div><h4>${esc(opp.name)}</h4><div class="source-line">${esc(source)}</div></div>
+          <span class="val-pill">${money(opp.value)}</span>
         </div>
-      `;
+        ${statusBadges(opp)}
+        ${linked?referralPairHtml(opp):`<div class="refbox empty-ref">No referrer linked yet.${madeCount?` <strong>${madeCount}</strong> referral${madeCount===1?'':'s'} attributed to this customer.`:''}</div>`}
+        <div class="card-actions">
+          <button class="btn light sm" type="button" data-action="link" data-id="${esc(opp.id)}">${linked?'Change referrer':'Link referrer'}</button>
+          ${linked?`<button class="btn orange sm" type="button" data-action="unlink" data-id="${esc(opp.id)}">Unlink</button>`:''}
+          <button class="btn green sm" type="button" data-action="ask" data-id="${esc(opp.id)}">Review email</button>
+        </div>
+      </article>`;
     }
 
-    function cardHtml(opp) {
-      const linked = opp.referredByName || opp.referredById;
-      const madeCount = opp.referralsMade ? opp.referralsMade.length : 0;
-      const source = opp.source || 'Unknown';
-      const stage = opp.stageName || 'Closed Won';
-      const viewCustomerButton = ghlButton(opp.ghlContactUrl, 'View in GHL');
-      return `
-        <article class="card" data-id="${esc(opp.id)}">
-          <div class="card-top">
-            <div>
-              <h3>${esc(opp.name)}</h3>
-              <div class="source-line">${esc(source)}</div>
-            </div>
-            <span class="pill">${money(opp.value)}</span>
-          </div>
-          <div class="meta">
-            <div class="meta-row"><span>Status</span><b>Won</b></div>
-            <div class="meta-row"><span>Stage</span><b>${esc(stage)}</b></div>
-            <div class="meta-row"><span>Won age</span><b>${esc(daysSince(opp.wonAt) || 'Unknown')}</b></div>
-          </div>
-          ${linked ? referralPairHtml(opp) : `
-            <div class="refline">
-              No referrer linked yet.
-              ${madeCount ? `<br><strong>${madeCount}</strong> referral${madeCount === 1 ? '' : 's'} attributed to this customer.` : ''}
-            </div>
-          `}
-          <div class="card-actions">
-            <button class="btn light" type="button" data-action="link" data-id="${esc(opp.id)}">${linked ? 'Change' : 'Link'}</button>
-            ${linked ? `<button class="btn orange" type="button" data-action="unlink" data-id="${esc(opp.id)}">Unlink</button>` : ''}
-            ${linked ? '' : viewCustomerButton}
-            <button class="btn green" type="button" data-action="ask" data-id="${esc(opp.id)}">Review</button>
-          </div>
-        </article>
-      `;
-    }
-
-    function renderBoard() {
-      const list = filteredOpportunities();
+    const COL_DOTS={won:'var(--blue)',linked:'var(--gold)',complete:'var(--green)'};
+    function renderBoard(){
+      const list=filteredOpportunities();
       renderMetrics(list);
-      const board = document.getElementById('board');
-      board.innerHTML = state.columns.map((column) => {
-        const cards = list.filter((opp) => opp.bucket === column.key);
-        return `
-          <section class="column">
-            <div class="col-head">
-              <div>
-                <h2>${esc(column.label)}</h2>
-                <p>${esc(column.hint || '')}</p>
-              </div>
-              <span class="count">${cards.length}</span>
-            </div>
-            <div class="stack">
-              ${cards.length ? cards.map(cardHtml).join('') : '<div class="empty">No cards</div>'}
-            </div>
-          </section>
-        `;
-      }).join('');
+      const board=document.getElementById('board');
+      board.innerHTML=`<div class="board">`+state.columns.map((column)=>{
+        const cards=list.filter((opp)=>opp.bucket===column.key);
+        return `<section class="column">
+          <div class="col-head">
+            <div class="lft"><span class="col-dot" style="background:${COL_DOTS[column.key]||'var(--muted)'}"></span>
+              <div><h3>${esc(column.label)}</h3><p>${esc(column.hint||'')}</p></div></div>
+            <span class="count">${cards.length}</span>
+          </div>
+          <div class="stack">${cards.length?cards.map(cardHtml).join(''):'<div class="empty">No cards here</div>'}</div>
+        </section>`;
+      }).join('')+`</div>`;
     }
 
-    async function loadTracker() {
-      const refresh = document.getElementById('refresh-btn');
-      refresh.disabled = true;
-      try {
-        const data = await api('/opportunities');
-        state.opportunities = data.opportunities || [];
-        state.columns = data.columns || [];
+    function showLoading(){document.getElementById('board').innerHTML='<div class="loading"><div class="spinner"></div><div class="loading-txt">Loading won installs…</div></div>';document.getElementById('metrics').innerHTML='';}
+
+    async function loadTracker(){
+      const refresh=document.getElementById('refresh-btn');
+      refresh.disabled=true; showLoading();
+      try{
+        const data=await api('/opportunities');
+        state.opportunities=data.opportunities||[];
+        state.columns=data.columns||[];
         renderSetup(data.setup);
-        document.getElementById('updated').textContent = data.generatedAt
-          ? `Updated ${new Date(data.generatedAt).toLocaleString('en-AU')}`
-          : 'Updated';
+        document.getElementById('updated').textContent=data.generatedAt?`Updated ${new Date(data.generatedAt).toLocaleString('en-AU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}`:'Updated';
         renderBoard();
-      } catch (err) {
-        if (/unauthorized/i.test(err.message)) return lock();
-        showToast(err.message, 'error');
-      } finally {
-        refresh.disabled = false;
-      }
+      }catch(err){
+        if(/unauthorized/i.test(err.message)) return lock();
+        document.getElementById('board').innerHTML=`<div class="empty" style="color:var(--red)">${esc(err.message)}</div>`;
+        showToast(err.message,'error');
+      }finally{refresh.disabled=false;}
     }
 
-    function referrerLabel(opp) {
-      return `${opp.name} - ${opp.source || 'Unknown'}`;
+    /* ── Link referrer ── */
+    function referrerLabel(opp){return `${opp.name} — ${opp.source||'Unknown'}`;}
+    function editableReferralNote(note){const v=String(note||'').trim();return /updated by tracker/i.test(v)?'':v;}
+    function referrerCandidates(){
+      const q=state.referrerQuery.trim().toLowerCase();
+      return state.opportunities.filter((o)=>o.id!==state.selectedOpportunityId)
+        .filter((o)=>!q||[o.name,o.source,o.email,o.phone,o.stageName].join(' ').toLowerCase().includes(q))
+        .sort((a,b)=>a.name.localeCompare(b.name));
     }
-
-    function editableReferralNote(note) {
-      const value = String(note || '').trim();
-      return /updated by tracker/i.test(value) ? '' : value;
+    function renderReferrerOptions(){
+      const select=document.getElementById('referrer-select');
+      const matches=referrerCandidates();
+      select.disabled=!matches.length;
+      select.size=Math.min(6,Math.max(3,matches.length||1));
+      select.innerHTML=matches.length?matches.map((o)=>`<option value="${esc(o.id)}">${esc(referrerLabel(o))}</option>`).join(''):'<option value="">No matching won customers</option>';
     }
-
-    function referrerCandidates() {
-      const q = state.referrerQuery.trim().toLowerCase();
-      return state.opportunities
-        .filter((opp) => opp.id !== state.selectedOpportunityId)
-        .filter((opp) => {
-          if (!q) return true;
-          return [opp.name, opp.source, opp.email, opp.phone, opp.stageName]
-            .join(' ')
-            .toLowerCase()
-            .includes(q);
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    function renderReferrerOptions() {
-      const select = document.getElementById('referrer-select');
-      const matches = referrerCandidates();
-      select.disabled = !matches.length;
-      select.innerHTML = matches.length
-        ? matches.map((opp) => `<option value="${esc(opp.id)}">${esc(referrerLabel(opp))}</option>`).join('')
-        : '<option value="">No matching won customers</option>';
-    }
-
-    function openLinkDialog(id) {
-      const target = state.opportunities.find((opp) => opp.id === id);
-      if (!target) return;
-      state.selectedOpportunityId = id;
-      state.referrerQuery = '';
-      document.getElementById('link-target').textContent = target.name;
-      document.getElementById('referral-note').value = editableReferralNote(target.referralNote);
-      document.getElementById('link-error').textContent = '';
-      document.getElementById('referrer-search').value = '';
+    function openLinkDialog(id){
+      const target=state.opportunities.find((o)=>o.id===id); if(!target) return;
+      state.selectedOpportunityId=id; state.referrerQuery='';
+      document.getElementById('link-target').textContent=`Who referred ${target.name}?`;
+      document.getElementById('referral-note').value=editableReferralNote(target.referralNote);
+      document.getElementById('link-error').textContent='';
+      document.getElementById('referrer-search').value='';
       renderReferrerOptions();
       document.getElementById('link-dialog').showModal();
       document.getElementById('referrer-search').focus();
     }
-
-    async function saveLink() {
-      const button = document.getElementById('save-link');
-      const error = document.getElementById('link-error');
-      const referrerOpportunityId = document.getElementById('referrer-select').value;
-      if (!referrerOpportunityId) {
-        error.textContent = 'Search and select a referrer first.';
-        return;
-      }
-      button.disabled = true;
-      error.textContent = '';
-      try {
-        const data = await api('/referrals', {
-          method: 'POST',
-          body: JSON.stringify({
-            opportunityId: state.selectedOpportunityId,
-            referrerOpportunityId,
-            note: document.getElementById('referral-note').value,
-          }),
-        });
+    async function saveLink(){
+      const button=document.getElementById('save-link'),error=document.getElementById('link-error');
+      const referrerOpportunityId=document.getElementById('referrer-select').value;
+      if(!referrerOpportunityId){error.textContent='Search and select a referrer first.';return;}
+      button.disabled=true; error.textContent='';
+      try{
+        const data=await api('/referrals',{method:'POST',body:JSON.stringify({opportunityId:state.selectedOpportunityId,referrerOpportunityId,note:document.getElementById('referral-note').value})});
         document.getElementById('link-dialog').close();
-        const message = data.linked && data.linked.associationRelationReused
-          ? 'Referral link saved in GHL. Additional opportunity was already linked.'
-          : 'Referral link saved and additional opportunity linked in GHL.';
-        showToast(data.linked && data.linked.noteWarning ? `${message} Note warning: ${data.linked.noteWarning}` : message);
+        const msg=data.linked&&data.linked.associationRelationReused?'Referral link saved in GHL.':'Referral link saved and linked in GHL.';
+        showToast(data.linked&&data.linked.noteWarning?`${msg} Note warning: ${data.linked.noteWarning}`:msg);
         await loadTracker();
-      } catch (err) {
-        error.textContent = err.message;
-      } finally {
-        button.disabled = false;
-      }
+      }catch(err){error.textContent=err.message;}
+      finally{button.disabled=false;}
+    }
+    async function unlinkReferral(id){
+      const opp=state.opportunities.find((o)=>o.id===id); if(!opp) return;
+      const referrerName=opp.referredByName||'the linked referrer';
+      if(!confirm(`Unlink ${opp.name} from ${referrerName}? This removes the linked opportunity relation in GHL.`)) return;
+      try{
+        const data=await api('/referrals',{method:'DELETE',body:JSON.stringify({opportunityId:id})});
+        const msg=data.unlinked&&data.unlinked.deletedRelation?'Referral unlinked and relation removed from GHL.':'Referral unlinked in GHL.';
+        showToast(data.unlinked&&data.unlinked.noteWarning?`${msg} Note warning: ${data.unlinked.noteWarning}`:msg);
+        await loadTracker();
+      }catch(err){showToast(err.message,'error');}
     }
 
-    async function unlinkReferral(id) {
-      const opportunity = state.opportunities.find((opp) => opp.id === id);
-      if (!opportunity) return;
-      const referrerName = opportunity.referredByName || 'the linked referrer';
-      if (!confirm(`Unlink ${opportunity.name} from ${referrerName}? This will remove the linked additional opportunity relation in GHL.`)) return;
-      try {
-        const data = await api('/referrals', {
-          method: 'DELETE',
-          body: JSON.stringify({ opportunityId: id }),
-        });
-        const message = data.unlinked && data.unlinked.deletedRelation
-          ? 'Referral unlinked and additional opportunity relation removed from GHL.'
-          : 'Referral unlinked in GHL.';
-        showToast(data.unlinked && data.unlinked.noteWarning ? `${message} Note warning: ${data.unlinked.noteWarning}` : message);
+    /* ── Review email ── */
+    function openReviewDialog(id){
+      const opp=state.opportunities.find((o)=>o.id===id); if(!opp) return;
+      state.selectedOpportunityId=id;
+      document.getElementById('review-target').textContent=opp.name;
+      document.getElementById('review-email').textContent=opp.email||'this customer (no email on contact)';
+      document.getElementById('review-note').value='';
+      document.getElementById('review-error').textContent='';
+      const warn=document.getElementById('review-warn');
+      const problems=[];
+      if(!reviewConfigured()) problems.push('The review link/template isn\'t configured yet (AQUOZ_REVIEW_URL or AQUOZ_REVIEW_EMAIL_TEMPLATE_ID). Add it in Vercel before sending.');
+      if(!opp.email) problems.push('This contact has no email address in GHL.');
+      warn.innerHTML=problems.join('<br>'); warn.style.display=problems.length?'block':'none';
+      document.getElementById('send-review').disabled=!opp.email;
+      document.getElementById('review-dialog').showModal();
+    }
+    async function sendReview(){
+      const button=document.getElementById('send-review'),error=document.getElementById('review-error');
+      button.disabled=true; error.textContent=''; button.textContent='Sending…';
+      try{
+        await api('/automation',{method:'POST',body:JSON.stringify({opportunityId:state.selectedOpportunityId,action:'send_review_email',note:document.getElementById('review-note').value})});
+        document.getElementById('review-dialog').close();
+        showToast('Review + referral email sent.');
         await loadTracker();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
+      }catch(err){error.textContent=err.message;}
+      finally{button.disabled=false; button.textContent='Send email';}
     }
 
-    async function sendAsk(id) {
-      const opportunity = state.opportunities.find((opp) => opp.id === id);
-      if (!opportunity) return;
-      const destination = opportunity.email ? ` to ${opportunity.email}` : '';
-      if (!confirm(`Send review request email${destination} for ${opportunity.name}?`)) return;
-      try {
-        await api('/automation', {
-          method: 'POST',
-          body: JSON.stringify({ opportunityId: id, action: 'send_review_email' }),
-        });
-        showToast('Review request email sent.');
-        await loadTracker();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    document.getElementById('login-form').addEventListener('submit', login);
-    document.getElementById('refresh-btn').addEventListener('click', loadTracker);
-    document.getElementById('logout-btn').addEventListener('click', lock);
-    document.getElementById('cancel-link').addEventListener('click', () => document.getElementById('link-dialog').close());
-    document.getElementById('save-link').addEventListener('click', saveLink);
-    document.getElementById('referrer-search').addEventListener('input', (event) => {
-      state.referrerQuery = event.target.value;
-      renderReferrerOptions();
-    });
-    document.getElementById('search').addEventListener('input', (event) => {
-      state.query = event.target.value;
-      renderBoard();
-    });
-    document.getElementById('board').addEventListener('click', (event) => {
-      const button = event.target.closest('button[data-action]');
-      if (!button) return;
-      if (button.dataset.action === 'link') openLinkDialog(button.dataset.id);
-      if (button.dataset.action === 'unlink') unlinkReferral(button.dataset.id);
-      if (button.dataset.action === 'ask') sendAsk(button.dataset.id);
+    /* ── Wire up ── */
+    document.getElementById('login-form').addEventListener('submit',login);
+    document.getElementById('refresh-btn').addEventListener('click',loadTracker);
+    document.getElementById('logout-btn').addEventListener('click',lock);
+    document.getElementById('link-x').addEventListener('click',()=>document.getElementById('link-dialog').close());
+    document.getElementById('cancel-link').addEventListener('click',()=>document.getElementById('link-dialog').close());
+    document.getElementById('save-link').addEventListener('click',saveLink);
+    document.getElementById('review-x').addEventListener('click',()=>document.getElementById('review-dialog').close());
+    document.getElementById('cancel-review').addEventListener('click',()=>document.getElementById('review-dialog').close());
+    document.getElementById('send-review').addEventListener('click',sendReview);
+    document.getElementById('referrer-search').addEventListener('input',(e)=>{state.referrerQuery=e.target.value;renderReferrerOptions();});
+    document.getElementById('search').addEventListener('input',(e)=>{state.query=e.target.value;renderBoard();});
+    document.getElementById('board').addEventListener('click',(e)=>{
+      const btn=e.target.closest('button[data-action]'); if(!btn) return;
+      if(btn.dataset.action==='link') openLinkDialog(btn.dataset.id);
+      if(btn.dataset.action==='unlink') unlinkReferral(btn.dataset.id);
+      if(btn.dataset.action==='ask') openReviewDialog(btn.dataset.id);
     });
 
-    if (state.token) enterApp();
+    if(state.token) enterApp();
   </script>
 </body>
 </html>
