@@ -7,6 +7,7 @@ const {
   requireTrackerAuth,
   sendJson,
   sendReviewRequestEmail,
+  updateOpportunityFields,
 } = require('../../lib/tracker-ghl');
 
 async function postAutomationWebhook(action, note, opportunity) {
@@ -82,12 +83,10 @@ module.exports = async function handler(req, res) {
 
     const email = await sendReviewRequestEmail(opportunity, note);
     const webhook = await postAutomationWebhook(action, note, opportunity);
-    const result = await moveOpportunityTrackerStage(
-      opportunity,
-      'sent',
-      `Review email sent from tracker on ${new Date().toISOString()}`,
-      { updateStatus: true },
-    );
+    const result = await updateOpportunityFields(opportunity.id, {
+      reviewStatus: 'Review request email sent',
+      referralAskStatus: `Review email sent from tracker on ${new Date().toISOString()}`,
+    });
 
     return sendJson(res, 200, {
       ok: true,

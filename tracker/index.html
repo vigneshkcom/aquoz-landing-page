@@ -97,6 +97,7 @@
       justify-content: center;
       gap: 8px;
       transition: background .16s ease, border-color .16s ease, transform .16s ease;
+      text-decoration: none;
     }
     .btn:hover { border-color: var(--blue); transform: translateY(-1px); }
     .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
@@ -164,7 +165,7 @@
 
     .board {
       display: grid;
-      grid-template-columns: repeat(4, minmax(260px, 1fr));
+      grid-template-columns: repeat(3, minmax(300px, 1fr));
       gap: 14px;
       align-items: start;
       overflow-x: auto;
@@ -239,6 +240,71 @@
       line-height: 1.45;
     }
     .refline strong { color: var(--ink); }
+    .referral-pair {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fbfd;
+    }
+    .pair-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: stretch;
+    }
+    .pair-person {
+      min-width: 0;
+      padding: 9px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+    .pair-person span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 5px;
+    }
+    .pair-person b {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+    .pair-person small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .pair-arrow {
+      align-self: center;
+      color: var(--blue);
+      font-weight: 900;
+      line-height: 1;
+    }
+    .pair-summary {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .pair-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .pair-links .btn {
+      min-height: 32px;
+      padding: 0 8px;
+      font-size: 11px;
+    }
     .stage-select {
       width: 100%;
       min-height: 34px;
@@ -313,8 +379,10 @@
     @media (max-width: 640px) {
       main, .toolbar { padding-left: 14px; padding-right: 14px; }
       .status-row { grid-template-columns: 1fr; }
-      .board { grid-template-columns: repeat(4, 82vw); }
+      .board { grid-template-columns: repeat(3, 82vw); }
       .card-actions { grid-template-columns: 1fr; }
+      .pair-row, .pair-links { grid-template-columns: 1fr; }
+      .pair-arrow { text-align: center; transform: rotate(90deg); }
     }
   </style>
 </head>
@@ -491,7 +559,7 @@
       const q = state.query.trim().toLowerCase();
       if (!q) return state.opportunities;
       return state.opportunities.filter((opp) => {
-        return [opp.name, opp.email, opp.phone, opp.source, opp.referredByName, opp.stageName]
+        return [opp.name, opp.email, opp.phone, opp.source, opp.referredByName, opp.referrer && opp.referrer.name, opp.stageName]
           .join(' ')
           .toLowerCase()
           .includes(q);
@@ -501,14 +569,12 @@
     function renderMetrics(list) {
       const totalValue = list.reduce((sum, opp) => sum + (opp.value || 0), 0);
       const linked = list.filter((opp) => opp.referredById).length;
-      const sent = list.filter((opp) => opp.bucket === 'sent' || opp.bucket === 'complete').length;
       const made = list.reduce((sum, opp) => sum + (opp.referralsMade ? opp.referralsMade.length : 0), 0);
       document.getElementById('metrics').innerHTML = [
         ['Won opportunities', list.length],
         ['Won value', money(totalValue)],
         ['Linked referrals', linked],
         ['Referrals made', made],
-        ['Asks sent', sent],
       ].slice(0, 4).map(([label, value]) => `
         <div class="metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>
       `).join('');
@@ -539,6 +605,58 @@
       `).join('');
     }
 
+    function ghlButton(url, label) {
+      return url
+        ? `<a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
+        : '';
+    }
+
+    function referralPerson(label, person, fallbackName) {
+      const name = person && (person.name || person.contactName) || fallbackName || 'Unknown';
+      const source = person && person.source || 'Unknown source';
+      const value = person && Number.isFinite(Number(person.value)) ? money(person.value) : '';
+      const detail = [source, value].filter(Boolean).join(' | ');
+      return `
+        <div class="pair-person">
+          <span>${esc(label)}</span>
+          <b>${esc(name)}</b>
+          <small>${esc(detail)}</small>
+        </div>
+      `;
+    }
+
+    function referralPairHtml(opp) {
+      const referrer = opp.referrer || {
+        name: opp.referredByName || opp.referredById,
+        contactId: opp.referredByContactId,
+        ghlContactUrl: opp.referredByGhlContactUrl,
+      };
+      const customer = {
+        name: opp.name,
+        source: opp.source,
+        value: opp.value,
+        contactId: opp.contactId,
+        ghlContactUrl: opp.ghlContactUrl,
+      };
+      const referrerName = referrer.name || opp.referredByName || 'the referrer';
+      return `
+        <div class="referral-pair">
+          <div class="pair-row">
+            ${referralPerson('Referrer', referrer, referrerName)}
+            <div class="pair-arrow">-&gt;</div>
+            ${referralPerson('Referred customer', customer, opp.name)}
+          </div>
+          <div class="pair-summary">
+            <strong>${esc(referrerName)}</strong> referred <strong>${esc(opp.name)}</strong>. This won job is worth <strong>${money(opp.value)}</strong>.
+          </div>
+          <div class="pair-links">
+            ${ghlButton(referrer.ghlContactUrl, 'View referrer in GHL')}
+            ${ghlButton(opp.ghlContactUrl, 'View customer in GHL')}
+          </div>
+        </div>
+      `;
+    }
+
     function cardHtml(opp) {
       const linked = opp.referredByName || opp.referredById;
       const madeCount = opp.referralsMade ? opp.referralsMade.length : 0;
@@ -556,10 +674,12 @@
             <div class="meta-row"><span>Stage</span><b>${esc(stage)}</b></div>
             <div class="meta-row"><span>Won age</span><b>${esc(daysSince(opp.wonAt) || 'Unknown')}</b></div>
           </div>
-          <div class="refline">
-            ${linked ? `Referred by <strong>${esc(opp.referredByName || opp.referredById)}</strong>` : 'No referrer linked yet.'}
-            ${madeCount ? `<br><strong>${madeCount}</strong> referral${madeCount === 1 ? '' : 's'} attributed to this customer.` : ''}
-          </div>
+          ${linked ? referralPairHtml(opp) : `
+            <div class="refline">
+              No referrer linked yet.
+              ${madeCount ? `<br><strong>${madeCount}</strong> referral${madeCount === 1 ? '' : 's'} attributed to this customer.` : ''}
+            </div>
+          `}
           <label class="sr-only" for="stage-${esc(opp.id)}">Tracker stage</label>
           <select class="stage-select" id="stage-${esc(opp.id)}" data-action="move" data-id="${esc(opp.id)}">
             ${stageOptions(opp.bucket)}

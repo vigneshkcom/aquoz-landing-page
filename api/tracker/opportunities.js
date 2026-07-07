@@ -20,7 +20,6 @@ module.exports = async function handler(req, res) {
       columns: [
         { key: 'won', label: 'Closed Won', hint: 'Ready for review/referral follow-up' },
         { key: 'linked', label: 'Referred Customers', hint: 'Won jobs linked to a referrer' },
-        { key: 'sent', label: 'Ask Sent', hint: 'Review/referral request triggered' },
         { key: 'complete', label: 'Complete', hint: 'Reviewed, thanked, or closed out' },
       ],
     });

@@ -51,11 +51,14 @@ Supabase is not required for the current tracker because GHL opportunity custom 
 - Columns:
   - Closed Won
   - Referred Customers
-  - Ask Sent
   - Complete
 - Search across won opportunities.
 - Link referrer modal with search by name/source/email/phone/stage.
-- Linked cards show:
+- Referred customer cards show both sides of the referral:
+  - Referrer opportunity/customer
+  - Referred customer opportunity/customer
+  - GHL contact buttons for both customers when contact IDs are available
+- Cards show:
   - Change referrer
   - Unlink
   - Send review email
@@ -78,21 +81,24 @@ Field groups include:
 - Review status
 - Referral ask status
 - Tracker stage
+- Previous source
 
 ### Link Referrer Flow
 
 When a user links Customer A to Referrer B:
 
 1. The referred customer's original won opportunity is updated with referrer fields.
-2. The tracker links Referrer B's existing won opportunity as an additional opportunity/contact relation for Customer A.
-3. No new opportunity is created, so the pipeline opportunity count is not inflated.
-4. The tracker stores the GHL association relation ID back on the original won opportunity.
-5. A GHL note is added:
+2. The referred customer's opportunity source is changed to `Referral-Referrer B`.
+3. The previous source is stored so it can be restored if the referral is unlinked.
+4. The tracker links Referrer B's existing won opportunity as an additional opportunity/contact relation for Customer A.
+5. No new opportunity is created, so the pipeline opportunity count is not inflated.
+6. The tracker stores the GHL association relation ID back on the original won opportunity.
+7. A GHL note is added:
 
    `Customer A was referred by Referrer B - updated by tracker`
 
-6. If the same link is saved again, the tracker reuses the existing association relation instead of creating duplicates.
-7. Older tracker-created `Referral - Customer` opportunities are no longer created by the current flow.
+8. If the same link is saved again, the tracker reuses the existing association relation instead of creating duplicates.
+9. Older tracker-created `Referral - Customer` opportunities are no longer created by the current flow.
 
 ### Unlink Flow
 
@@ -100,11 +106,12 @@ When a user unlinks a referral:
 
 1. The tracker removes the stored additional-opportunity association relation.
 2. The original won opportunity's referral fields are cleared.
-3. A GHL note is added:
+3. If a previous source was stored, the source is restored.
+4. A GHL note is added:
 
    `Referral link removed for Customer A from Referrer B - updated by tracker`
 
-4. The customer moves back to the Closed Won column.
+5. The customer moves back to the Closed Won column.
 
 ### Post-Install Review/Referral Ask
 
@@ -114,7 +121,7 @@ The Send Review Email button:
 - Uses either `AQUOZ_REVIEW_EMAIL_TEMPLATE_ID` or the built-in email body with `AQUOZ_REVIEW_URL`.
 - Optionally posts to `AQUOZ_POST_INSTALL_WEBHOOK_URL` after the email send.
 - Updates review/referral status fields in GHL only after the email send succeeds.
-- Moves the card into the Ask Sent column by writing the tracker stage custom field.
+- Does not move the card to a separate review-request column.
 
 ### Manual Kanban Movement
 
