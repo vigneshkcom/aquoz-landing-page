@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aquoz Referral Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --ink: #102433;
+      --muted: #61717f;
+      --line: #dfe7ee;
+      --line-strong: #c8d4de;
+      --blue: #1880bd;
+      --green: #1f9d63;
+      --orange: #f07a3a;
+      --red: #c7493d;
+      --shadow: 0 12px 34px rgba(16, 36, 51, .08);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .gate {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        linear-gradient(135deg, rgba(24,128,189,.14), transparent 36%),
+        linear-gradient(315deg, rgba(31,157,99,.12), transparent 42%),
+        var(--bg);
+    }
+
+    .gate-box {
+      width: min(420px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .brand img { width: 116px; }
+    .brand span { font-weight: 800; color: var(--blue); }
+
+    .gate-box h1, .toolbar h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .gate-box p { margin: 8px 0 22px; color: var(--muted); line-height: 1.55; }
+    .field { display: grid; gap: 7px; margin-bottom: 14px; }
+    .field label { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      min-height: 42px;
+      padding: 10px 12px;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+    }
+    textarea { min-height: 86px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,128,189,.12); }
+
+    .btn {
+      min-height: 40px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      font-weight: 800;
+      padding: 0 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background .16s ease, border-color .16s ease, transform .16s ease;
+    }
+    .btn:hover { border-color: var(--blue); transform: translateY(-1px); }
+    .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .btn.green { background: var(--green); color: #fff; border-color: var(--green); }
+    .btn.orange { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .btn.icon { width: 40px; padding: 0; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+    .app { display: none; min-height: 100vh; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(246,248,251,.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .toolbar {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 16px 22px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+    }
+    .toolbar .brand { margin: 0; }
+    .toolbar .brand img { width: 98px; }
+    .tools {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .search { max-width: 320px; }
+
+    main { max-width: 1540px; margin: 0 auto; padding: 22px; }
+    .status-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 18px rgba(16,36,51,.04);
+      padding: 15px;
+    }
+    .metric span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+    .metric b { display: block; margin-top: 7px; font-size: 24px; }
+
+    .setup {
+      display: none;
+      margin-bottom: 18px;
+      padding: 13px 14px;
+      border: 1px solid #f5c36e;
+      border-radius: var(--radius);
+      background: #fff8eb;
+      color: #815016;
+      line-height: 1.55;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(260px, 1fr));
+      gap: 14px;
+      align-items: start;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+    .column {
+      min-height: 420px;
+      background: #edf2f6;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px;
+    }
+    .col-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 4px 10px;
+    }
+    .col-head h2 { margin: 0; font-size: 14px; }
+    .col-head p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
+    .count {
+      min-width: 28px;
+      height: 24px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .stack { display: grid; gap: 10px; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 18px rgba(16,36,51,.06);
+      padding: 13px;
+    }
+    .card-top { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .card h3 { margin: 0; font-size: 15px; line-height: 1.25; }
+    .pill {
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      background: rgba(31,157,99,.12);
+      color: var(--green);
+      white-space: nowrap;
+    }
+    .meta { margin: 10px 0 0; display: grid; gap: 6px; color: var(--muted); font-size: 12px; }
+    .meta-row { display: flex; justify-content: space-between; gap: 10px; }
+    .meta-row b { color: var(--ink); font-weight: 800; text-align: right; }
+    .refline {
+      margin-top: 10px;
+      padding: 9px;
+      border-radius: var(--radius);
+      background: #f5f8fa;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .refline strong { color: var(--ink); }
+    .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+    .card-actions .btn { min-height: 34px; padding: 0 9px; font-size: 12px; }
+
+    .empty {
+      border: 1px dashed var(--line-strong);
+      border-radius: var(--radius);
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255,255,255,.55);
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      max-width: 420px;
+      display: none;
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      background: #102433;
+      color: #fff;
+      box-shadow: var(--shadow);
+      line-height: 1.45;
+    }
+    .toast.error { background: #8f2f28; }
+
+    dialog {
+      width: min(560px, calc(100% - 28px));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0;
+      box-shadow: var(--shadow);
+    }
+    dialog::backdrop { background: rgba(16,36,51,.42); backdrop-filter: blur(3px); }
+    .modal-head, .modal-body, .modal-foot { padding: 16px; }
+    .modal-head { border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .modal-head h2 { margin: 0; font-size: 18px; }
+    .modal-body { display: grid; gap: 14px; }
+    .modal-foot { border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; }
+    .target-name { color: var(--muted); margin-top: 4px; }
+    .error-text { min-height: 18px; color: var(--red); font-size: 12px; margin-top: 10px; }
+
+    @media (max-width: 1040px) {
+      .toolbar { grid-template-columns: 1fr; }
+      .tools { justify-content: start; }
+      .status-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      main, .toolbar { padding-left: 14px; padding-right: 14px; }
+      .status-row { grid-template-columns: 1fr; }
+      .board { grid-template-columns: repeat(4, 82vw); }
+      .card-actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <section class="gate" id="gate">
+    <form class="gate-box" id="login-form">
+      <div class="brand">
+        <img src="/assets/aquoz-logo.png" alt="Aquoz">
+        <span>Referral Tracker</span>
+      </div>
+      <h1>Referral and review tracker</h1>
+      <p>Closed-won opportunities from GHL, referral links, and post-install review/referral requests.</p>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn primary" type="submit" id="login-btn">Unlock</button>
+      <div class="error-text" id="login-error"></div>
+    </form>
+  </section>
+
+  <section class="app" id="app">
+    <header>
+      <div class="toolbar">
+        <div class="brand">
+          <img src="/assets/aquoz-logo.png" alt="Aquoz">
+          <div>
+            <h1>Referral Tracker</h1>
+            <span id="updated">Waiting for GHL</span>
+          </div>
+        </div>
+        <input class="search" id="search" type="search" placeholder="Search won opportunities">
+        <div class="tools">
+          <button class="btn" id="refresh-btn" type="button">Refresh</button>
+          <button class="btn" id="logout-btn" type="button">Lock</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="setup" id="setup"></div>
+      <section class="status-row" id="metrics"></section>
+      <section class="board" id="board"></section>
+    </main>
+  </section>
+
+  <dialog id="link-dialog">
+    <form method="dialog">
+      <div class="modal-head">
+        <div>
+          <h2>Link referrer</h2>
+          <div class="target-name" id="link-target"></div>
+        </div>
+        <button class="btn icon" value="cancel" aria-label="Close" type="submit">X</button>
+      </div>
+    </form>
+    <div class="modal-body">
+      <div class="field">
+        <label for="referrer-select">Who referred this customer?</label>
+        <select id="referrer-select"></select>
+      </div>
+      <div class="field">
+        <label for="referral-note">Note</label>
+        <textarea id="referral-note" placeholder="Optional referral context"></textarea>
+      </div>
+      <div class="error-text" id="link-error"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="cancel-link" type="button">Cancel</button>
+      <button class="btn primary" id="save-link" type="button">Save link</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API = '/api/tracker';
+    const state = {
+      token: sessionStorage.getItem('aquoz_tracker_token') || '',
+      opportunities: [],
+      columns: [],
+      selectedOpportunityId: '',
+      query: '',
+    };
+
+    const money = (value) => new Intl.NumberFormat('en-AU', {
+      style: 'currency',
+      currency: 'AUD',
+      maximumFractionDigits: 0,
+    }).format(value || 0);
+
+    const esc = (value) => String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    function showToast(message, type) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.toggle('error', type === 'error');
+      toast.style.display = 'block';
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => { toast.style.display = 'none'; }, 4200);
+    }
+
+    async function api(path, options = {}) {
+      const resp = await fetch(API + path, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.token}`,
+          ...(options.headers || {}),
+        },
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        const err = new Error(data.error || `HTTP ${resp.status}`);
+        err.data = data;
+        throw err;
+      }
+      return data;
+    }
+
+    function enterApp() {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadTracker();
+    }
+
+    function lock() {
+      state.token = '';
+      sessionStorage.removeItem('aquoz_tracker_token');
+      document.getElementById('gate').style.display = 'grid';
+      document.getElementById('app').style.display = 'none';
+    }
+
+    async function login(event) {
+      event.preventDefault();
+      const button = document.getElementById('login-btn');
+      const error = document.getElementById('login-error');
+      button.disabled = true;
+      error.textContent = '';
+      try {
+        const resp = await fetch(API + '/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: document.getElementById('password').value }),
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.token) throw new Error(data.error || 'Could not unlock tracker.');
+        state.token = data.token;
+        sessionStorage.setItem('aquoz_tracker_token', state.token);
+        enterApp();
+      } catch (err) {
+        error.textContent = err.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function daysSince(iso) {
+      if (!iso) return '';
+      const diff = Date.now() - new Date(iso).getTime();
+      if (!Number.isFinite(diff)) return '';
+      const days = Math.max(0, Math.floor(diff / 86400000));
+      return `${days} day${days === 1 ? '' : 's'}`;
+    }
+
+    function filteredOpportunities() {
+      const q = state.query.trim().toLowerCase();
+      if (!q) return state.opportunities;
+      return state.opportunities.filter((opp) => {
+        return [opp.name, opp.email, opp.phone, opp.source, opp.referredByName, opp.stageName]
+          .join(' ')
+          .toLowerCase()
+          .includes(q);
+      });
+    }
+
+    function renderMetrics(list) {
+      const totalValue = list.reduce((sum, opp) => sum + (opp.value || 0), 0);
+      const linked = list.filter((opp) => opp.referredById).length;
+      const sent = list.filter((opp) => opp.bucket === 'sent' || opp.bucket === 'complete').length;
+      const made = list.reduce((sum, opp) => sum + (opp.referralsMade ? opp.referralsMade.length : 0), 0);
+      document.getElementById('metrics').innerHTML = [
+        ['Won opportunities', list.length],
+        ['Won value', money(totalValue)],
+        ['Linked referrals', linked],
+        ['Referrals made', made],
+        ['Asks sent', sent],
+      ].slice(0, 4).map(([label, value]) => `
+        <div class="metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>
+      `).join('');
+    }
+
+    function renderSetup(setup) {
+      const box = document.getElementById('setup');
+      const missing = (setup && setup.missingFields || []).filter((field) => field.requiredForLink);
+      if (!setup || (!missing.length && setup.hasGhlApiKey && setup.hasLocationId)) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+      }
+      const parts = [];
+      if (!setup.hasGhlApiKey) parts.push('GHL API key env var is missing.');
+      if (!setup.hasLocationId) parts.push('GHL location ID env var is missing.');
+      if (missing.length) parts.push('Referral custom field ID is missing, so saving referral links will fail until it is added.');
+      box.innerHTML = `<strong>Setup attention:</strong> ${esc(parts.join(' '))}`;
+      box.style.display = 'block';
+    }
+
+    function cardHtml(opp) {
+      const linked = opp.referredByName || opp.referredById;
+      const madeCount = opp.referralsMade ? opp.referralsMade.length : 0;
+      const source = opp.source || 'Unknown';
+      const stage = opp.stageName || 'Closed Won';
+      return `
+        <article class="card" data-id="${esc(opp.id)}">
+          <div class="card-top">
+            <h3>${esc(opp.name)}</h3>
+            <span class="pill">Won</span>
+          </div>
+          <div class="meta">
+            <div class="meta-row"><span>Value</span><b>${money(opp.value)}</b></div>
+            <div class="meta-row"><span>Source</span><b>${esc(source)}</b></div>
+            <div class="meta-row"><span>Stage</span><b>${esc(stage)}</b></div>
+            <div class="meta-row"><span>Won age</span><b>${esc(daysSince(opp.wonAt) || 'Unknown')}</b></div>
+          </div>
+          <div class="refline">
+            ${linked ? `Referred by <strong>${esc(opp.referredByName || opp.referredById)}</strong>` : 'No referrer linked yet.'}
+            ${madeCount ? `<br><strong>${madeCount}</strong> referral${madeCount === 1 ? '' : 's'} attributed to this customer.` : ''}
+          </div>
+          <div class="card-actions">
+            <button class="btn" type="button" data-action="link" data-id="${esc(opp.id)}">Link referrer</button>
+            <button class="btn green" type="button" data-action="ask" data-id="${esc(opp.id)}">Ask review</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderBoard() {
+      const list = filteredOpportunities();
+      renderMetrics(list);
+      const board = document.getElementById('board');
+      board.innerHTML = state.columns.map((column) => {
+        const cards = list.filter((opp) => opp.bucket === column.key);
+        return `
+          <section class="column">
+            <div class="col-head">
+              <div>
+                <h2>${esc(column.label)}</h2>
+                <p>${esc(column.hint || '')}</p>
+              </div>
+              <span class="count">${cards.length}</span>
+            </div>
+            <div class="stack">
+              ${cards.length ? cards.map(cardHtml).join('') : '<div class="empty">No cards</div>'}
+            </div>
+          </section>
+        `;
+      }).join('');
+    }
+
+    async function loadTracker() {
+      const refresh = document.getElementById('refresh-btn');
+      refresh.disabled = true;
+      try {
+        const data = await api('/opportunities');
+        state.opportunities = data.opportunities || [];
+        state.columns = data.columns || [];
+        renderSetup(data.setup);
+        document.getElementById('updated').textContent = data.generatedAt
+          ? `Updated ${new Date(data.generatedAt).toLocaleString('en-AU')}`
+          : 'Updated';
+        renderBoard();
+      } catch (err) {
+        if (/unauthorized/i.test(err.message)) return lock();
+        showToast(err.message, 'error');
+      } finally {
+        refresh.disabled = false;
+      }
+    }
+
+    function openLinkDialog(id) {
+      const target = state.opportunities.find((opp) => opp.id === id);
+      if (!target) return;
+      state.selectedOpportunityId = id;
+      document.getElementById('link-target').textContent = target.name;
+      document.getElementById('referral-note').value = target.referralNote || '';
+      document.getElementById('link-error').textContent = '';
+      document.getElementById('referrer-select').innerHTML = state.opportunities
+        .filter((opp) => opp.id !== id)
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((opp) => `<option value="${esc(opp.id)}">${esc(opp.name)} - ${esc(opp.source || 'Unknown')}</option>`)
+        .join('');
+      document.getElementById('link-dialog').showModal();
+    }
+
+    async function saveLink() {
+      const button = document.getElementById('save-link');
+      const error = document.getElementById('link-error');
+      button.disabled = true;
+      error.textContent = '';
+      try {
+        await api('/referrals', {
+          method: 'POST',
+          body: JSON.stringify({
+            opportunityId: state.selectedOpportunityId,
+            referrerOpportunityId: document.getElementById('referrer-select').value,
+            note: document.getElementById('referral-note').value,
+          }),
+        });
+        document.getElementById('link-dialog').close();
+        showToast('Referral link saved in GHL.');
+        await loadTracker();
+      } catch (err) {
+        error.textContent = err.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function sendAsk(id) {
+      const opportunity = state.opportunities.find((opp) => opp.id === id);
+      if (!opportunity) return;
+      if (!confirm(`Trigger post-install review/referral ask for ${opportunity.name}?`)) return;
+      try {
+        await api('/automation', {
+          method: 'POST',
+          body: JSON.stringify({ opportunityId: id, action: 'post_install_review_referral' }),
+        });
+        showToast('Post-install review/referral ask triggered.');
+        await loadTracker();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    document.getElementById('login-form').addEventListener('submit', login);
+    document.getElementById('refresh-btn').addEventListener('click', loadTracker);
+    document.getElementById('logout-btn').addEventListener('click', lock);
+    document.getElementById('cancel-link').addEventListener('click', () => document.getElementById('link-dialog').close());
+    document.getElementById('save-link').addEventListener('click', saveLink);
+    document.getElementById('search').addEventListener('input', (event) => {
+      state.query = event.target.value;
+      renderBoard();
+    });
+    document.getElementById('board').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-action]');
+      if (!button) return;
+      if (button.dataset.action === 'link') openLinkDialog(button.dataset.id);
+      if (button.dataset.action === 'ask') sendAsk(button.dataset.id);
+    });
+
+    if (state.token) enterApp();
+  </script>
+</body>
+</html>
