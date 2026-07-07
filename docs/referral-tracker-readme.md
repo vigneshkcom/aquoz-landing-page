@@ -58,7 +58,7 @@ Supabase is not required for the current tracker because GHL opportunity custom 
 - Linked cards show:
   - Change referrer
   - Unlink
-  - Ask review
+  - Send review email
 
 ### GHL Field Setup
 
@@ -147,3 +147,4 @@ Manual movement:
 - `c5557ca` - Attach referral tracking opportunity to customer contact (superseded by association relation flow)
 - `08e2667` - Use GHL additional opportunity associations
 - `410e472` - Reduce referral link API load
+- `1c87340` - Send tracker review emails and allow stage moves
