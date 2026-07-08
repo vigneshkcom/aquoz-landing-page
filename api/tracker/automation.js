@@ -2,6 +2,7 @@ const {
   buildReviewEmail,
   getGhlConfig,
   getReferralLinkParticipants,
+  markReviewEmailSent,
   readJsonBody,
   requireTrackerAuth,
   sendJson,
@@ -80,6 +81,9 @@ module.exports = async function handler(req, res) {
 
     const email = await sendReviewRequestEmail(opportunity, note);
     const webhook = await postAutomationWebhook(action, note, opportunity);
+    // Tag the contact "Review email sent" and move them to End of Funnel /
+    // "Referral Email Sent" (best-effort — never fails the send).
+    const advance = await markReviewEmailSent(opportunity);
     const result = await updateOpportunityFields(opportunity.id, {
       reviewStatus: 'Review request email sent',
       referralAskStatus: `Review email sent from tracker on ${new Date().toISOString()}`,
@@ -90,6 +94,15 @@ module.exports = async function handler(req, res) {
       action: 'send_review_email',
       email,
       webhook,
+      advance: {
+        tagged: !!(advance.tag && advance.tag.ok),
+        tag: advance.tag ? advance.tag.tag : '',
+        tagWarning: advance.tag && advance.tag.ok === false ? advance.tag.error : '',
+        moved: !!(advance.move && advance.move.moved),
+        pipelineName: advance.move ? advance.move.pipelineName : '',
+        stageName: advance.move ? advance.move.stageName : '',
+        moveWarning: advance.move ? advance.move.warning : '',
+      },
       result,
     });
   } catch (error) {

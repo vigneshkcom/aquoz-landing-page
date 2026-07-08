@@ -623,9 +623,14 @@
       const button=document.getElementById('send-review'),error=document.getElementById('review-error');
       button.disabled=true; error.textContent=''; button.textContent='Sending…';
       try{
-        await api('/automation',{method:'POST',body:JSON.stringify({opportunityId:state.selectedOpportunityId,action:'send_review_email',note:document.getElementById('review-note').value})});
+        const data=await api('/automation',{method:'POST',body:JSON.stringify({opportunityId:state.selectedOpportunityId,action:'send_review_email',note:document.getElementById('review-note').value})});
         document.getElementById('review-dialog').close();
-        showToast('Review + referral email sent.');
+        const adv=data.advance||{};
+        let msg='Review + referral email sent.';
+        if(adv.tagged) msg+=` Tagged "${adv.tag||'Review email sent'}".`;
+        if(adv.moved) msg+=` Moved to ${adv.pipelineName||'End of Funnel'} → ${adv.stageName||'Referral Email Sent'}.`;
+        else if(adv.moveWarning) msg+=` (Couldn't move stage: ${adv.moveWarning})`;
+        showToast(msg,adv.moveWarning?'error':undefined);
         await loadTracker();
       }catch(err){error.textContent=err.message;}
       finally{button.disabled=false; button.textContent='Send email';}
