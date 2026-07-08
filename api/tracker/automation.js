@@ -1,4 +1,5 @@
 const {
+  buildReviewEmail,
   getGhlConfig,
   getReferralLinkParticipants,
   readJsonBody,
@@ -54,6 +55,20 @@ module.exports = async function handler(req, res) {
 
     const { target: opportunity } = await getReferralLinkParticipants(opportunityId);
     if (!opportunity) return sendJson(res, 404, { error: 'Won opportunity was not found.' });
+
+    if (action === 'preview_review_email') {
+      // Read-only: renders the exact email that send_review_email would send,
+      // without emailing anyone or touching GHL fields.
+      const preview = buildReviewEmail(opportunity, note);
+      return sendJson(res, 200, {
+        ok: true,
+        to: opportunity.email || '',
+        subject: preview.subject,
+        html: preview.html,
+        text: preview.text,
+        reviewUrl: preview.reviewUrl,
+      });
+    }
 
     if (action === 'move_stage') {
       return sendJson(res, 400, { error: 'Stage changes are disabled in the tracker.' });

@@ -177,15 +177,20 @@
 
     /* Dialog */
     dialog{width:min(560px,calc(100% - 28px));border:none;border-radius:var(--radius);padding:0;box-shadow:var(--shadow-lg);color:var(--ink);}
+    dialog#review-dialog{width:min(640px,calc(100% - 28px));}
     dialog::backdrop{background:rgba(11,36,56,.5);backdrop-filter:blur(4px);}
     .modal-head{padding:20px 22px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
     .modal-head h3{margin:0;font-size:19px;letter-spacing:-.01em;}
     .modal-head .target-name{color:var(--muted);margin-top:4px;font-size:13px;}
-    .modal-body{padding:20px 22px;display:grid;gap:14px;}
+    .modal-body{padding:20px 22px;display:grid;gap:14px;max-height:74vh;overflow-y:auto;}
     .modal-foot{padding:16px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;background:#fafcfe;}
     .infoline{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;line-height:1.5;color:var(--ink);}
     .infoline b{color:var(--blue-deep);}
     .warn{background:var(--gold-soft);border:1px solid #f3ce7d;color:#7a5410;border-radius:var(--radius-sm);padding:11px 13px;font-size:12.5px;line-height:1.5;font-weight:600;}
+    .preview-wrap{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:#eef7fa;position:relative;}
+    .preview-wrap iframe{width:100%;height:440px;border:0;display:block;background:#eef7fa;}
+    .preview-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(238,247,250,.85);font-size:12.5px;color:var(--muted);font-weight:700;transition:opacity .15s;}
+    .preview-loading.hide{opacity:0;pointer-events:none;}
 
     @media(max-width:1040px){
       .toolbar{grid-template-columns:1fr auto;}
@@ -291,13 +296,19 @@
     </div>
     <div class="modal-body">
       <div class="infoline">
-        A single post-install email will be sent to <b id="review-email">this customer</b>, from your GHL account:
-        a <b>Google review request</b> and a reminder of the <b>referral cashback</b> offer.
+        Sending to <b id="review-email">this customer</b> &mdash; via your GHL account's email API, signed by Anna.
       </div>
       <div class="warn" id="review-warn" style="display:none"></div>
       <div class="field">
         <label for="review-note">Add a personal note (optional)</label>
         <textarea id="review-note" placeholder="Optional line added to the email…"></textarea>
+      </div>
+      <div class="field">
+        <label>Preview</label>
+        <div class="preview-wrap">
+          <iframe id="review-preview-frame" title="Email preview"></iframe>
+          <div class="preview-loading" id="review-preview-loading">Loading preview…</div>
+        </div>
       </div>
       <div class="error-text" id="review-error"></div>
     </div>
@@ -385,17 +396,14 @@
       state.setup=setup||null;
       const box=document.getElementById('setup');
       const missing=(setup&&setup.missingFields||[]).filter((f)=>f.requiredForLink);
-      const hasReviewEmailConfig=setup&&(setup.hasReviewUrl||setup.hasReviewEmailTemplate);
-      if(!setup||(!missing.length&&setup.hasGhlApiKey&&setup.hasLocationId&&hasReviewEmailConfig)){box.style.display='none';box.innerHTML='';return;}
+      if(!setup||(!missing.length&&setup.hasGhlApiKey&&setup.hasLocationId)){box.style.display='none';box.innerHTML='';return;}
       const parts=[];
       if(!setup.hasGhlApiKey) parts.push('GHL API key env var is missing.');
       if(!setup.hasLocationId) parts.push('GHL location ID env var is missing.');
       if(missing.length) parts.push('Referral custom-field ID is missing, so saving referral links will fail until it is added.');
-      if(!hasReviewEmailConfig) parts.push('Review email needs AQUOZ_REVIEW_URL or AQUOZ_REVIEW_EMAIL_TEMPLATE_ID before it can send.');
       box.innerHTML=`<strong>Setup attention:</strong> ${esc(parts.join(' '))}`;
       box.style.display='block';
     }
-    function reviewConfigured(){return !!(state.setup&&(state.setup.hasReviewUrl||state.setup.hasReviewEmailTemplate));}
 
     function ghlTextLink(url,label){return url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`:'';}
 
@@ -529,6 +537,23 @@
     }
 
     /* ── Review email ── */
+    let previewTimer=null;
+    async function refreshPreview(){
+      const frame=document.getElementById('review-preview-frame');
+      const loading=document.getElementById('review-preview-loading');
+      loading.classList.remove('hide'); loading.textContent='Loading preview…';
+      try{
+        const data=await api('/automation',{method:'POST',body:JSON.stringify({opportunityId:state.selectedOpportunityId,action:'preview_review_email',note:document.getElementById('review-note').value})});
+        frame.srcdoc=data.html;
+        loading.classList.add('hide');
+      }catch(err){
+        loading.textContent='Preview failed: '+err.message;
+      }
+    }
+    function schedulePreviewRefresh(){
+      clearTimeout(previewTimer);
+      previewTimer=setTimeout(refreshPreview,400);
+    }
     function openReviewDialog(id){
       const opp=state.opportunities.find((o)=>o.id===id); if(!opp) return;
       state.selectedOpportunityId=id;
@@ -537,12 +562,12 @@
       document.getElementById('review-note').value='';
       document.getElementById('review-error').textContent='';
       const warn=document.getElementById('review-warn');
-      const problems=[];
-      if(!reviewConfigured()) problems.push('The review link/template isn\'t configured yet (AQUOZ_REVIEW_URL or AQUOZ_REVIEW_EMAIL_TEMPLATE_ID). Add it in Vercel before sending.');
-      if(!opp.email) problems.push('This contact has no email address in GHL.');
-      warn.innerHTML=problems.join('<br>'); warn.style.display=problems.length?'block':'none';
+      if(!opp.email){warn.textContent='This contact has no email address in GHL, so this email cannot be sent yet.';warn.style.display='block';}
+      else{warn.style.display='none';warn.textContent='';}
       document.getElementById('send-review').disabled=!opp.email;
+      document.getElementById('review-preview-frame').srcdoc='';
       document.getElementById('review-dialog').showModal();
+      refreshPreview();
     }
     async function sendReview(){
       const button=document.getElementById('send-review'),error=document.getElementById('review-error');
@@ -566,6 +591,7 @@
     document.getElementById('review-x').addEventListener('click',()=>document.getElementById('review-dialog').close());
     document.getElementById('cancel-review').addEventListener('click',()=>document.getElementById('review-dialog').close());
     document.getElementById('send-review').addEventListener('click',sendReview);
+    document.getElementById('review-note').addEventListener('input',schedulePreviewRefresh);
     document.getElementById('referrer-search').addEventListener('input',(e)=>{state.referrerQuery=e.target.value;renderReferrerOptions();});
     document.getElementById('search').addEventListener('input',(e)=>{state.query=e.target.value;renderBoard();});
     document.getElementById('board').addEventListener('click',(e)=>{
