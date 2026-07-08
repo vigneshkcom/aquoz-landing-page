@@ -191,6 +191,24 @@
     .preview-wrap iframe{width:100%;height:440px;border:0;display:block;background:#eef7fa;}
     .preview-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(238,247,250,.85);font-size:12.5px;color:var(--muted);font-weight:700;transition:opacity .15s;}
     .preview-loading.hide{opacity:0;pointer-events:none;}
+    /* Referrer picker */
+    .search-in{position:relative;}
+    .search-in svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--faint);pointer-events:none;}
+    .search-in input{padding-left:38px;}
+    .picker{margin-top:10px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);overflow:hidden;background:#fff;}
+    .picker-list{max-height:280px;overflow-y:auto;}
+    .pick{display:flex;align-items:center;gap:11px;padding:10px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s;}
+    .pick:last-child{border-bottom:none;}
+    .pick:hover{background:var(--soft);}
+    .pick.sel{background:#e4f1fb;}
+    .pick-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(180deg,var(--blue-soft),var(--blue-deep));color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;flex-shrink:0;}
+    .pick-main{min-width:0;flex:1;}
+    .pick-name{font-size:13.5px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .pick-sub{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .pick-check{margin-left:auto;color:var(--blue);font-weight:900;font-size:15px;opacity:0;flex-shrink:0;}
+    .pick.sel .pick-check{opacity:1;}
+    .pick-empty{padding:22px 14px;text-align:center;color:var(--faint);font-size:12.5px;font-weight:600;}
+    .picker-count{font-size:11px;color:var(--faint);font-weight:700;padding:8px 13px;border-top:1px solid var(--line);background:#fafcfe;}
 
     @media(max-width:1040px){
       .toolbar{grid-template-columns:1fr auto;}
@@ -270,8 +288,14 @@
     <div class="modal-body">
       <div class="field">
         <label for="referrer-search">Who referred this customer?</label>
-        <input id="referrer-search" type="search" placeholder="Search existing won customers…" autocomplete="off">
-        <select id="referrer-select" size="1"></select>
+        <div class="search-in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="referrer-search" type="search" placeholder="Type a name to search…" autocomplete="off">
+        </div>
+        <div class="picker">
+          <div class="picker-list" id="referrer-list"></div>
+          <div class="picker-count" id="referrer-count"></div>
+        </div>
       </div>
       <div class="field">
         <label for="referral-note">Note (optional)</label>
@@ -335,6 +359,7 @@
 
     const money = (v) => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(v||0);
     const esc = (v) => String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const initials = (n) => String(n||'?').trim().split(/\s+/).slice(0,2).map((x)=>x[0]||'').join('').toUpperCase()||'?';
 
     function showToast(message,type){
       const t=document.getElementById('toast');
@@ -484,7 +509,6 @@
     }
 
     /* ── Link referrer ── */
-    function referrerLabel(opp){return `${opp.name} — ${opp.source||'Unknown'}`;}
     function editableReferralNote(note){const v=String(note||'').trim();return /updated by tracker/i.test(v)?'':v;}
     function referrerCandidates(){
       const q=state.referrerQuery.trim().toLowerCase();
@@ -492,27 +516,45 @@
         .filter((o)=>!q||[o.name,o.source,o.email,o.phone,o.stageName].join(' ').toLowerCase().includes(q))
         .sort((a,b)=>a.name.localeCompare(b.name));
     }
-    function renderReferrerOptions(){
-      const select=document.getElementById('referrer-select');
+    function renderReferrerList(){
+      const listEl=document.getElementById('referrer-list');
+      const countEl=document.getElementById('referrer-count');
       const matches=referrerCandidates();
-      select.disabled=!matches.length;
-      select.size=Math.min(6,Math.max(3,matches.length||1));
-      select.innerHTML=matches.length?matches.map((o)=>`<option value="${esc(o.id)}">${esc(referrerLabel(o))}</option>`).join(''):'<option value="">No matching won customers</option>';
+      const total=state.opportunities.filter((o)=>o.id!==state.selectedOpportunityId).length;
+      listEl.innerHTML=matches.length
+        ? matches.map((o)=>`<div class="pick ${o.id===state.selectedReferrerId?'sel':''}" role="button" tabindex="0" data-ref="${esc(o.id)}">
+            <div class="pick-av">${esc(initials(o.name))}</div>
+            <div class="pick-main"><div class="pick-name">${esc(o.name)}</div><div class="pick-sub">${esc(o.source||'Unknown source')} · ${esc(money(o.value))}</div></div>
+            <div class="pick-check">✓</div>
+          </div>`).join('')
+        : '<div class="pick-empty">No matching customers. Try a different name.</div>';
+      countEl.textContent=state.referrerQuery.trim()
+        ? `${matches.length} of ${total} customers`
+        : `${total} won customers`;
+    }
+    function selectReferrer(id){
+      state.selectedReferrerId=id;
+      document.getElementById('link-error').textContent='';
+      document.querySelectorAll('#referrer-list .pick').forEach((el)=>el.classList.toggle('sel',el.dataset.ref===id));
+      document.getElementById('save-link').disabled=!id;
     }
     function openLinkDialog(id){
       const target=state.opportunities.find((o)=>o.id===id); if(!target) return;
       state.selectedOpportunityId=id; state.referrerQuery='';
+      state.selectedReferrerId=target.referredById||'';
       document.getElementById('link-target').textContent=`Who referred ${target.name}?`;
       document.getElementById('referral-note').value=editableReferralNote(target.referralNote);
       document.getElementById('link-error').textContent='';
       document.getElementById('referrer-search').value='';
-      renderReferrerOptions();
+      renderReferrerList();
+      document.getElementById('save-link').disabled=!state.selectedReferrerId;
       document.getElementById('link-dialog').showModal();
       document.getElementById('referrer-search').focus();
+      const sel=document.querySelector('#referrer-list .pick.sel'); if(sel) sel.scrollIntoView({block:'center'});
     }
     async function saveLink(){
       const button=document.getElementById('save-link'),error=document.getElementById('link-error');
-      const referrerOpportunityId=document.getElementById('referrer-select').value;
+      const referrerOpportunityId=state.selectedReferrerId;
       if(!referrerOpportunityId){error.textContent='Search and select a referrer first.';return;}
       button.disabled=true; error.textContent='';
       try{
@@ -600,7 +642,10 @@
     document.getElementById('cancel-review').addEventListener('click',()=>document.getElementById('review-dialog').close());
     document.getElementById('send-review').addEventListener('click',sendReview);
     document.getElementById('review-note').addEventListener('input',schedulePreviewRefresh);
-    document.getElementById('referrer-search').addEventListener('input',(e)=>{state.referrerQuery=e.target.value;renderReferrerOptions();});
+    document.getElementById('referrer-search').addEventListener('input',(e)=>{state.referrerQuery=e.target.value;renderReferrerList();});
+    document.getElementById('referrer-search').addEventListener('keydown',(e)=>{if(e.key==='Enter'){e.preventDefault();const first=document.querySelector('#referrer-list .pick');if(first)selectReferrer(first.dataset.ref);}});
+    document.getElementById('referrer-list').addEventListener('click',(e)=>{const el=e.target.closest('.pick');if(el&&el.dataset.ref)selectReferrer(el.dataset.ref);});
+    document.getElementById('referrer-list').addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){const el=e.target.closest('.pick');if(el&&el.dataset.ref){e.preventDefault();selectReferrer(el.dataset.ref);}}});
     document.getElementById('search').addEventListener('input',(e)=>{state.query=e.target.value;renderBoard();});
     document.getElementById('board').addEventListener('click',(e)=>{
       const btn=e.target.closest('button[data-action]'); if(!btn) return;
