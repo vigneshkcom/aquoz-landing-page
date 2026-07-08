@@ -34,6 +34,8 @@ module.exports = async function handler(req, res) {
           previousReferrerName: result.previousReferrerName,
           deletedRelation: !!target.referralAssociationRelationId,
           noteWarning: result.contactNote && result.contactNote.ok === false ? result.contactNote.error : '',
+          pipelineRestored: !!(result.pipelineRestore && result.pipelineRestore.restored && result.pipelineRestore.restored.length),
+          pipelineRestoreWarning: result.pipelineRestore ? result.pipelineRestore.warning : '',
         },
         result,
       });

@@ -534,8 +534,12 @@
       if(!confirm(`Unlink ${opp.name} from ${referrerName}? This removes the linked opportunity relation in GHL.`)) return;
       try{
         const data=await api('/referrals',{method:'DELETE',body:JSON.stringify({opportunityId:id})});
-        const msg=data.unlinked&&data.unlinked.deletedRelation?'Referral unlinked and relation removed from GHL.':'Referral unlinked in GHL.';
-        showToast(data.unlinked&&data.unlinked.noteWarning?`${msg} Note warning: ${data.unlinked.noteWarning}`:msg);
+        const unlinked=data.unlinked||{};
+        let msg=unlinked.deletedRelation?'Referral unlinked and relation removed from GHL.':'Referral unlinked in GHL.';
+        if(unlinked.pipelineRestored){msg+=' Both opportunities moved back to their previous pipeline.';}
+        else if(unlinked.pipelineRestoreWarning){msg+=` (Couldn't restore pipeline: ${unlinked.pipelineRestoreWarning})`;}
+        if(unlinked.noteWarning){msg+=` Note warning: ${unlinked.noteWarning}`;}
+        showToast(msg,unlinked.pipelineRestoreWarning?'error':undefined);
         await loadTracker();
       }catch(err){showToast(err.message,'error');}
     }
