@@ -60,6 +60,10 @@ module.exports = async function handler(req, res) {
         associationRelationId: result.relation.id,
         associationRelationReused: !!result.relation.reused,
         noteWarning: result.contactNote && result.contactNote.ok === false ? result.contactNote.error : '',
+        pipelineMoved: !!(result.pipelineMove && result.pipelineMove.moved && result.pipelineMove.moved.length),
+        pipelineName: result.pipelineMove ? result.pipelineMove.pipelineName : '',
+        pipelineStageName: result.pipelineMove ? result.pipelineMove.stageName : '',
+        pipelineMoveWarning: result.pipelineMove ? result.pipelineMove.warning : '',
       },
       result,
     });

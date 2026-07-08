@@ -518,8 +518,12 @@
       try{
         const data=await api('/referrals',{method:'POST',body:JSON.stringify({opportunityId:state.selectedOpportunityId,referrerOpportunityId,note:document.getElementById('referral-note').value})});
         document.getElementById('link-dialog').close();
-        const msg=data.linked&&data.linked.associationRelationReused?'Referral link saved in GHL.':'Referral link saved and linked in GHL.';
-        showToast(data.linked&&data.linked.noteWarning?`${msg} Note warning: ${data.linked.noteWarning}`:msg);
+        const linked=data.linked||{};
+        let msg=linked.associationRelationReused?'Referral link saved in GHL.':'Referral link saved and linked in GHL.';
+        if(linked.pipelineMoved){msg+=` Both opportunities moved to ${linked.pipelineName||'End of Funnel'} → ${linked.pipelineStageName||'Completed'}.`;}
+        else if(linked.pipelineMoveWarning){msg+=` (Couldn't move pipeline: ${linked.pipelineMoveWarning})`;}
+        if(linked.noteWarning){msg+=` Note warning: ${linked.noteWarning}`;}
+        showToast(msg,linked.pipelineMoveWarning?'error':undefined);
         await loadTracker();
       }catch(err){error.textContent=err.message;}
       finally{button.disabled=false;}
