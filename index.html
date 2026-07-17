@@ -728,15 +728,20 @@
             <input id="postcode" name="postcode" inputmode="numeric" autocomplete="postal-code" placeholder="e.g. 3061" required>
           </div>
           <div class="field">
-            <label for="priority">What matters most? <span style="font-weight:600;color:var(--muted)">(optional)</span></label>
-            <select id="priority" name="priority">
+            <label for="homeowner">Are you a homeowner?</label>
+            <select id="homeowner" name="homeowner" required>
               <option value="">Select one</option>
-              <option>Better drinking water</option>
-              <option>Whole-house filtration</option>
-              <option>Chlorine taste or smell</option>
-              <option>Skin, hair or shower water</option>
-              <option>Bore or tank water</option>
-              <option>Not sure — need advice</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="mainsWater">Are you connected to mains water?</label>
+            <select id="mainsWater" name="mainsWater" required>
+              <option value="">Select one</option>
+              <option>Yes</option>
+              <option>No</option>
+              <option>Not sure</option>
             </select>
           </div>
 
@@ -1112,28 +1117,22 @@
       var ANGLES = {
         health:     { eyebrow: "Whole-home water filtration · Australian owned",
                       h1: "What's really in your <span class='hl'>tap water?</span>",
-                      sub: "Book a free in-home water test and find out exactly what's in it — then get an honest recommendation. Whole-house & under-sink filtration by licensed Australian plumbers.",
-                      priority: "Whole-house filtration" },
+                      sub: "Book a free in-home water test and find out exactly what's in it — then get an honest recommendation. Whole-house & under-sink filtration by licensed Australian plumbers." },
         taste:      { eyebrow: "Better-tasting water · Australian owned",
                       h1: "Finally, tap water that <span class='hl'>tastes great.</span>",
-                      sub: "Cut the chlorine taste and smell for good — better water for drinking, coffee and tea. Start with a free in-home water test and licensed install.",
-                      priority: "Chlorine taste or smell" },
+                      sub: "Cut the chlorine taste and smell for good — better water for drinking, coffee and tea. Start with a free in-home water test and licensed install." },
         savings:    { eyebrow: "Stop buying bottled water · Australian owned",
                       h1: "Stop buying <span class='hl'>bottled water.</span>",
-                      sub: "Families switch and save hundreds a year — clean, great-tasting water straight from the tap. Start with a free in-home water test.",
-                      priority: "Better drinking water" },
+                      sub: "Families switch and save hundreds a year — clean, great-tasting water straight from the tap. Start with a free in-home water test." },
         family:     { eyebrow: "Safer water for your family · Australian owned",
                       h1: "Safer water for the people <span class='hl'>you love.</span>",
-                      sub: "Cleaner, filtered water for drinking, cooking and bathing — peace of mind from every tap. Free in-home water test, installed by licensed Australian plumbers.",
-                      priority: "Better drinking water" },
+                      sub: "Cleaner, filtered water for drinking, cooking and bathing — peace of mind from every tap. Free in-home water test, installed by licensed Australian plumbers." },
         skin:       { eyebrow: "Better shower &amp; skin water · Australian owned",
                       h1: "Softer skin, healthier hair — from <span class='hl'>every tap.</span>",
-                      sub: "Reduce the chlorine that dries out skin and hair. Whole-home filtered water for better showers and daily routines. Free in-home water test.",
-                      priority: "Skin, hair or shower water" },
+                      sub: "Reduce the chlorine that dries out skin and hair. Whole-home filtered water for better showers and daily routines. Free in-home water test." },
         appliances: { eyebrow: "Whole-home water filtration · Australian owned",
                       h1: "Protect your home from sediment &amp; <span class='hl'>scale.</span>",
-                      sub: "Reduce sediment, rust and mineral build-up that damages pipes, hot water systems and appliances. Free in-home water test, licensed install.",
-                      priority: "Whole-house filtration" }
+                      sub: "Reduce sediment, rust and mineral build-up that damages pipes, hot water systems and appliances. Free in-home water test, licensed install." }
       };
       var ALIASES = {
         health:"health", contaminants:"health", quality:"health", pfas:"health",
@@ -1155,8 +1154,6 @@
           if (eb) { var ic = eb.querySelector("svg"); eb.innerHTML = (ic ? ic.outerHTML + " " : "") + cfg.eyebrow; }
           if (h1) h1.innerHTML = cfg.h1;
           if (sub) sub.textContent = cfg.sub;
-          var pri = document.getElementById("priority");
-          if (pri && cfg.priority) { for (var pi = 0; pi < pri.options.length; pi++) { if (pri.options[pi].text === cfg.priority) { pri.selectedIndex = pi; break; } } }
           document.documentElement.setAttribute("data-angle", key);
         }
       } catch (e) {}
@@ -1252,7 +1249,7 @@
         /* Honeypot: silently ignore bots */
         if (form.company && form.company.value) return;
 
-        var name = form.name, phone = form.phone, email = form.email, address = form.address, postcode = form.postcode;
+        var name = form.name, phone = form.phone, email = form.email, address = form.address, postcode = form.postcode, homeowner = form.homeowner, mainsWater = form.mainsWater;
         var ok = true;
         if (!name.value.trim()) { setInvalid(name, true); ok = false; } else setInvalid(name, false);
         if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setInvalid(email, true); ok = false; } else setInvalid(email, false);
@@ -1260,6 +1257,8 @@
         if (digits < 8) { setInvalid(phone, true); ok = false; } else setInvalid(phone, false);
         if (!address.value.trim()) { setInvalid(address, true); ok = false; } else setInvalid(address, false);
         if (!/^\d{4}$/.test(postcode.value.trim())) { setInvalid(postcode, true); ok = false; } else setInvalid(postcode, false);
+        if (!homeowner.value) { setInvalid(homeowner, true); ok = false; } else setInvalid(homeowner, false);
+        if (!mainsWater.value) { setInvalid(mainsWater, true); ok = false; } else setInvalid(mainsWater, false);
         if (!ok) {
           var firstBad = form.querySelector(".invalid");
           if (firstBad) firstBad.focus();
@@ -1276,7 +1275,8 @@
           email: email.value.trim(),
           address: address.value.trim(),
           postcode: postcode.value.trim(),
-          priority: form.priority.value
+          homeowner: homeowner.value,
+          mainsWater: mainsWater.value
         };
 
         function showSuccess() {
